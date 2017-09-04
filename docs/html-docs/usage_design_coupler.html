@@ -1,0 +1,58 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<TITLE>Homepage of atlc - Arbitrary Transmission Line Calculator</TITLE>
+<META name="generator" content="Mostly bluefish and vi">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+<meta name="author" content="Dr. David Kirkby">
+<META name="DESCRIPTION" content="Transmission line design_coupler design coupler calculator, of *any* cross section">
+<META name="KEYWORDS" content="Transmission line calculator design_coupler arbitrary any shape cross section finite difference">
+</HEAD>
+<BODY>
+
+
+<H1>Arguments and options for  <CODE>design_coupler</CODE></H1>
+If<CODE> design_coupler</CODE>  is run with the wrong number of arguments (there should be 3), it prints information on what it expects for its 3 arguments and the options available. . 
+<pre>
+sparrow /export/home/davek/atlc/src/non_gui % design_coupler
+
+Usage: design_coupler [-d] -[e] [-q] [-s fstep] [-C] [-H height] [-L length] [-Z Zo] CF fmin fmax
+where: 
+     CF          is the coupling factor required in dB [10 log(P1/P2)]
+     fmin        is the minimum frequency (MHz)
+     fman        is the maximum frequency (MHz)
+Options are:
+      -d           Calculate physical dimensions (takes a while).
+      -e           Give lots of examples of usage.
+      -q           Run in quite mode, giving less output.
+      -s fstep     Set the analysis frequency step in MHz.
+      -C           Print Copyright, Licencing and Distribution information.
+      -H height    to set the height of the enclosure (defaults to 1 unit).
+      -L length    to set the coupler length (m). Defaults to lambda/4.
+      -Q           Run in very quite mode, giving just one line of output
+      -Z Zo        Set the design impedance (default is 50 Ohms)
+coupled port 2 ************************************************ reflected port 3
+
+input port 1   ************************************************ output port 4
+               <--------------------L------------------------->
+Drive Port 1. The main power comes out from port 4. A fraction (set by the 
+coupling factor) of the forward power comes from port 2. A fraction of the
+
+</pre>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</html>

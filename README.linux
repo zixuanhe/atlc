@@ -1,0 +1,4 @@
+ATLC should run fine on any linux system, though 
+no effort has been taken to gather information 
+about linux systems. (For some operating systems
+ATLC reports the CPU type, cache sizes etc). 

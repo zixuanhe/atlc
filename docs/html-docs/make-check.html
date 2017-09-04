@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+<meta name="author" content="Dr. David Kirkby">
+<META name="DESCRIPTION" content="How to build atlc - Arbitrary Transmission Line Calculator from sources.">
+<META name="KEYWORDS" content="Transmission lines, calculator, atlc">
+<TITLE>How make check works</TITLE>
+</HEAD>
+<BODY>
+<H1>How 'make check' works</H1>
+<p>Extensive work has been put into testing the <a href="accuracy.html">accuracy</a> of <em>atlc</em>, so I have a high-degree of confidence in the code. However, over the years that <em>atlc</em> has been developed, a few problems have been discovered, often only affecting one hardware system, or one operating system, or one compiler or one set of optimisation flags. For this reason, extenive self-checking is performed to try to discover any problems.</p>
+
+After <code>make</code> is run, one should run <code>make check</code>, which will run a series of about 90 (as of 3rd August 2003) self-tests. This page describes what the self-tests do, how they work etc. </p>
+<OL>
+<LI>First, the basic <a href="accuracy.html">accuracy</a> of the code has been checked on a Sun Ultra 80, where all development is done. That checks the results are correct, but only on one platform.<br><br></li>
+<LI>A number of self tests call the programs <code>create_bmp_for_circ_in_circ,  create_bmp_for_circ_in_rect, create_bmp_for_microstrip_coupler, create_bmp_for_rect_cen_in_rect,  
+create_bmp_for_rect_cen_in_rect_coupler, create_bmp_for_rect_in_circ, create_bmp_for_stripline_coupler</code> and <code>create_bmp_for_symmetrical_stripline.</code> These programs create bitmap files. The validity of the bitmaps files is checked with Gimp, to meansure the width and height of the generated bitmaps, the diameters or sizes of conductors, etc. Note, it would take an error both in Gimp and one of <br>the <code>create_bmp_for_*</code> files for an error to not be detected when viewed in the Gimp.<br><br></li>
+
+<li>The MD5 checksums of these bitmaps are computed with the program <code>mymd5sum</code> in the <code>tools/src subdirectory</code>. The MD5 checksums of the generated should be identical to those expected. For example, test <code>2a-create_bmp_for_rect_in_rect.bmp.test</code> executes<br><br>
+<code>create_bmp_for_rect_in_rect -b 4 500 100 20 240 20 460 50 40 1 4.8 test_rect_in_rect.bmp</code>
+<br><br>
+The MD5 checksum of <code>test_rect_in_rect.bmp</code> should be <code>c761645b57a08057064eb284a44859e9</code> and if not, test <code>2a-create_bmp_for_rect_in_rect.bmp.test</code> will fail.<br><br> 
+</li>
+<li>The program <code>atlc</code>, is run, using the bitmaps generated above. For example, test <code>2b-create_bmp_for_rect_in_rect.txt.test</code> executes:<br><br>
+atlc  -S test_rect_in_rect.bmp > test_rect_in_rect.txt<br><br>
+This creates the text file <code>test_rect_in_rect.txt</code> as well as the bitmaps <code>test_rect_in_rect.Ex.bmp, test_rect_in_rect.Ey.bmp, test_rect_in_rect.E.bmp, test_rect_in_rect.V.bmp, test_rect_in_rect.U.bmp</code> and <code>test_rect_in_rect.Er.bmp<br><br></code>.</li>
+<li>The results of the numerical computations are checked against those expected, which should be close to the theoretical values. For example, in test <code>create_bmp_for_rect_in_rect.txt.test</code> the capacitance computation is expected to be 121.0 pF/m and the impedance 44.61 Ohms. If not, test <code>2b-create_bmp_for_rect_in_rect.txt.test</code> will fail. <br><br></li>
+<li>The MD5 checksums of the bitmap files created by <code>atlc</code> are computed and checked against what is expected. For example, test <code>2c-create_bmp_for_rect_in_rect.E.bmp.test</code> compares the MD5 checksum of 
+<code>test_rect_in_rect.E.bmp</code> to that was expected (<code>49ce7df03fcd0ee4e0120269e136f506</code>), test <code>2d-create_bmp_for_rect_in_rect.Er.bmp.test</code> that of <code>test_rect_in_rect.Er.bmp</code> to that expected (<code>83c85493d8cfc248b65b72fc6bb1935d</code>) etc. In a few rare incidences, a single pixel of the bitmaps created in step 4 depend on the platform. The differences are due to rounding errors. For example, in test </code>1g-create_bmp_for_symmetrical_stripline.U.bmp.test</code>, the MD5 checksum is computed of the file <code>test_sym_strip.U.bmp</code>, but depending on the platform, one pixel will vary in gray level by one shade of gray, so two MD5 checksums are considered acceptable - <code>353a368663a112d7e8f0af6a63df75f3</code> and <code>a983da63a2f7b5d56d263d93988c1f8d.</code>  Such instances are rare.<br><br></li>
+<LI><code>atlc</code> will, unless the <code>-S</code> option is given, write binary files, with the .bin extension. Only the lengths of these are currently checked - not their contents, as that would be too dependant on rounding errors. Perhaps at a later date their binary data will be convered into an integer format (say 256 levels) and the data compared. Currently no use is made of the binary data files, so not much effort has been put into checking them. </li>
+
+<br><br>
+To be continued. 
+
+</ol>
+
+</body>
+
+</html>

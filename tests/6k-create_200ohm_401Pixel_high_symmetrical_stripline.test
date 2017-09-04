@@ -1,0 +1,12 @@
+#! /bin/sh
+Zo=`$top_builddir/src/create_bmp_for_symmetrical_stripline -v 1680 401 36 $top_builddir/tmp/200ohm-401h.bmp | awk '{print $4}' | tail -1`
+if [ $Zo = 200.669461 ]; then
+  rm $top_builddir/tmp/200ohm-401h.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi
+
+

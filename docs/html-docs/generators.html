@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<meta name="generator" content="Mostly bluefish &amp; vi. Sometimes netscape">
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<meta name="DESCRIPTION" content="Transmission line calculator, or *any* cross section">
+<meta name="KEYWORDS" content="Transmission line calculator arbitrary any cross section">
+<title>Arbitrary Transmission Line Calculator - atlc</title>
+</head>
+<body>
+<h1>Automatic Bitmap Generators.</h1>
+
+In order to describe the cross sections of the transmission lines, you can either use a graphics programme to draw it manually, or one of several programs which will be written in order to generate bitmaps more quickly. Currently several automatic bitmap generators have been written, which handle some of the more common combination of circular and rectangular conductors. Note <CODE>create_bmp_for_circ_in_circ</CODE> which handles the eccentric coax, with a circular inner and outer, was written to test <CODE>atlc</CODE>, - since there is an exact analytical formula for that case, there is no point in simulating it.  UNIX manual pages are available for most, but not all of the programs.<p> <STRONG>NOTE: The HTML versions of the UNIX man pages are produces automatically from the UNIX man pages. They are not very well produced and any diagrams are very poorly shown. Hence don't expect too much of the hyperlinks below - the man pages when viewed using <CODE>man</CODE> are much better.</STRONG></p>
+<TABLE border>
+
+	
+	<TR><TD><a href="create_bmp_for_circ_in_circ.1.html">create_bmp_for_circ_in_circ</a> <CODE>100 30 25 1.0006 off-centre2.bmp</CODE><br>This is used for producing bitmaps of a circular conductor inside another circular conductor. In this example, the inner diameter of the outer conductor is 100 mm, the outer diameter of inner conductor is 30 mm. The inner is offset 25 mm from the centre. The dielectric constant of the material between the inner and outer is 1.0006 (air). The fact the outer looks square, not circular, is of no consequence. The shape <STRONG>inside</STRONG> of the outer conductor is round - the shape outside is irrelevant..</TD><TD><img src="jpgs/off-centre2.jpg" alt="eccentric coax" width="150"></TD></TR>
+	<TR><TD><a href="create_bmp_for_rect_cen_in_rect.1.html">create_bmp_for_rect_cen_in_rect</a>  <CODE>268 100 100 50 4.8 central.bmp</CODE> <br>This is used for creating bitmaps of a rectangular conductor placed centrally inside another  rectangular conductor. Only a single dielectric exists.</TD><TD><img src="jpgs/central.jpg" alt="centralised rectangular"></TD></TR>
+	<TR><TD><a href="create_bmp_for_circ_in_rect.1.html">create_bmp_for_circ_in_rect</a> 20 200 100 50 -5 10.2 cir.bmp<br>This is used for the generation of bitmap with a  circular conductor inside a rectangular conductor.</TD><TD><img src="jpgs/cir.jpg" alt="odd one again"></TD></TR>
+	<TR><TD><CODE>create_bmp_for_rect_in_circ</CODE>  has not been finished yet.<br>But this is what it will do - calculate the properties of a transmission line formed from a circular outer and a rectangular inner.</TD><TD><img src="jpgs/ric.jpg" alt="odd one again" width="150"></TD></TR>
+	<TR><TD><CODE><a href="create_bmp_for_stripline_coupler.1.html">create_bmp_for_stripline_coupler</a> -v  2.0  1.01  1.02 1.0 coupler.bmp</CODE><br>This is used for creating bitmaps for a directional coupler. In this example, the height H of the enclosure is 2 mm, the width of the conductors w is 1.01 mm, the spacing between them is 1.02 m. The dielectric between them has a permittivity of 1.0. The width of the enclosure W is automatically set, to be sufficiently large to make no significant difference to the results. The inner conductors are made only one pixel high, so that the bitmap produced closely approximates a geometry that has an exact analytical solution, which the -v option causes the program to compute (Zodd=93.196255, Zeven=106.612606 and Zo=99.678963 Ohms). The thickness of the inner conductors is shown exaggerated here, otherwise you would be unable to see them. You will really need to zoom in with a graphics package to see the inner conductors.</TD><TD><img src="jpgs/coupler.jpg" alt="coupled lines" width="268">.</TD></TR>
+<TR><TD><CODE><a href="create_bmp_for_symmetrical_stripline.1.html">create_bmp_for_symmetrical_stripline</a></code> <code> 1 201 301 wide.bmp</CODE><br>This is used for creating bitmaps of a thin strip line between two wide conductors. The program also calculates the theoretical impedance, assuming the stripline is infinitely thin and the width W infinite wide. The inner conductor that is produced is one pixel high, in order that <CODE>atlc</CODE> may be tested against theoretical data. It is often difficult to see the inner conductor unless you zoom into a bitmap. Hence it is  shown very exaggerated in this diagramme. </TD><TD><img src="jpgs/wide.jpg" alt="wide stripline">.</TD></TR>
+	<TR><TD><a href="create_bmp_for_rect_in_rect.1.html">create_bmp_for_rect_in_rect</a> <CODE>268 100 10 40 25 200 100 45 1.0 4.8 pcb2.bmp</CODE><br>This is used for creating bitmaps for a rectangular conductor placed anywhere inside another  rectangular conductor, with one conductor place on top of another dielectric. The programme create_bmp_for_rect_in_rect  is quite hard to use, as it has so many parameters that must be supplied. Don't try using this one before some of the others.</TD><TD><img src="jpgs/pcb2.jpg" alt="odd rectangular"></TD></TR>
+	<TR><TD><code><a href="create_bmp_for_microstrip_coupler.1.html">create_bmp_for_microstrip_coupler</a>  2.5 2.0 1 1.593 0.53 1 3.7</CODE><br>This is used when one wishes to create bitmaps for two coupled lines microstrip lines on a PCB. In this example, the width of the coupled lines (w) is 2.5 mm, there is a 2 mm space (s) between the two coupled lines, there is a gap (g) of 1 mm between the edges of the coupled lines and the top groundplane. The dielectric is 1.593 mm thick and the copper tracks 0.53 mm thick. The permittivity of the material (air) above the PCB is 1.0 and that of the PCB is 3.7. This has an odd mode impedance of 43.96 Ohms and an even mode impedance of 55.06 Ohms. .</TD><TD><img src="jpgs/ms_coupler.jpg" alt="microstrip coupler"></TD></TR>
+	<TR><TD></TD><TD></TD><TD></TD></TR>
+</TABLE>
+<p>
+The above programs will, by default, produce a bitmap of around 500 kb, which should be analysed in about 3  minutes at most, depending on the speed of your computer. You can increase or decrease the size of the bitmap, by use of the -b option. <br>
+<br>
+<p>
+<CODE>create_bmp_for_symmetrical_stripline</CODE> is different from the other programmes used for bitmap generation, in that instead of the programme automatically determining the optimal bitmap dimensions, <CODE>create_bmp_for_symmetrical_stripline</CODE> must be provided with them. Whereas all the other programs can accept floating point numbers for the dimensions of the conductors, <CODE>create_bmp_for_symmetrical_stripline </CODE>will only accept integer numbers and translates them directly to the bitmap size.  The program <CODE>create_bmp_for_symmetrical_stripline</CODE> was put together quickly and has no finess.
+
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</html>
+

@@ -1,0 +1,1 @@
+pcb.bmp 2 Er=  3.17 Zo=  65.468 Ohms C=   90.7 pF/m L=  388.6 nH/m v= 1.685e+08 m/s v_f= 0.562 VERSION= 4.6.0

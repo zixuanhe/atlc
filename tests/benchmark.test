@@ -1,0 +1,92 @@
+#! /bin/sh
+# This test checks that a multi-threaded vesion of 
+# atlc runs faster than a single threaded one. 
+# and reports by how much so. 
+
+if [ "x$mpirun_found" = "xyes" ] ; then
+  return 77
+else
+  cp $top_srcdir/examples/25ohm-401h.bmp $top_builddir/tmp
+  ret=`$top_builddir/tests/benchmark $top_builddir/src/atlc $top_builddir/tmp/25ohm-401h.bmp `
+  rm -f $top_builddir/tmp/25ohm-401h.bmp
+
+#  cp $top_srcdir/examples/twin-wire3.bmp $top_builddir/tmp
+#  ret=`$top_builddir/tests/benchmark $top_builddir/src/atlc $top_builddir/tmp/twin-wire3.bmp `
+#  rm -f $top_builddir/tmp/twin-wire3.bmp
+
+  exitcode=`echo $ret | awk '{print $1}'`
+  t1=`echo $ret | awk '{print $2}'`
+  t2=`echo $ret | awk '{print $3}'`
+  speedup=`echo $ret | awk '{print $4}'`
+  N_cpus=`echo $ret | awk '{print $5}'`
+  mhz=`echo $ret | awk '{print $6}'`
+  efficiency=`echo $ret | awk '{print $7}'`
+  cpu_type=`echo $ret | awk '{print $8}'`
+  fpu_type=`echo $ret | awk '{print $9}'`
+  supported_cpus=`echo $ret | awk '{print $10}'`
+  ram=`echo $ret | awk '{print $11}'`
+  sysname=`echo $ret | awk '{print $12}'`
+  nodename=`echo $ret | awk '{print $13}'`
+  release=`echo $ret | awk '{print $14}'`
+  version=`echo $ret | awk '{print $15}'`
+  machine=`echo $ret | awk '{print $16}'`
+  hw_provider=`echo $ret | awk '{print $17}'`
+  hw_platform=`echo $ret | awk '{print $18}'`
+  L1data=`echo $ret | awk '{print $19}'`
+  L1instruction=`echo $ret | awk '{print $20}'`
+  L2=`echo $ret | awk '{print $21}'`
+  echo " "
+  echo "                  BENCHMARK DATA"
+  echo "                  BENCHMARK DATA" >> tests.log
+  echo "                  <STRONG><div align="center">BENCHMARK DATA</div></STRONG> <BR>" > tests.html
+
+  echo "Hardware data working reasonably well on AIX, HP-UX, Solaris, Tru64,"
+  echo "Hardware data working reasonably well on AIX, HP-UX, Solaris, Tru64," >> tests.log
+  echo "Hardware data working reasonably well on AIX, HP-UX, Solaris, Tru64, <BR>" >> tests.html
+
+  echo "IRIX and UNICOS, but not too well on Linux and poorly on *BSD" 
+  echo "IRIX and UNICOS, but not too well on Linux and poorly on *BSD" >> tests.log
+  echo "IRIX and UNICOS, but not too well on Linux and poorly on *BSD <BR>" >> tests.html
+
+  echo "Any help to write code to gather data on other OS's would be appreciated" 
+  echo "Any help to write code to gather data on other OS's would be appreciated" >> tests.log
+  echo "Any help to write code to gather data on other OS's would be appreciated<BR><BR>" >> tests.html
+
+  echo " "
+  echo " " >> tests.log
+  echo "<BR>" >> tests.html
+
+  echo "Hardware provider is $hw_provider. Hardware platform is $hw_platform."
+  echo "Hardware provider is $hw_provider. Hardware platform is $hw_platform." >> tests.log
+  echo "Hardware provider is $hw_provider. Hardware platform is $hw_platform.<BR>" >> tests.html
+
+  echo "Machine: $machine. Sysname: $sysname. Release: $release. Nodename: $nodename."
+  echo "Machine: $machine. Sysname: $sysname. Release: $release. Nodename: $nodename." >> tests.log
+  echo "Machine: $machine. Sysname: $sysname. Release: $release. Nodename: $nodename.<BR>" >> tests.html
+
+  echo "Number of CPUs supported by system is $supported_cpus. Number of CPUs online is  $N_cpus."
+  echo "Number of CPUs supported by system is $supported_cpus. Number of CPUs online is  $N_cpus." >> tests.log
+  echo "Number of CPUs supported by system is $supported_cpus. Number of CPUs online is  $N_cpus.<BR>" >> tests.html
+
+  echo "CPU_type is $cpu_type. FPU_type is $fpu_type. Speed of CPU(s) is $mhz MHz."
+  echo "CPU_type is $cpu_type. FPU_type is $fpu_type. Speed of CPU(s) is $mhz MHz." >> tests.log
+  echo "CPU_type is $cpu_type. FPU_type is $fpu_type. Speed of CPU(s) is $mhz MHz.<BR>" >> tests.html
+
+  echo "L1 data cache is $L1data kB; L1 instruction cache is $L1instruction kB; L2 cache is $L2 kB"
+  echo "L1 data cache is $L1data kB; L1 instruction cache is $L1instruction kB; L2 cache is $L2 kB" >> tests.log
+  echo "L1 data cache is $L1data kB; L1 instruction cache is $L1instruction kB; L2 cache is $L2 kB<BR>" >> tests.html
+
+  if [ "x$built_with_posix_threads" = "xyes" ] ; then
+    echo "Run times: T_sequential is $t1 s. T_parallel is $t2 s."
+    echo "Run times: T_sequential is $t1 s. T_parallel is $t2 s." >> tests.log
+    echo "Run times: T_sequential is $t1 s. T_parallel is $t2 s.<BR>" >> tests.html
+
+    echo "Speedup=T_sequential/T_parallel is $speedup. Efficiency=Speedup/N_cpus is $efficiency"
+    echo "Speedup=T_sequential/T_parallel is $speedup. Efficiency=Speedup/N_cpus is $efficiency" >> tests.log
+    echo "Speedup=T_sequential/T_parallel is $speedup. Efficiency=Speedup/N_cpus is $efficiency<BR>" >> tests.html
+  else
+    echo "Run times: T_sequential is $t1 s. Not configured for parallel operation."
+    echo "Run times: T_sequential is $t1 s. Not configured for parallel operation." >> tests.log
+    echo "Run times: T_sequential is $t1 s. Not configured for parallel operation.<BR>" >> tests.html
+  fi 
+fi

@@ -1,0 +1,19 @@
+# !/bin/sh
+# This test runs atlc, but if the package was configured with the --with-mpi
+# or --with-mpe options, then atlc should not be called directly, but via
+# the mpirun script, which is part of the MPICH distribution. 
+
+if [ -n "$mpirun_found" ] ; then
+  Zo=`mpirun -np 2 $top_builddir/src/atlc $top_builddir/tmp/test_sym_strip.bmp | awk '{print $6}'` 2> /dev/null
+else
+  Zo=`$top_builddir/src/atlc $top_builddir/tmp/test_sym_strip.bmp | awk '{print $6}'`
+fi
+
+# Check the impedance Zo which should be 122.43 Ohms
+if [ "x$Zo" = "x122.792" ] ; then
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 Zo=$Zo >> tests.log
+  exit 1
+fi

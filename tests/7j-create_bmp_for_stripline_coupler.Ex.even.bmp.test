@@ -1,0 +1,33 @@
+#! /bin/sh
+# This is one of a set of test that generate checksums after files are
+# created. Generally a bitmap if first produced by a program such as create_bmp_for_symmetrical_stripline, 
+# create_bmp_for_create_bmp_for_rect_in_rect, create_bmp_for_rect_cen_in_rect, create_bmp_for_circ_in_circ, create_bmp_for_circ_in_rect, 
+# create_bmp_for_stripline_coupler etc.
+
+# The checksum of the bitmap generated is compared to what is known to be 
+# the correct checksum using a program 'mymd5sum' which is a cut-down version of
+# the GNU program 'sum'. Using my own version avoids the need for the user to 
+# have the GNU textutils installed and avoids the possibility that they have
+# 'textutils' installed but have another version of 'sum' (such as the one 
+# supplied by Sun with Solaris, which generates a different checksum. 
+
+# atlc is then run, generating a lot of files, including those with the 
+# extension .bmp, .txt and .bin. The checksum of the .bmp's and part of
+# the .txt file are checked. The .bin's are not, since they will be
+# dependent on the whether the machine is Big Endian (like Suns) or
+# Little Endian like PCs. It will also be too dependent on rounding
+# difference caused by the different FPUs in the different machines. 
+
+# Any failure to generate the correct checksums are noted. 
+
+# Check the Ex.even file created by running 7a
+touch $top_builddir/tmp/test_stripline_coupler.Ex.even.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_stripline_coupler.Ex.even.bmp`
+if [ $MD5SUM != 4fc55cfc75d375864cd21a0c03df889f ] ; then
+  echo "FAILED:(checksum failure)" $0 >> tests.log
+  exit 1
+else
+  rm $top_builddir/tmp/test_stripline_coupler.Ex.even.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+fi

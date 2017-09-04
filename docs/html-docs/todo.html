@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="Transmission line calculator, or *any* cross section">
+<META name="KEYWORDS" content="Transmission line calculator arbitrary any cross section">
+<TITLE>Arbitrary Transmission Line Calculator (atlc) version 2.02</TITLE>
+</HEAD>
+<BODY>
+
+<H1>To Do list..</H1>
+Here is a list of the ways I would like to expand <COde>atlc</code>, in a rough order of time.
+<OL>
+	<LI>Improve consistancy amonst the programs <a href="create_bmp_for_rect_in_rect.1.html">create_bmp_for_rect_in_rect</a>, <a href="create_bmp_for_rect_cen_in_rect.1.html">create_bmp_for_rect_cen_in_rect</a>, <a href="create_bmp_for_rect_in_circ.1.html">create_bmp_for_rect_in_circ</a>, <a href="create_bmp_for_circ_in_rect.1.html">create_bmp_for_circ_in_rect</a>, generate_ coupler_bitmap <a href="create_bmp_for_sym_strip.1.html">create_bmp_for_sym_strip</a>. Most write to standard output, some write to a file given on the comand line, some take integer arguments, some take floats etc. It's all a bit confusing.<p> </LI>
+
+<LI>Improve support for coupled transmission lines. It is very weak at the present time,being unable to handle any dielectric other tthan a vacuum and not being able to give any images showing the fields, energy or whatever. Additions may include some software to make use of the impedance values to calculate the properties of a directional coupler, although you should be able to use these in the free versions of spice or pspice. I have not tried that I must admit. There is also a cheapish programme called Puff available from <a href="http://www.its.caltech.edu/~mmic/puffindex/puffE/puffE.htm">http://www.its.caltech.edu/~mmic/puffindex/puffE/puffE.htm </a> . That would certinaly allow such calculations. There's a UNIX verison too at <a href="http://wwwhome.cs.utwente.nl/~ptdeboer/ham/puff.html">http://wwwhome.cs.utwente.nl/~ptdeboer/ham/puff.html</a>  <br><br></LI>
+	<LI>Implement a better way of enabling a user to change the contrast/brightness in an image. Current, this can only be done with the '<a href ="options.html">-f option</a> to <code>atlc</code>, but this requires a re-run of <code>atlc</code> to do this, which is hardly very useful, given <code>atlc</code> is so CPU intensive. There are faster ways of doing this, just from the binary files (example.E.bin, example.Ex.bin, example.Ey.bin, example.U.bin, example.V.bin and example.Er.bin)..<br><br></LI>
+	<LI>Try other methods of thread syncronisation in the version of atlc that supports multiple CPUs. Currently, threads are created and destroyed to give syncronisation. I think there may be a faster method by the use of 'mutex variables', but this has not be tried.<br><br></LI>
+
+</OL>
+
+If anyone has any suggestions for how to improve <COde>atlc</code>, please <a href="">email me</A>.
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+</BODY>
+
+</HTML>

@@ -1,0 +1,61 @@
+Unless atlc is configured with the --disable-hardware-info option 
+(only do this if it fails to compile properly), a small benchmark at the end 
+tries to gather information about the hardware. The following shows 
+what information is obtained on each system. 
+
+If anyone can add to the information gathered on a system, or add
+information on a new system, please email me and discuss how to 
+do this. Basically a C file in the tests subdirectory needs expanding
+or adding (say try_foo.c), where the system tries to gather data on
+system foo. 
+
+Feature                                 Operating system
+
+                           AIX HP-UX IRIX Linux NetBSD OpenBSD Solaris Tru64
+Harware provider            Y                                     Y      
+Hardware platform                                                 Y      Y
+Machine                     Y    Y          Y                     Y      Y
+Sysname                     Y    Y          Y                     Y      Y
+Release                     #1   Y          Y                     Y      Y
+Nodename                    Y    Y          Y                     Y      Y
+#CPUs supported                  Y                                Y      Y
+#CPUs online                Y    Y                                Y      Y
+CPU type                         #2         Y                     Y      Y
+FPU type                         #3                               Y
+Speed of CPU(s)                  Y                                Y      Y
+RAM size (Mb)               Y    Y          #4                    Y      Y
+L1 data cache size                                                    
+L1 instruction cache size                                            
+L2 cache size
+
+Feature                                 Operating system
+
+                           UNICOS 
+Harware provider            Y      
+Hardware platform            
+Machine                     Y  
+Sysname                     
+Release                  
+Nodename               
+#CPUs supported           
+#CPUs online            
+CPU type                    
+FPU type                   
+Speed of CPU(s)           
+RAM size (Mb)          
+L1 data cache size                                                    
+L1 instruction cache size                                            
+L2 cache size
+
+Notes:
+
+#1 On AIX, the release is reported as 2, not 5.2 as expected. 
+#2 on HP-UX, the CPU is reported as  a number, which might not be that 
+useful.
+#3 on HP-UX, the FPU is reported as  a number, which might not be that 
+useful.
+#4 On a machine with 128 Mb of RAM, the ram is reported on Linux as
+124 Mb, not 128 Mb as expected. 
+
+
+

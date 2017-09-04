@@ -1,0 +1,15 @@
+Here are a number of example files, falling into 4 catabories:
+
+foo.bmp                       (a bitmap showing the cross section)
+foo.V.bmo, foo.E.bmp ..       (showing the voltage, electric field etc)
+foo.bmp.txt                   (the result of running atlc on foo.bmp)
+foo.V.even.bmp, foo.E.odd.bmp (voltage, E-field etc for coupled lines).
+
+Formally a lot of examples were created during the 'make check' stage.
+However, users of the automake mailing list all thought this was not
+such a good idea and that the files should be distributed. Hence a lot
+more examples are now distrubted. Whilst this makes the package bigger,
+it solves a lot of problems with automake. 
+
+Dr. David Kirkby
+29th March 2003.

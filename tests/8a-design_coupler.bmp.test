@@ -1,0 +1,24 @@
+#! /bin/sh
+# This is one of a set of test that generate checksums after files are
+# created, in this case the program design_coupler is run and its 
+# output compared to what is expected. Since design_coupler creates
+# a text file, the format of which is different between UNIX  (where
+# a carriage return is used at the end of a line) and Windoze, where both
+# a carriage return and a line feed are needed, the checksum of the file
+# will be different on the two systems. Hence any of two checksums are 
+# acceptable. 
+
+# The GNU scientific library is needed to use design_coupler, so if it's
+# not present, this test gets skipped. 
+
+$top_builddir/src/design_coupler -d 20 144 146 > $top_builddir/tmp/results  2> /dev/null
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/results`
+# Accept eithe a DOS or UNIX based text file, so accept two checksums. 
+if [ $MD5SUM = f53d09bdc334c3f0508b4f44e789e216 ] || [ $MD5SUM = aebd9a6d1c1db548d39723edec454640 ] ; then
+  rm $top_builddir/tmp/results
+  echo "PASSED:" $0 >> tests.log 
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log 
+  exit 1
+fi

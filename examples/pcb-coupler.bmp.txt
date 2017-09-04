@@ -1,0 +1,1 @@
+pcb-coupler.bmp 3 Er_odd=   2.879 Er_even=   3.372 Zodd=  56.214 Zeven=  73.842 Zo=  64.428 Zdiff= 112.428 Zcomm=  36.921 Ohms VERSION=4.6.0

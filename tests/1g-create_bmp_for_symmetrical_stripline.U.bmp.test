@@ -1,0 +1,32 @@
+# !/bin/sh
+# This is one of a set of test that generate checksums after files are
+# created. Generally a bitmap if first produced by a program such as sym_strip, 
+# rect_in_rect, rect_cen_in_rect, circ_in_circ, circ_in_rect, 
+# generate_coupler_bitmap etc.
+
+# In a few cases, the checksum is performed on a file that is 
+# supplied with the package, rather than one that is 
+# generated. 
+
+# The checksum of the bitmaps generated is compared to what is known to be 
+# the correct checksum using a program 'mymd5sum' which is a cut-down version of
+# the normal md5 or md5sum command.  It does not print the filename 
+# to stdout, as the normal version does. 
+
+# Due to rounding errors, some systems do generate a different checksum on 
+# one machines to another. Usually this is only a single pixel differing
+# by one gray level. In this case, the 3 consequive bytes 301041, 
+# 301042 and 301043 are 254 on a Cray Y-MP but 255 on a Sun. AS such, 
+# in this case, more than one checksum is acceptable. 
+
+touch $top_builddir/tmp/test_sym_strip.U.bmp
+
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_sym_strip.U.bmp`
+if [ $MD5SUM = 2f4d1ab071f103805e794a9b1cdba7ce ]  ; then
+  rm -f $top_builddir/tmp/test_sym_strip.U.bmp 
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi

@@ -1,0 +1,15 @@
+NEWS for realease 4.6.0  Nobember 2003.
+
+This is a very different from the last release (4.5.1) in
+two very important ways.
+
+1) The basic accuracy for single dielectrics has been improved.
+Now typical errors are only around 0.1%
+
+2) I have re-enabled the calculation of multiple dielectrics
+which were disabled due to accuracy concerns. I'm still not
+100% happy with the algorithms, but on tests with a dual 
+coaxial cable with two dielectrics shows errors of under 2%, 
+I hope to improve this further at a later date. 
+
+Dr. David Kirkby, 7th December 2003. Re: atlc-4.6.0

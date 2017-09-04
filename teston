@@ -1,0 +1,283 @@
+#! /bin/sh
+# 'teston' is used for testing software build properly on remote
+# machines. 
+# Copyright (C) Dr. David Kirkby, drkirkby@ntlworld.com
+
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2, or (at your option) any
+# later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+# In other words, you are welcome to use, share and improve this program.
+# You are forbidden to forbid anyone else to use, share and improve
+# #what you give them.   Help stamp out software-hoarding!  */
+
+# The following script allows a distribution of any program which ends
+# .tar.gz to be configured/built on a remote platform. By doing this,
+# possible to spot bugs that are not apparent on a local machine. The
+# script uses ssh/scp to copy the commands and should not require the
+# entry of passwords. A script is created on the local machine, which
+# is copied by scp/scp2 to a remote machine and executed there. Trying
+# to execute the individual staments in the script via ssh takes too
+# long, as the authentication needs to be repeated each time. 
+########################################################################
+########################################################################
+# The following parameters should be set, to save specifying them on the
+# command line each time you run. However ALL can be set on the command
+# line, but it make sense to set the defaults how you will most often use
+########################################################################
+########################################################################
+
+# This shell might look a bit alful, but is writen in a portable way.
+: ${USERNAME='davek'}            # The user name on the remote system
+: ${COMPILER='gcc'}              # can be set to cc or whatever
+: ${MAKE='make'}                   # you might user 'gmake as default 
+COMPILER=_FLAGS=${COMPILER_FLAGS="-Wall -O2"}  # can be set on command line
+LINKER_FLAGS=${LINKER_FLAGS="-L/usr/local/lib"}  
+MAKE_OPTIONS=${MAKE_OPTIONS=""}       # can be changed on the commmand line
+SCP=${SCP="scp"}                      # can be changed on commmand line.
+SSH=${SSH="ssh"}                      # could be changed to rsh 
+EXTENSION=${EXTENSION=".tar.gz"}       #                         
+CONFIGURE_OUTPUT=${CONFIGURE_OUTPUT=''}  # Change to /dev/null if you want
+MAKE_OUTPUT=${MAKE_OUTPUT=''}            # Chnage to /null if you want. 
+
+########################################################################
+########################################################################
+# NOTHING BELOW HERE SHOULD NEED ALTERING !! Don't touch
+# NOTHING BELOW HERE SHOULD NEED ALTERING !! Don't touch
+########################################################################
+########################################################################
+
+#: ${DELETE_FILES_AFTER_USE='no'}  # Don't change
+TMP_NAME=${TMP_NAME=""}
+
+EX1a="eg #1 teston dove atlc-5.0.0"
+EX1b="copies atlc-5.0.0.tar.gz to dove and builds it on dove\n"
+
+EX2a="eg #2 teston -b -c '--with-x --without-y' -m check woodpecker atlc-4.2.12"
+EX2b="Builds and checks atlc-4.2.2.tar.bz2 on woodpecker, configured with x, but not y\n"
+
+EX3a="eg #3 teston -m '-j2' -z bluetit atlc-4.0.0"
+EX3b="copies atlc-4.0.0.zip to bluetit and does a parallel build\n"
+
+EX4a="eg #4 teston -c --enable-hardware-info -M gmake  crow atlc-4.0.0"
+EX4b="copies atlc-4.0.0.tar.gz to crow, configures with --enable-hardware-info and uses gmake to build\n"
+
+EX5a="eg #5 teston -u root duke@medphys.ucl.ac.uk gcc-3.2.2"
+EX5b="builds+tests gcc-3.2.2.tar.gz on duke@medphys.ucl.ac.uk using username root"
+
+TMP_DIR=  # Don't be fooled. Don't touch it. It is not what you think!
+
+while getopts c:m:M:u:tbRrNnTzZ supplied_options
+do 
+  case $supplied_options in
+  u)
+  USERNAME=$OPTARG;;
+  R)
+  SCP="rsh cp"
+  SSH=rsh;;
+  b)
+  EXTENSION=".tar.bz2" ;;
+  t)
+  EXTENSION=".tgz" ;;
+  z)
+  EXTENSION=".zip" ;;
+  Z)
+  EXTENSION='.ZIP'  ;;
+
+  c)
+  CONFIG_OPTIONS=$OPTARG;;
+
+  m)
+  MAKE_OPTIONS=$OPTARG;;
+
+  M)
+  MAKE=$OPTARG;;
+
+  N)
+  CONFIGURE_OUTPUT=\>/dev/null;;
+
+  N)
+  MAKE_OUTPUT=\>/dev/null;;
+  T)
+#  TIME=`date | awk '{print $4}'`
+#  TMP_DIR=$TIME.$$/
+#  TMP_NAME=$TIME.$$.;;
+ TMP_DIR=$$/
+ TMP_NAME=$$.;;
+  r)
+  DELETE_FILES_AFTER_USE="yes" ;;
+  \?)
+  echo "Usage: teston [options] host package\n"
+  echo  "Options are:"
+  echo  "Options are:"
+  echo  "            -u username             # username on host (default = $USERNAME)"
+  echo  "            -R                      # rsh and 'rsh cp' rather than $SSH and $SCP"
+  echo  "            -b                      # assume .tar.bz2 rather than $EXTENSION"
+  echo  "            -t                      # assume .tgz extention rather than $EXTENSION"
+  echo  "            -z                      # assume .zip extention rather than $EXTENSION"
+  echo  "            -Z                      # assume .ZIP extention rather than $EXTENSION"
+  echo  "            -c option_to_configure  # e.g --with-foo"
+  echo  "            -M name_of_make         # e.g. gmake (default = $MAKE)"
+  echo  "            -m option_to_make       # e.g. install (default $MAKE_OPTIONS)"
+  echo  "            -B                      # run make in background. "
+  echo  "            -N                      # Redirect output of make to /dev/null"
+  echo  "            -T                      # Use a unique tmp directory on remote host"
+  echo  "            -r                      # Removes files afterwards"
+  echo  "            -n                      # Redirect output of configure to /dev/null"
+  echo $EX1a  
+  echo $EX1b 
+  echo $EX2a  
+  echo $EX2b 
+  echo $EX3a 
+  echo $EX3b  
+  echo $EX4a  
+  echo $EX4b 
+  echo $EX5a  
+  echo $EX5b 
+  esac
+  done
+shift `expr $OPTIND - 1`
+
+if [ $# -ne 2 ] ; then
+  echo "Usage: teston [options] host package\n"
+  echo  "Options are:"
+  echo  "            -u username             # username on host (default = $USERNAME)"
+  echo  "            -R                      # rsh and 'rsh cp' rather than $SSH and $SCP"
+  echo  "            -b                      # assume .tar.bz2 rather than $EXTENSION"
+  echo  "            -t                      # assume .tgz extention rather than $EXTENSION"
+  echo  "            -z                      # assume .zip extention rather than $EXTENSION"
+  echo  "            -Z                      # assume .ZIP extention rather than $EXTENSION"
+  echo  "            -c option_to_configure  # e.g --with-foo"
+  echo  "            -M name_of_make         # e.g. gmake (default = $MAKE)"
+  echo  "            -m option_to_make       # e.g. install (default $MAKE_OPTIONS)"
+  echo  "            -B                      # run make in background. "
+  echo  "            -N                      # Redirect output of make to /dev/null"
+  echo  "            -T                      # Use a unique tmp directory on remote host"
+  echo  "            -r                      # Removes files afterwards"
+  echo  "            -n                      # Redirect output of configure to /dev/null"
+  echo $EX1a  
+  echo $EX1b 
+  echo $EX2a  
+  echo $EX2b 
+  echo $EX3a 
+  echo $EX3b  
+  echo $EX4a  
+  echo $EX4b 
+  echo $EX5a  
+  echo $EX5b 
+  exit 4
+fi   
+
+REMOTE_HOST=`echo $* | awk '{print $1}'`
+VER=`echo $* | awk '{print $2}'`
+
+# Check the file needed to be sent does acutally exist. 
+if test ! -f $VER$EXTENSION ; then
+  echo $VER$EXTENSION can not be opened for reading
+  exit 3
+fi
+
+DATE=`date`
+echo $TIME
+LOCAL_HOST=`hostname` > /dev/null
+
+# Find the home directory of the user on the remote host.
+REMOTE_HOME=`$SSH $USERNAME@$REMOTE_HOST pwd`
+
+# Create a file 'remote_test.$REMOTE_HOST' on the local machine, which we want
+# executed on the remote host, not on the local machine. 
+echo "#! /bin/sh" | tee > remote-test.$TMP_NAME$REMOTE_HOST.out > remote-test.$TMP_NAME$REMOTE_HOST
+echo "# Script created on $LOCAL_HOST at $DATE using 'teston' " >> remote-test.$TMP_NAME$REMOTE_HOST
+echo "# to run on the remote host $REMOTE_HOST " >> remote-test.$TMP_NAME$REMOTE_HOST
+echo PATH=\$PATH:/usr/local/bin >> remote-test.$TMP_NAME$REMOTE_HOST
+echo "Output from the script created on $LOCAL_HOST at $DATE using 'teston' " >> remote-test.$TMP_NAME$REMOTE_HOST.out
+echo cd $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR >> remote-test.$TMP_NAME$REMOTE_HOST
+
+# the exact method of decompressing the file depends on the file extension. 
+if [ "x$EXTENSION" = "x.tar.gz" ] ; then
+  echo gzip -d $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar.gz >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo rm $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+elif [ "x$EXTENSION" = "x.tgz" ] ; then
+  echo  gzip -d $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tgz >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo  tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo rm $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+elif [ "x$EXTENSION" = "x.tar.bz2" ] ; then
+  echo  $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar.bz2 >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo  tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo rm $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+elif [ "x$EXTENSION" = "x.tar.Z" ] ; then
+  echo gzip -d $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar.Z  >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo  tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo rm $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+elif [ "x$EXTENSION" = "x.zip" ]  ; then
+  echo unzip $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.zip >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+elif [ "x$EXTENSION" = "x.ZIP" ]  ; then
+  echo unzip $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.ZIP >> remote-test.$TMP_NAME$REMOTE_HOST
+  echo tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+elif [ "x$EXTENSION" = "x.tar" ] ; then
+  echo tar xf $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER.tar >> remote-test.$TMP_NAME$REMOTE_HOST
+else
+  echo "unknown extension $EXTENSION"
+  exit 1
+fi
+
+REMOTE_HOST=`echo $* | awk '{print $1}'`
+VER=`echo $* | awk '{print $2}'`
+if test ! -f $VER$EXTENSION ; then
+  echo $VER$EXTENSION can not be opened for reading
+  exit 3
+fi
+
+DATE=`date`
+# The rest of the script to go to the remote machine. 
+echo mkdir $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER-build >> remote-test.$TMP_NAME$REMOTE_HOST
+echo cd $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER-build >> remote-test.$TMP_NAME$REMOTE_HOST
+echo $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER/configure $CONFIG_OPTIONS $CONFIGURE_OUTPUT >> remote-test.$TMP_NAME$REMOTE_HOST
+echo $MAKE $MAKE_OPTIONS $MAKE_OUTPUT >> remote-test.$TMP_NAME$REMOTE_HOST
+if [ "x$DELETE_FILES_AFTER_USE" = "xyes" ] ; then 
+  rm -r $REMOTE_HOME/$REMOTE_HOST/$TMP_DIR$VER >> remote-test.$TMP_NAME$REMOTE_HOST
+fi 
+
+# The script is now created on the local machine, so make it executable
+chmod 755 remote-test.$TMP_NAME$REMOTE_HOST
+
+# Remove any direcotory on the remove machine that might have files
+# in so messing up our build. If we want to build more than once on the
+# remote machine, the -T option should be given to create a 
+# directory on the remote machine that is unique. The method used 
+# here does not guarantee uniqness, but it should be okay. 
+
+$SSH $USERNAME@$REMOTE_HOST rm -fR $REMOTE_HOST/$TMP_DIR 2> /dev/null
+
+# Make direcotries on the remote machine. #
+
+$SSH $USERNAME@$REMOTE_HOST mkdir $REMOTE_HOST 2> /dev/null
+$SSH $USERNAME@$REMOTE_HOST mkdir $REMOTE_HOST/$TMP_DIR 2> /dev/null
+
+# Copy via scp/scp2 the script file in addition to the package
+# (somename.tar.gz or somename.tgz etc) to the remote machine.
+
+$SCP -p $VER$EXTENSION remote-test.$TMP_NAME$REMOTE_HOST $USERNAME@$REMOTE_HOST:$REMOTE_HOST/$TMP_DIR
+ 
+# Put a copy of the remote script locally for debugging. 
+cat remote-test.$TMP_NAME$REMOTE_HOST >> remote-test.$TMP_NAME$REMOTE_HOST.out
+
+# Execute the script on the distant machine.
+$SSH -f $USERNAME@$REMOTE_HOST $REMOTE_HOST/$TMP_DIR/remote-test.$TMP_NAME$REMOTE_HOST | tee -a remote-test.$TMP_NAME$REMOTE_HOST.out &
+
+# Clean up the local file after ourselves. 
+if [ DELETE_FILES_AFTER_USE = "yes" ] ; then 
+  rm remote-test.$TMP_NAME$REMOTE_HOST
+fi

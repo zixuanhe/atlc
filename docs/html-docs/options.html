@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="Transmission line calculator, or *any* cross section">
+<META name="KEYWORDS" content="Transmission line calculator arbitrary any cross section">
+<TITLE>Arbitrary Transmission Line Calculator (atlc) version 2</TITLE>
+</HEAD>
+<BODY>
+
+<H1><COde>atlc</code>'s Options.</H1>
+<COde>atlc</code> supports a few options on the command line. All except the  <code>-v</code> option, require something to follow them, which is usually a number, but in the case of the <CODE>-d</CODE> option, it is more complex. The available options can be seen if you run <CODE>atlc</CODE> without any arguments. As of  version 3.0.0, these options are:
+<pre>
+Usage: atlc [<a href="#-v">-v</A>][<a href="#-c">-c </A>cutoff][<a href="#-d">-d</a> rrggbb=Er][<a href="#-F">-F</A> appendfile]
+[<a href="#-i">-i</a> factor][<a href="#-r">-r</a> rate_multiplier][<a href="#-t">-t</a> THREADs]  bitmap
+
+options are:
+  -c cutoff
+      where 'cutoff' sets the cutoff criteria - see html docs or man page.
+  -d rrggbb=Er
+      where the colour rrggbb (in hex) is a (d)ielectric of permittivity Er.
+  -F appendfile
+      appends all data to 'appendfile'.
+  -i factor
+      which lightens (factor &gt 2.0) or darkens (1.0 &lt factor &lt  2.0) output bitmaps.
+  -t threads. 
+      Where 'threads' is the number of threads to use (normally best set to 
+      the number of cpus).
+  -r rate_multiplier
+      where 'rate_multiplier' sets the rate multipler (called r in source code)
+  -v       
+      Verbose option. Print extra data to stdout.
+
+</pre>
+Unless you <a href="building.html">compile with multi-processor support</a>, the <CODE>-t</CODE> option will not  be seen. These options, while on the whole fairly self-explanatory, are described below.
+<br><br>
+<strong><a name="-c">-c</A> cutoff </strong><br>
+The programme solves a problem iteratively - i.e. it gets closer and closer to the true solution. It never gives the exact answer, but can (at least in theory) give an answer to any desired accuracy. The programme needs to know when to stop and give the user the answer. It does this by comparing two subsequent estimates of the transmission line's capacitance and stoping it these two estimates are within a certain tolerance of each other. By default, the programme stops when two iterations differ by less than 0.01%, but this can be changed with the <CODE>-c</CODE> option. For example, here are two runs of the same problem, one with the cutoff at the default (0.0001=0.01%) and anothe with the cutoff changed to a larger value (0.1 or 10%). 
+<pre>
+% atlc -v 200-Ohm-401.bmp
+200-Ohm-401.bmp Er= 1.0000 C= 22.2637 pF/m L= 499.7606 nH/m Zo= 149.8245 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 19.4557 pF/m L= 571.8880 nH/m Zo= 171.4477 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 18.2779 pF/m L= 608.7418 nH/m Zo= 182.4962 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 17.6339 pF/m L= 630.9716 nH/m Zo= 189.1605 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 17.2563 pF/m L= 644.7799 nH/m Zo= 193.3001 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 17.0244 pF/m L= 653.5612 nH/m Zo= 195.9327 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.8772 pF/m L= 659.2639 nH/m Zo= 197.6423 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.7812 pF/m L= 663.0335 nH/m Zo= 198.7724 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.7174 pF/m L= 665.5623 nH/m Zo= 199.5306 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.6744 pF/m L= 667.2796 nH/m Zo= 200.0454 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.6450 pF/m L= 668.4575 nH/m Zo= 200.3985 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.6248 pF/m L= 669.2723 nH/m Zo= 200.6428 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.6107 pF/m L= 669.8398 nH/m Zo= 200.8129 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.6008 pF/m L= 670.2371 nH/m Zo= 200.9320 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5939 pF/m L= 670.5166 nH/m Zo= 201.0158 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5890 pF/m L= 670.7138 nH/m Zo= 201.0750 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5856 pF/m L= 670.8533 nH/m Zo= 201.1168 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5832 pF/m L= 670.9520 nH/m Zo= 201.1464 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5814 pF/m L= 671.0220 nH/m Zo= 201.1673 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5802 pF/m L= 671.0714 nH/m Zo= 201.1821 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 16.5802 pF/m L= 671.0714 nH/m Zo= 201.1821 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+</pre>
+Now here is a run with the cutoff set to a much larger value. atlc will iterate less and so give a less accurate answer quickly. 
+<pre>
+% atlc -v -c 0.1 200-Ohm-401.bmp
+200-Ohm-401.bmp Er= 1.0000 C= 22.2637 pF/m L= 499.7606 nH/m Zo= 149.8245 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 19.4557 pF/m L= 571.8880 nH/m Zo= 171.4477 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 18.2779 pF/m L= 608.7418 nH/m Zo= 182.4962 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+200-Ohm-401.bmp Er= 1.0000 C= 18.2779 pF/m L= 608.7418 nH/m Zo= 182.4962 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 3.0.1
+</pre>
+<strong><a name="-d">-d rrggbb=Er</a></STRONG><br>
+ If you wish to analyse a structure, such as this microstrip in a closed box.<br>
+<img src="jpgs/enclosed-microstrip.jpg" ALT="Enclosed microstrip">
+<br>Green is the outer conductor, red the microstrip's conductor, white is vacuum and the brownish colour (rgb=0x654D65) is supposed to represent your substrate, which we will assume has an Er of 3.0 <br>
+It is now necessary to use the <CODE>-d</CODE> option to <COde>atlc</code>, so that it understands this brownish colour is a dielectric with a permittivity of 3.0, like this<br>
+<pre>
+% atlc -d654D65=3.0 enclosed-microstrip.bmp
+% atlc -d654D65=3.0 enclosed-microstrip.bmp
+enclosed-microstrip.bmp Er= MIXED C= 68.0545 pF/m L= 345.145352 nH/m Zo= 71.215160 Ohms v= 206333823.992669 m/s     v_f= 0.688256 VERSION=3.0.0
+</pre>
+If instead the permittivity was 300, not 3, we could indicate this to atlc. We would expect the capacitance to rise a lot and Zo to fall a lot. 
+<pre>
+% atlc -d654D65=300 enclosed-microstrip.bmp
+enclosed-microstrip.bmp Er= MIXED C= 5162.48 pF/m L= 320.454031 nH/m Zo= 7.878680 Ohms v= 24585992.507328 m/s     v_f= 0.082010 VERSION=3.0.0
+</pre>
+<strong><a name="-f">-f</a> appendfile</STRONG><br>
+Causes the results to be appended to <EM>appendfile</EM>, which will then just contain text. (Obviously <EM>appendfile</EM> can be any file name you want, it does not need to be 'appendfile').  Notes  results will be written to files with the original filename, appended with .txt. So this is only necessary to keep a number of results in one file. Note if the -v option is added too, then the intermediate results will be included. Here's an example of its usage. <pre>
+atlc -F results_from_all_tests.txt test123a.bmp </pre>
+<br><br>
+<strong><a name="-i">-i factor</a></STRONG><br>
+The programme prints the electric field intensity, both as a binary file, and as bitmaps. The binary files have <STRONG>quantitative</STRONG> data in them, but the bitmaps have only <STRONG>qualitative</STRONG> data and are scaled so that black is no field, white is maximum. Exactly how a image appear, depends on may things, including the response of the human eye, the gamma of your CRT tube, and just how <COde>atlc</code> equates field strength to gray levels. The last of these, are user defineaable in <CODE>atlc</CODE>. Setting the factor &gt; 2 lightens the images, but setting it between 1 and 2 lightens them. Note, the factor of 2 may be changed in the header file, like this
+<pre>
+#define IMAGE_FIDDLE_FACTOR 2.0
+</pre>
+It is possible the user may wish to change the default. If this is done, the programme will always show the default, if ran with no filename. ie 
+<pre>
+% atlc
+</pre>
+<TABLE>
+<TR>
+<TD></TD>
+<TD>E</TD>
+<TD>Ex</TD>
+<TD>Ey</TD>
+</TR>
+<TR>
+<TD>light (factor = 4)</TD>
+<TD><img src="jpgs/very-odd-light.E.jpg"  width="128" height="128" ALT="E-field of odd transmission line"></TD>
+<TD><img src="jpgs/very-odd-light.Ex.jpg"  width="128" height="128" ALT="Ex field of odd transmission line"></TD>
+<TD><img src="jpgs/very-odd-light.Ey.jpg"  width="128" height="128" ALT="Ey field of odd transmission line"></TD>
+</TR>
+<TR>
+<TD>default (factor = 2.0)</TD>
+<TD><img src="jpgs/very-odd.E.jpg"  width="128" height="128" ALT="E-field of odd transmission line"></TD>
+<TD><img src="jpgs/very-odd.Ex.jpg"  width="128" height="128" ALT="Ex field of odd transmission line"></TD>
+<TD><img src="jpgs/very-odd.Ey.jpg"  width="128" height="128" ALT="Ey field of odd transmission line"></TD>
+</TR>
+<TR>
+<TD>dark (factor = 1.1)</TD>
+<TD><img src="jpgs/very-odd-dark.E.jpg"  width="128" height="128" ALT="E-field of odd transmission line"></TD>
+<TD><img src="jpgs/very-odd-dark.Ex.jpg"  width="128" height="128" ALT="Ex field of odd transmission line"></TD>
+<TD><img src="jpgs/very-odd-dark.Ey.jpg"  width="128" height="128" ALT="Ey field of odd transmission line"></TD>
+</TR>
+</TABLE>
+Given that it is time consuming to calculate the electric fields, it seems silly to expect the user to re-run <COde>atlc</code>, if the images are too light or dark. It would be more sensible to have a sepparate programme that is able to generate the bitamps quickly from the binary files. A programme with a name something like bin2bmp may be added later to do this. <STRONG>Note also that the the <CODE>-i image_fiddle_factor</CODE> will be replaced with a <CODE>-g gamma </CODE>option later, when a more scientific method is developed for this. The current method really is a fiddle!!</STRONG>
+<br><br>
+<strong><a name="-p">-t threads</a></STRONG><br>
+If the computer has multiple processors, you should be able to gain an increase in performance by using them. To do this, but must install pthreads, and configured with the <CODE>--with-threads</CODE> option. One this is done, the programme will be optimised to use 2 cpus. If you have more than 2, you might want to use the <CODE>-t</CODE> option. <br>
+If you attempt do to do this on a version of <COde>atlc</code> that has not be compiled with multi-processor support, it will exit with an error message. <br><br>
+<strong><a name="-v">-v</a></STRONG><br>
+This is the verbose option, so it prints extra data to stdout. <br>
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</html>

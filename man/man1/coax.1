@@ -1,0 +1,65 @@
+.TH coax 1 "atlc-4.6.0 28th Oct 2003" "Dr. David Kirkby"
+.ds n 5
+.SH NAME
+\fBcoax\fR - determine impedance of a coaxial structure, where the inner may be offset from the centre if
+necessary.
+.SH SYNOPSIS
+\fBcoax [-O offset] d D Er\fR
+.br
+.SH DESCRIPTION
+coax computes the impedance of a coaxial cable, given the 
+outside diameter of the inner conductor d, the internal diameter of the outer 
+conductor D and the relative permittivity of the dielectric Er. If there is 
+an offset between the inner and outer (i.e. the coax is eccentric), 
+the offset can be given as a option. coax uses the 
+equation 
+.br
+.br
+Zo=59.95849160 ln(x+sqrt(x^2-1)) /sqrt(Er)  Ohms
+.br
+.br
+where x=(d^2+D^2-4 O^2)/(2*D*d) 
+.br
+.br
+.SH FILES 
+coax does not read/write any files. 
+.SH SEE ALSO
+atlc(1)
+.br
+create_bmp_for_circ_in_circ(1)
+.br
+create_bmp_for_circ_in_rect(1)
+.br
+create_bmp_for_microstrip_coupler(1)
+.br
+create_bmp_for_rect_cen_in_rect(1)
+.br
+create_bmp_for_rect_cen_in_rect_coupler(1)
+.br
+create_bmp_for_rect_in_circ(1)
+.br
+create_bmp_for_rect_in_rect(1)
+.br
+create_bmp_for_stripline_coupler(1)
+.br
+create_bmp_for_symmetrical_stripline(1)
+.br
+design_coupler(1)
+.br
+dualcoax(1)
+.br
+find_optimal_dimensions_for_microstrip_coupler(1)
+.br
+readbin(1)
+.P 
+.br
+http://atlc.sourceforge.net      - Home page 
+.br
+http://sourceforge.net/projects/atlc   - Download area
+.br
+/usr/local/share/atlc/docs/html-docs/index.html  - HTML docs
+.br
+/usr/local/share/atlc/docs/qex-december-1996/atlc.pdf - theory paper
+.br
+/usr/local/share/atlc/examples    - examples
+.br

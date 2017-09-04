@@ -1,0 +1,222 @@
+.TH find_optimal_dimensions_for_microstrp_coupler 1 "atlc-4.5.0 28th Sept 2003" "Dr. David Kirkby"
+.ds n 5
+.SH NAME
+\fBfind_optimal_dimensions_for_microstrp_coupler\fR  part of atlc.
+.SH SYNOPSIS
+\fBfind_optimal_dimensions_for_microstrp_coupler [options... ] h t Er1 Er2 Z Zodd_req Zeve_reg outfile.bmp\f1
+.b2
+.SH WARNING
+This man page is not a complete set of documentation - the complexity of the atlc project makes man pages not an ideal way to document it, although out of completeness, man pages are produced. 
+The best documentation that was current at the time this version was produced should be found on your
+hard drive, usually at 
+.br
+/usr/local/share/atlc/docs/html\-docs/index.html 
+.br
+although it might be elsewhere if
+your system administrator chose to install the package elsewhere. Sometimes, errors are corrected
+in the documentation and placed at http://atlc.sourceforge.net/ before a new release of atlc is
+released.  Please, if you notice a problem with the documentation - even spelling errors and typos,
+please let me know. 
+
+.SH DESCRIPTION
+\fBfind_optimal_dimensions_for_microstrp_coupler\fR is part of the \fBatlc\fR, CAD package for the design and
+analysis of transmission lines and directional couplers. While the executable program \fbatlc\fR (as opposed
+to the complete package \fBatlc\fR) is able to analyse the properties of directional couplers, telling you
+both the odd and even mode impedances Zodd and Zeven, it is not able to design a coupler to have specific odd
+and even mode impedances. The only way to use the program program \fBatlc\fR 
+
+.br
+
+The parameters 'W' and 'H' and the inner dimensions of the outer conductor.
+The inner conductor has a diameter of 'd' and is offset from the centre
+of the outer conductor by an amount 'x' horizontally and 'y' vertically.
+The space between the inner and outer conductors is a 
+dielectric of relative permittivity 'Er'. If there is just a vacuum dielectric,
+then 'Er' should be set to 1.0 
+.PP 
+.br
+.P
+\fBfind_optimal_dimensions_for_microstrp_coupler  d W H x y Er > filename.bmp\fR OR
+.br
+\fBfind_optimal_dimensions_for_microstrp_coupler -f filename.bmp d W H x y Er\fR
+.P
+.br
+The bitmaps produced by \fBfind_optimal_dimensions_for_microstrp_coupler\fR are 24-bit bit colour bitmaps, as are required by \fBatlc\fR. 
+
+The permittivities of the bitmap, set by 'Er', determine the
+colours in the bitmap. If Er1 is 1.0, 1.006, 2.1, 2.2, 2.33, 2.5, 3.3,
+3.335, 3.7, 4.8, 10.2 or 100 then the colour corresponding to that permittivity
+will be set according to the colours defined in COLOURS below. If Er
+is not one of those permittivities, the region of permittivity Er
+will be set to the colour 0xCAFF00. The
+program \fBatlc\fR does not know what these permittivites are, so 
+\fBatlc\fR, must be told with the -d command line option, as in example 4
+below.
+.P
+.SH OPTIONS
+\fB-b bitmapsize\fR
+.br
+is used to set the size of the bitmap, and so the accuracy to which atlc
+is able to calculate the transmission line's properties. The default
+value for 'bitmapsize' is normally 4, although this is set at compile
+time. The value can be set anywhere from 1 to 15, but more than 8 is
+probably not sensible. 
+.PP
+\fB-f outfile\fR
+.br
+.P
+\fB-v \fR
+.br
+Causes \fBfind_optimal_dimensions_for_microstrp_coupler\fR to print some data to stderr. Note, nothing
+extra goes to standard output, as that is expected to be redirected to a
+bitmap file.
+
+.SH COLOURS
+The 24-bit bitmaps that \fBatlc\fR expects, have 8 bits assigned 
+to represent the amount of red, 8 for blue and 8 for green. Hence there are 
+256 levels of red, green and blue, making a total of 256*256*256=16777216 colours. 
+Every one of the possible 16777216 colours can be defined precisely by the stating the exact amount 
+of red, green and blue, as in:
+.PP
+.br
+red         = 255,000,000 or 0xff0000
+.br
+green       = 000,255,000 or 0x00ff00
+.br
+blue        = 000,000,255 or 0x0000ff
+.br
+black       = 000,000,000 or 0x000000
+.br
+white       = 255,255,255 or 0xffffff
+.br
+Brown       = 255,000,255 or 0xff00ff 
+.br
+gray        = 142,142,142 or 0x8e8e8e
+.PP
+Some colours, such as pink, turquoise, sandy, brown, gray etc may mean slightly
+different things to different people. This is not so with \fBatlc\fR, as the 
+program expects the colours below to be EXACTLY defined as given. Whether 
+you feel the colour is sandy or yellow is up to you, but if you use it in 
+your bitmap, then it either needs to be a colour recognised by atlc, \fBor\fR
+you must define it with a command line option (see OPTIONS and example 5
+below).
+.br
+The following conductors are recognised by atlc:
+.br
+red    = 255,000,000 or 0xff0000 is the live conductor. 
+.br
+green  = 000,255,000 or 0x00ff00 is the grounded conductor. 
+.br
+black  = 000,000,000 or 0x000000 is the negative conductor 
+.PP
+All bitmaps \fBmust\fR have the live (red) and grounded (green) conductor. The black 
+conductor is not currently supported, but it will be used to indicate a 
+negative conductor, which will be needed if/when the program gets extended 
+to analyse directional couplers. 
+.PP
+The following dielectrics are recognised by \fRatlc\fB and so are
+produced by \fRfind_optimal_dimensions_for_microstrp_coupler\fB. 
+.PP
+.br
+white     255,255,255 or 0xFFFFFF as Er=1.0   (vacuum)
+.br
+white     255,202,202 or 0xFFCACA as Er=1.0006 (air)
+.br
+blue      000,000,255 or 0x0000FF as Er=2.1   (PTFE)
+.br
+Mid gray  142,242,142 or 0x8E8E8E as Er=2.2   (duroid 5880)
+.br
+mauve     255.000,255 or 0xFF00FF as Er=2.33  (polyethylene)
+.br
+yellow    255,255,000 or 0xFFFF00 as Er=2.5   (polystyrene)
+.br
+sandy     239,203,027 or 0xEFCC1A as Er=3.3   (PVC)
+.br
+brown     188,127,096 or 0xBC7F60 as Er=3.335 (epoxy resin)
+.br
+Turquoise 026,239,179 or 0x1AEFB3 as Er=4.8   (glass PCB)
+.br
+Dark gray 142,142,142 or ox696969 as Er=6.15  (duroid 6006)
+.br
+L. gray   240,240,240 or 0xDCDCDC as Er=10.2  (duroid 6010)
+.br
+D. Orange 213,160,077 or 0xD5A04D as Er=100   (for testing)
+.br
+If the permittivity is one not in the above list, then those parts of
+the image with Er1 will be set to 0xCAFF00, and those parts with Er2 to
+0xAC82AC.
+.SH EXAMPLES
+Here are a few examples of the use of \fBfind_optimal_dimensions_for_microstrp_coupler\fR. Again, see the html documentation in atlc-X.Y.Z/docs/html-docs for more examples.     
+.P
+In the first example, there is just an air dielectric, so Er1=Er2=1.0.
+The inner of 1x1 inches (or mm, miles etc) is placed centrally in an
+outer with dimensions 3 x 3 inches. 
+
+The exact place where the dielectric starts (a) and its width (d) are
+unimportant, but they must still be entered. 
+
+\fB% find_optimal_dimensions_for_microstrp_coupler 3 3 1 1 1 1 1 1 > ex1.bmp
+.br
+% atlc ex1.bmp\fR
+
+In this second example, an inner of 15.0 mm x 0.5 mm is surrounded by an
+outer with internal dimensions of 61.5 x 20.1 mm. There is a material
+with permittivity 2.1 (Er of PTFE) below the inner conductor. The output
+from \fBfind_optimal_dimensions_for_microstrp_coupler\fR is sent to a file ex1.bmp, which is then processed by
+\fBatlc\fR 
+
+\fB% find_optimal_dimensions_for_microstrp_coupler 61.5 20.1 5 22 0.5 50 15 5 1.0 2.1 > ex2.bmp\fR
+.br
+\fB% atlc ex2.bmp\fR
+.br
+
+In example 3, the bitmap is made larger, to increase accuracy, but
+otherwise this is identical to the second example. 
+\fB% find_optimal_dimensions_for_microstrp_coupler -b7 61.5 20.1 5 22 0.5 50 15 5 1.0 2.1 > ex3.bmp\fR
+.br
+\fB% atlc ex3.bmp\fR
+.br
+.P
+In the fourth example, instead of re-directing \fBfind_optimal_dimensions_for_microstrp_coupler's\fR output
+to a file with the > sign, it is done using the -f option. 
+.br
+\fB% find_optimal_dimensions_for_microstrp_coupler -f ex4.bmp 61.5 20.1 5 22 0.5 50 15 5 1.0 2.1\fR
+.br
+\fB% atlc ex4.bmp\fR
+.P
+In the fifth example, materials with permittivites 2.78 and 7.89 are
+used. While there is no change in how to use \fBfind_optimal_dimensions_for_microstrp_coupler\fR, since
+these permittivities are not known, we must tell \fBatlc\fR what they
+are.
+\fB
+% find_optimal_dimensions_for_microstrp_coupler 61 20 1 4 22 0.5 50 15 5 2.78 7.89 > ex5.bmp
+% atlc -d CAFF00=2.78 -d AC82AC=7.89 ex5.bmp
+\fR
+In the sixth and final example, the -v option is used to print some
+extra data to stderr from \fBfind_optimal_dimensions_for_microstrp_coupler\fR. 
+.
+.SH SEE ALSO
+atlc(1)
+create_bmp_for_circ_in_circ(1)
+create_bmp_for_circ_in_rect(1)
+create_bmp_for_microstrip_coupler(1)
+create_bmp_for_rect_cen_in_rect(1)
+create_bmp_for_rect_cen_in_rect_coupler(1)
+create_bmp_for_rect_in_circ(1)
+create_bmp_for_rect_in_rect(1)
+create_bmp_for_stripline_coupler(1)
+create_bmp_for_symmetrical_stripline(1)
+design_coupler(1)
+readbin(1)
+.P 
+.br
+http://atlc.sourceforge.net                - Home page 
+.br
+http://sourceforge.net/projects/atlc       - Download area
+.br
+atlc-X.Y.Z/docs/html-docs/index.html       - HTML docs
+.br
+atlc-X.Y.Z/docs/qex-december-1996/atlc.pdf - theory paper
+.br
+atlc-X.Y.Z/examples                        - examples
+.br

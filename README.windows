@@ -1,0 +1,19 @@
+atlc is primarily a UNIX program. Some Microsoft Windows
+binaries have been produced in the past, one of which
+was atlc-4.4.4_Win32.zip. However, some problems were
+found in atlc with multiple dielectrics. As such I've 
+removed the windows binaries. 
+
+If someone wants to build some, based on the latest
+code I'll put them up again, but whilst the code
+is not working optimally with multi-dielectrics, it 
+is not seriously broken as it was before. 
+ 
+The best solution for Windows uses is to use
+Cygin, which gives you a Linux environment on a 
+Windows computer. ATLC should build fine on that, 
+though I have never tried it. 
+
+
+Dr. David Kirkby, G8WRB,  27th March 2011
+Re: atlc-4.6.1

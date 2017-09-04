@@ -1,0 +1,32 @@
+#! /bin/sh
+teston -T -m check tiger $1
+teston -T -m check woodpecker  $1
+teston -T -m check dove  $1
+teston -T -m check crow  $1
+teston -T -m check blackbird   $1
+teston -T -m check bluetit    $1
+
+sleep 400
+
+teston -T -m check -c '--with-threads' tiger $1
+teston -T -m check -c '--with-threads' woodpecker $1
+teston -T -m check -c '--with-threads' dove  $1
+teston -T -m check -c '--with-threads' crow  $1
+teston -T -m check -c '--with-threads' blackbird  $1
+teston -T -m check -c '--with-threads' bluetit   $1
+
+sleep 400
+teston -T -m check -c '--with-mpi' tiger $1
+teston -T -m check -c '--with-mpi' woodpecker $1
+teston -T -m check -c '--with-mpi' dove  $1
+teston -T -m check -c '--with-mpi' crow  $1
+teston -T -m check -c '--with-mpi' blackbird  $1
+teston -T -m check -c '--with-mpi' bluetit    $1
+
+sleep 400
+teston -T -m check -c '--with-mpe' tiger $1
+teston -T -m check -c '--with-mpe' woodpecker $1
+teston -T -m check -c '--with-mpe' dove  $1
+teston -T -m check -c '--with-mpe' crow  $1
+teston -T -m check -c '--with-mpe' blackbird  $1
+teston -T -m check -c '--with-mpe' bluetit    $1

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes Netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="<COde>atlc</code>'s Binary File Format">
+<META name="KEYWORDS" content="transmission line calculator <COde>atlc</code> binary file">
+<TITLE>Files saved by<COde>atlc</code>.</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Files produced by atlc.</H1>
+
+<COde>atlc</code> reads a <a href="bmp.html">bitmap file</a>, such as pcb.bmp After running atlc<p>
+
+<CODE>% atlc pcb.bmp</CODE><br><br>
+<CODE>atlc</CODE> will produce:
+<OL>
+	<LI>A single line of text on the standard output. It is not
+	written to a file, but can be done so using the &gt or appended
+	to a file using &gt&gt. The line can be a little long, so it may appear to span multiple lines, but all the results are on one line of text. Multiple lines will be produced if the -v option is used to show intermediate results.
+	A new option -L will be added to atlc. This will force the
+	results to be printed to 14 significant figures and is intended
+	for testsing only. If the -L option is added, the line will
+	appear very long indeed.
+	</LI>
+	<LI>Some bitmap files, ending in .bmp, showing images of the transmission lines properties.</LI>
+	<LI>Some binary files, ending in .bin, which are likely to be of academic interest only, showing the similar information to the bitmap files, but in an exact, quantitive manner, rather than an image made to <EM>look nice </EM></LI>
+</OL>
+The -s option can be used on <CODE>atlc</CODE> to suppress the production of the .bmp files and the -S option can be used to suppress the generation of the .bin files. You might well wish to use both options nearly all the time, as writing these files take a few seconds and for the case of 2 conductor lines, takes up about 9x as much disk space as the original bitmap. For 3 conductor lines, the files produced take up about 27 times the disk space of the original bitmap. <br><br>
+The format of the output depends on whether a 2-conductor lines is analysed or a 3 conductor directional coupler. The first column sent to standard output will always be the filename. The second column will always be either a 2 if analysing 2-conductor lines (like coaxial cable) or a 3 if analysing transmission lines with 3 conductors (couplers). Beyond these two columns, the output will differer significantly and is therefore discussed in separate sections. Note <CODE>atlc </CODE>is run in exactly the same way for 2 or 3 conductor transmission lines. The filename must always be supplied and the same options 
+(-C, -s, -S, -v, -c, -d, -i, -r or -t) can always be used. 
+
+<code>
+
+
+<H1>Files produced by atlc for 2 conductor transmission lines.</H1>
+% atlc pcb.bmp
+
+</code>
+<p>
+ you will have the following files. 
+<TABLE border width="700">
+<TR>
+	<TD><img src="jpgs/pcb.jpg" ALT="Original PCB"></TD>
+	<TD><img src="jpgs/pcb.Er.jpg" ALT="Permittivity"></TD>
+	<TD><img src="jpgs/pcb.Ex.jpg" ALT="x-directed E-field"></TD>
+	
+</TR>
+<TR>
+	<TD><STRONG>pcb.bmp</STRONG> Original microstrip enclosed in a box. Note the thin red inner conductor, the green outer conductor, the white vacuum and the turquoise dielectric (E<sub>r</sub>=4.8).</TD>
+	<TD><STRONG>pcb.Er.bmp</STRONG> Permittivity diagram. This  shows the permittivity  as a grayscale - lighter for increasing permittivity. The conductors are shown red, green and blue,  +1 V is shown red, 0V green and -1V blue. 
+	<TD><STRONG>pcb.Ex.bmp</STRONG> x-directed electric field. Blue is negative, Red is positive. Recall Ex=-dV/dx.</TD>
+</TR>
+<TR>
+	<TD><img src="jpgs/pcb.Ey.jpg" ALT="y-directed E-field"></TD>
+	<TD><img src="jpgs/pcb.E.jpg" ALT="E-field (Ex^2+Ey^2)"></TD>
+	<TD><img src="jpgs/pcb.V.jpg" ALT="Voltage"></TD>
+</TR>
+<TR>
+	<TD><STRONG>pcb.Ey.bmp</STRONG> y-directed electric field. Blue is negative, Red is positive. Recall Ey=-dV/dy.</TD>
+	<TD><STRONG>pcb.E.bmp</STRONG> Magnitude of the electric field. E=Ex<sup>2</sup>+Ey<sup>2</sup>. Shown lighter for increasing E-field. </TD>
+	<TD><STRONG>pcb.V.bmp</STRONG> Voltage field. Red is shown positive, black as no voltage and negative voltages would be shown as blue.</TD>
+</TR>
+<TR>
+	<TD><img src="jpgs/pcb.U.jpg" ALT="Energy"></TD>
+	<TD><CODE>pcb.bmp Er= MIXED C= 94.2540 pF/m L= 387.2186 nH/m Zo= 64.0956 Ohms v= 1.65528e+
+08 m/sv_f= 0.5521 VERSION=3.0.1</CODE></TD>
+	<TD><CODE>01010010<br>00101010<br>00011101<br>00001111<br>11110010<br>00000001<br>11111110</CODE></TD>
+</TR>
+<TR>
+	<TD><STRONG>pcb.U.bmp</STRONG> Energy. Since E=0.5 C V<sup>2</sup>, this is proportional to capacitance (and hence Er) and the E-field on a pixel</TD>
+	<TD>The stadnard output shows all the results from the simulation on one line. </TD>
+	<TD><STRONG>pcb.Er.bin, pcb.Ex.bin, pcb.Ey.bin, pb.E.bin, pcb.V.bin and pcbU.bin</STRONG> Six binary files have the same data as the bitmaps, but in a quantitative manner. </TD>
+</TR>
+<TR>
+	<TD></TD>
+	<TD></TD>
+	<TD></TD>
+</TR>
+<TR>
+	<TD></TD>
+	<TD></TD>
+	<TD></TD>
+</TR>
+<TR>
+	<TD></TD>
+	<TD></TD>
+	<TD></TD>
+</TR>
+</TABLE>
+<PRE>
+
+</PRE>
+The bitmap files do not show quantitative data - i.e. the numbers are optimised to look okay, rather than to be scientifically rigorous.<p>
+The binary files show similar data to the bitmaps, but in a more scientific way. They show the electric field in volts/pixel (.Ex.bmp, .Ey.bmp and .E.bmp) and voltage (.V.bmp)  assuming one conductor is earthed to 0v (the green one) and the other is at +1V (the red one). If your two conductors have a real voltage difference of V between them, the data file shows a value of E_data V/m, the dimensions of your transmission line are X mm across and the number of pixels in the x-direction allocated for the transmission line is N, then the true field strength that will be achieved in practice is 
+E_real=E_data * N / X        (V/mm)<p>
+The -s option can be used on atlc to suppress the production of the .bmp files and the -S option can be used to suppress the generation of the .bin files.
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It is issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</HTML>

@@ -1,0 +1,51 @@
+#! /bin/sh
+
+# This is one of a set of test that generate checksums after files are
+# created. Generally a bitmap if first produced by a program such as create_bmp_for_symmetrical_stripline, 
+# create_bmp_for_create_bmp_for_rect_in_rect, create_bmp_for_rect_cen_in_rect, create_bmp_for_circ_in_circ, create_bmp_for_circ_in_rect, 
+# create_bmp_for_stripline_coupler etc.
+
+# The checksum of the bitmap generated is compared to what is known to be 
+# the correct checksum using a program 'mymd5sum' which is a cut-down version of
+# the GNU program 'sum'. Using my own version avoids the need for the user to 
+# have the GNU textutils installed and avoids the possibility that they have
+# 'textutils' installed but have another version of 'sum' (such as the one 
+# supplied by Sun with Solaris, which generates a different checksum. 
+
+# atlc is then run, generating a lot of files, including those with the 
+# extension .bmp, .txt and .bin. The checksum of the .bmp's and part of
+# the .txt file are checked. The .bin's are not, since they will be
+# dependent on the whether the machine is Big Endian (like Suns) or
+# Little Endian like PCs. It will also be too dependent on rounding
+# difference caused by the different FPUs in the different machines. 
+
+# Any failure to generate the correct checksums are noted. 
+
+# Any failure in an Xa-$top_builddir. where X is an integer will cause
+# Xb, Xc, Xd $top_builddir.etc to fail. Any pass of Xa, but faiure of Xb will cause
+# all the Xc, Xd $top_builddir. to fail. If both Xa and Xb pass, then hopefully Xc,
+# Xd etc will. However, Xd, Xe etc does not rely on the correct functioning of 
+# Xc. The Xc, Xd, $top_builddir. only need Xa and Xb to pass, so Xc, Xd etc are
+# independent of each other. 
+
+# I would add that these checksums have been checked using the GNU
+# textutils on about 15 different computers, from PCs, to Suns to Dec etc.
+# So they are okay and I would suggest any failures is a problem. 
+# The only reason I can think of a failure is that there is a difference
+# in the outout of 'mymd5sum' to the GNU utilites one, but that is
+# unlikely. So if any problems occur, check the checksum with the GNU
+# 'sum' and see what that gives. If any failures do occur, please let me
+# know. email drkirkby@ntlworld.com and/or davek@medphys.ucl.ac.uk 
+
+
+Zodd=`$top_builddir/src/create_bmp_for_stripline_coupler -v 1.0 1.0 1.0 1.0 $top_builddir/tmp/coupler1.bmp | tail -1 | awk '{print $2 }' `
+Zeven=`$top_builddir/src/create_bmp_for_stripline_coupler -v 1.0 1.0 1.0 1.0 $top_builddir/tmp/coupler1.bmp | tail -1 | awk '{print $4 }' `
+Zo=`$top_builddir/src/create_bmp_for_stripline_coupler -v 1.0 1.0 1.0 1.0 $top_builddir/tmp/coupler1.bmp | tail -1 | awk '{print $6 }' `
+rm -f $top_builddir/tmp/coupler1.bmp
+if [ $Zodd = 64.722695 ] && [ $Zeven = 65.969498 ] && [ $Zo = 65.343123 ] ; then
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi

@@ -1,0 +1,47 @@
+#!/bin/sh
+# A bitmap is created of a symmetrical_stripline. By adding the -v option
+# to create_bmp_for_symmetrical_stripline the theoretical impedance
+# is computed. 
+# atlc is then called, and its estimate calculated, which will differ 
+# slightly from the theoretical data 
+
+# Create a bitmap and compute its theeoretical impedance. 
+ZoTheory=`$top_builddir/src/create_bmp_for_symmetrical_stripline -v 1512 201 668 $top_builddir/tmp/25ohm-201h.bmp | awk '{print $4}' | tail -1`
+
+# Generate a checksum for the file created
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/25ohm-201h.bmp`
+
+# Now run atlc on this bitmap and check it is close to that computed. 
+if [ "x$mpirun" = "xyes" ] ; then
+  Zoatlc=`mpirun -np 2 $top_builddir/src/atlc -S $top_builddir/tmp/25ohm-201h.bmp | awk '{print $6}' | tail -1`
+else
+  Zoatlc=`$top_builddir/src/atlc -S $top_builddir/tmp/25ohm-201h.bmp | awk '{print $6}' | tail -1 `
+fi  
+
+# Generate a checksum for a file created by atlc. 
+EXMD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/25ohm-201h.Ex.bmp`
+
+if [ -z "$Zoatlc" ]  || [ -z "$ZoTheory" ] || [ -z "$MD5SUM" ] || [ -z "$EXMD5SUM" ] ; then  
+  exit 1
+fi
+
+# "Zo theory = " $ZoTheory "Zo altc= " $Zoatlc " cksum of bitmap" $MD5SUM "cksum of .Ex.bmp= " $EXMD5SUM
+
+# Remvove the unwanted files. 
+rm $top_builddir/tmp/25ohm-201h.Ex.bmp
+rm $top_builddir/tmp/25ohm-201h.bmp
+rm $top_builddir/tmp/25ohm-201h.Ey.bmp
+rm $top_builddir/tmp/25ohm-201h.E.bmp
+rm $top_builddir/tmp/25ohm-201h.V.bmp
+rm $top_builddir/tmp/25ohm-201h.U.bmp
+rm $top_builddir/tmp/25ohm-201h.Er.bmp
+
+if [ $ZoTheory = 25.017590  ] && [ $Zoatlc = 24.932 ] && [ $MD5SUM = 44e86f6bcec1a61db9564040ec93557c ] && [ $EXMD5SUM = 499efd42aa2610c23f6995071e060e69 ] ; then
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi
+
+

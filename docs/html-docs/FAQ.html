@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="bluefish & vi">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="FAQ for atlc">
+<META name="KEYWORDS" content="tranmission lines, tranmission line, atlc, transmission line calculator">
+<TITLE>The arbitrary transmission line calculator FAQ</TITLE>
+</HEAD>
+<BODY>
+<H1><CODE>atlc's</CODE> Frequently asked questions</H1>
+
+<OL>
+        <LI><a href="#What_is">What is <CODE>atlc</CODE>?</A></LI>
+        <LI><a href="#Formulas_for">Formulas for transmission line properties can be found in any decent book, so why would I want to use <CODE>atlc</CODE>?</A></LI>
+        <LI><a href="#When_would">When would using <CODE>atlc</CODE> not be a good idea?</A></LI>
+        <LI><a href="#Loss">Can <CODE>atlc</CODE> calculate the loss of a transmission line?</A></LI>
+        <LI><a href="#What_are">What are the hardware and software requirements for using <CODE>atlc</CODE>?</A></LI>
+        <LI><a href="#Who_wrote">Who wrote <CODE>atlc</CODE>?</a></LI>
+       	<LI><a href="#Under_what">Under what license conditions is <CODE>atlc</CODE> released? </a></LI>
+	<LI><a href="#Where_can">Where can I download the latest version of <CODE>atlc</CODE>?</a></LI>
+	<LI><a href="#How_do">How do I build <CODE>atlc</CODE>? </a></LI>
+	<LI><a href="#Can_atlc">Can <CODE>atlc</CODE> calculate the impedance of any transmission line?</a></LI>
+	<LI><a href="#I_wish">I wish to find the impedance of a microstrip line, on a printed circuit board, which is enclosed in a box. Can <CODE>atlc</CODE> calculate the impedance of such a transmission line, with the two dielectrics - vacuum and the fibreglass PCB.</a></LI>
+        <LI><a href="#Is_it">Is it possible to calculate the properties of two coupled transmission lines, which form a directional coupler, with a view to calculate the properties of a directional coupler?</A></LI>
+              <LI><a href="#Is_it_possible_to_design_couplers">Given one can determine the odd and even mode impedances of a directional coupler, is it possible to perform the reverse and find the required impedances for a directional coupler of a reqired specification?</A></LI>
+	<LI><a href="#How_accurate">How accurate is <CODE>atlc</CODE>?</a></LI>
+        <LI><a href="#How_does">How does one enter the transmission lines structure into <CODE>atlc</CODE>?</a></LI>
+	<LI><a href="#Does_atlc">Does <CODE>atlc</CODE> need to know the dimensions of transmission lines?</a></LI>
+	<LI><a href="#Bitmap_files">Bitmap files are large, can I use JPEG instead?</a></LI>
+	<LI><a href="#I_want">I want to try a number of different transmission lines, all with rectangular cross sections. Drawing them as bitmaps is a bit tedious. Is there a simpler way?</a></LI>
+	<LI><a href="#border">I ran create_bmp_for_rect_in_rect with the -v option, so that it produced some extra information to stderr.  create_bmp_for_rect_in_rect indicated that it would create a grid of 615 x 201, yet the bitmap was larger at 625 x 211 pixels. Why is this ? </a></LI>
+	<LI><a href="#ten">What are the 12 programs, that form the atlc package?  </a></LI>
+
+</OL>
+
+<OL>
+	<LI><UL><LI><STRONG>Question: </STRONG> <A NAME="What_is">What</a> is <a href="atlc.1.html"><code>atlc</code></a>?</LI><LI><STRONG>Answer: </STRONG> <a href="atlc.1.html"><code>atlc</code></a> is a set of around 10 computer programmes designed for finding the properties (characteristic impedance, inductance per m, capacitance per metre, velocity factor, electric field distribution) of any transmission line with 2 or 3 conductors (i.e. a normal line or coupler). Some programs are used for design, other for analysis. The main program, which is called  <a href="atlc.1.html"><code>atlc</code></a> itseelf, uses the finite difference method to determine these properties, so while slower than other methods, <CODE>atlc</CODE> can handle any cross section.</LI></UL></LI>
+	
+	<LI><UL><LI><STRONG>Question: </STRONG><A NAME="Formulas_for">Formulas</a> for transmission line properties can be found in any decent book, so why would I want to use <CODE>atlc</CODE>?</LI><LI><STRONG>Answer: </STRONG>Formulas can be found for many simple cases, but often no analytical formula is known for more complex, but useful cases. <br>For example, many amateur radio valve amplifiers have a stripline transmission line, mounted above a chassis. The impedance of such a line can be calculated from published formula. However, these assume there is no metallic side walls for the amplifier, or a lid on top. Once these are added, there is no known analytical formula. <br><br>You may wish to make a transmission line out of available materials. For example, assume you have some U-section brass that you would like to use for the inner of a transmission line, with the outer being rectangular section brass. See the figure below, where the inner is shown red, the outer green and white is just vacuum. <br><img src="jpgs/ushape.jpg" ALT="U section" ><br> The programme gives the following information about this transmission line. 
+<TABLE>
+<TR>
+<TD><STRONG>Electrical characteristics</STRONG><br>L=145.5810 nH/m<br>C=76.4283 pF/m<br>Zo= 43.6441Ohms<br>v= 299792458.010503 m/s</TD>
+<TD><img src="jpgs/ushape.E.jpg" ALT="E-field" ></TD>
+<TD><img src="jpgs/ushape.Ex.jpg" ALT="x-directed E-field" ></TD>
+<TD><img src="jpgs/ushape.Ey.jpg" ALT="y-directed E-field" ></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD>Total electric field <br>(white is higher)</TD>
+<TD>x-directed E-field, <br>Red in +x direction, <br>blue in -x direction.</TD>
+<TD>y-directed E-field. <br>Red in +y direction, <br>blue in -y direction.</TD>
+</TR>
+</TABLE>
+Note, in the above images, it should <STRONG>not</STRONG> be assumed that somewhere that is twice as bright as someone else has twice the electric field. The perceived brightness depends on the non-linear characteristics of the human eye and the non-linear characteristics of how the CRT's brightness depends on the voltage levels applied to it. Quantitative data on electric field strengths are saved as binary files. See the HTML page on the <a href="fileformat.html">file format</a> if interested in using this data. 
+</LI></UL></LI>
+
+	
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="When_would">When</a> would using <a href="atlc.1.html"><code>atlc</code></a> not be a good idea?</LI><LI><STRONG>Answer:</STRONG> If the geometry is simple and there are known analytical formula, it would generally be preferable to calculate them analystically. The only exceptions would be cases where analytical evaluation is possible, but difficult.  But generally, <a href="atlc.1.html">atlc</a> is designed for the cases where there are no analytical methods available.</LI></UL></LI>
+
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="Loss">Can </a> <a href="atlc.1.html"><code>atlc</code></a> calculate the loss of a transmission line?</LI><LI><STRONG>Answer:</STRONG> No it can not. Someone hinted at a way it could perhaps be done, but this is highly speculative and I have no plans to attempt it.</LI></UL></LI>	
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="What_are">What</a> are the hardware and software requirements for using <CODE>atlc</CODE>?</LI><LI><STRONG>Answer:</STRONG>A UNIX computer, with a <A HREF="http://gcc.gnu.org">gcc</A> or other C compiler is needed to run <a href="atlc.1.html"><code>atlc</code></a>. Floating point support in hardware is strongly recommended. Hence a 486 or better PC is really needed, or perhaps a 386 with 387 floating point processor. Given the programme is fairlly CPU intensive, I would suggest at least a 300 MHz machine, preferably a lot more. The programme should compile easily.  If you have multiple processors, you can add multi-threaded support. If you wish to do this, you will need to have a POSIX compatable thread library. In the unlikely event your system does not have such as a library <a href="http://www.gnu.org/software/pth">pth</A>  can be installed. <BR><BR>RAM requirements should not be excessive by today's standards, with 64 MB sufficient for most problems. Using a very fine grid can push this into a few hundred MB, but cpu speed will generally limit you before RAM <br>You will also need some graphics package such as <A HREF="http://www.gimp.org">Gimp</A>, <A HREF="http://www.adobe.com/products/photoshop/main.html">Photoshop</A>, Windows Paint, CorelDraw etc, that can save images at bitmap (.BMP or .bmp) files. I would suggest using <A HREF="http://www.gimp.org">Gimp</A> on the UNIX machine, but the Gimp graphics programme can run under Windows, UNIX, OS2, DOS, VMS  or whatever operating system you like. </LI></UL></LI>
+	
+	<LI><UL><LI><STRONG>Question:</STRONG><a name="Who_wrote">Who wrote</a> <a href="atlc.1.html"><code>atlc</code></a> ?</LI><LI><STRONG>Answer: </STRONG><CODE>atlc</CODE> was written and is maintained by <A HREF= "jpgs/home-email.jpg">Dr. David Kirkby</a>. A few others have also contributed to the project too. Mark Chun KH6HPQ has compiled the Windows binaries, helping change the source where necessary to support Windows. Randall DuCharme helped in the port of an earlier vesion to Windoze. Numerous people have contributed useful information that has made atlc possible. In particular Eric Sosman suggested changes that would allow the code to run on the ~Cray Y-MP, on which all data types are 8 bytes long (including shoort). </LI></UL></LI>
+	<LI><UL><LI><STRONG>Question: </STRONG> <a name="Under_what">Under</a> what license conditions is <a href="atlc.1.html"><code>atlc</code></a> released ?</LI><LI><STRONG>Answer: </STRONG>It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A></LI></UL></LI>
+		
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="Where_can">Where can I download the latest version of <CODE>atlc</CODE>? </a></LI><LI><STRONG>Answer:</STRONG> Please download from <a href="http://atlc.sourceforge.net">SourceForge</A></LI></UL></LI>
+	<LI><UL><LI><STRONG>Question:</STRONG> <a name="How_do">How</a> do I build <a href="atlc.1.html"><code>atlc</code></a> ? </LI><LI><STRONG>Answer: </STRONG> Building can be simple, basically requiring you to type<br>
+<PRE>
+% gzip -d atlc-X.Y.Z.tar.gz </PRE> Where X.Y.Z is the version<br>
+<PRE>% tar xf atlc-X.Y.Z.tar
+% cd atlc-X.Y.Z
+% ./configure
+% make
+% make check
+% su
+# make install</PRE>
+<br>However, there  are several complications that arise, so check <a href="building.html">here for a more detailed descriptoin of building the program</a>. 
+</LI></UL></LI>	
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="Can_atlc">Can </a><a href="atlc.1.html"><code>atlc</code></a> calculate the impedance of <STRONG>any</STRONG> transmission line?</LI><LI><STRONG>Answer:</STRONG> No. It can calculate the impedance of any transmission line with 2 or 3 conductors, but it can not calculate the impedance of fibre optic cables, metallic waveguides or a stucture with more than 3 conductors.</LI></UL></LI>
+
+	<LI><UL><LI><STRONG>Question: </STRONG> <a name="I_wish">I wish to find the impedance of a microstrip line, on a printed circuit board, which is enclosed in a box. Can <CODE>atlc</CODE> calculate the impedance of the transmission line with the two dielectrics - vacuum and the fibreglass PCB.</a>  </LI><LI><STRONG>Answer:</STRONG> Yes, this is no problem, although I must admit the results of this have not been checked very much. <a href="atlc.1.html"><code>atlc</code></a> is conveniently configured for the following dielectric constants - 1.0, 1.000 (air) 2.1 (PTFE), 2.2 (RT Duroid 5880),  2.33 (Polyethylene), 2.5 (polystyrene), 3.3 (PVC), 3.335 (epoxy resin), 4.8 (fibreglass), 6.15 (duriod 6006) and 10.2 (duroid 6010). Any other permittivity can be defined, but needs slightly more effort in doing so. For more information on this, <a href="colours.html">see here</a>.</LI></UL></LI>	
+
+	<LI><UL><LI><STRONG>Question: </STRONG> <a name="Is_it">Is it possible to calculate the properties of two coupled transmission lines, which form a directional coupler, with a view to calculate the properties of a directional coupler?</a></LI>
+	
+	<LI><STRONG>Answer:</STRONG>When there are two coupled transmission lines, there is not a single characteristic impedance Zo, but instead an even-mode impedance Z<sub>even</sub> and an odd-mode impedance Z<sub>odd</sub>. An odd-mode impedance is calculated when the two lines are driven out of phase and an even-mode impedance when they are driven in phase. Versions of <a href="atlc.1.html"><code>atlc</code></a> from 4.0.0 onwards are able to calculate an even-mode impedance Z<sub>even</sub> and an odd-mode impedance Z<sub>odd</sub> Also calculated are the common mode impedance Z<sub>comm</sub> and the differential mode impedance Z<sub>diff</sub>.</LI></UL></LI>
+	
+	<LI><UL><LI><STRONG>Question: </STRONG> <a name="Is_it_possible_to_design_couplers">Given one can determine the odd and even mode impedances of a directional coupler, is it possible to reverse this and find the required impedances given a specification for the coupler?</a></LI>
+	<LI><STRONG>Answer:</STRONG>Yes it is. One can easily determine with the aid of the program  <CODE>design_coupler</CODE> Z<sub>even</sub> and Z<sub>odd</sub>. For one particular configuration, it is possible to <a href="determine_dimensions_of_couplers.html">determine the dimensions </a>of a coupler that will meet those specifications. For other geometries, it will be necessary to find suitable dimensions by trial and error with atlc, which will be quite time-consuming.</LI></UL></LI>
+	
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="How_accurate">How </a>accurate is <a href="atlc.1.html"><code>atlc</code></a>? </LI>
+	
+	<LI><STRONG>Answer:</STRONG>The basic method by which <CODE>atlc</CODE> works is very accurate. Errors of less than 0.3% are typical, and largest error every recorded is under 1%. The problem is that achieving such accuracy is very time consuming. Few people need results more accurate than 1%, in which case the run-times should be only a few minutes at most. The accurary of the program <a href="atlc.1.html"><code>atlc</code></a> has not been properly evaluated for open-structures, such as twin-wire, where the fields theoretically extend to infinity. Initail results suggest <a href="atlc.1.html"><code>atlc</code></a> is not very accuate in such cases, but this has not been fully investigated. </LI></UL></LI>
+
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="How_does">How </a>does <a href="atlc.1.html"><code>atlc</code></a> work? </LI><LI><STRONG>Answer: </STRONG> <a href="atlc.1.html"><code>atlc</code></a> uses a method known as finite differences. A paper describing the theory of this was published in the amateur radio journal QEX See: <EM>Finding the characteristics of Arbitrary transmission lines</EM>, D. Kirkby, QEX, December 1996, page 3-10. You can  <a href="http://atlc.sourceforge.net/docs/qex-december-1996/atlc.pdf">download</a> a copy  if you wish, or there should be <a href="../qex-december-1996/atlc.pdf">a local copy</a>. Note this is an old paper, so <a href="atlc.1.html"><code>atlc</code></a> has been much improved since that paper was written.  </LI></UL></LI>
+
+	<LI><UL><LI><STRONG>Question: </STRONG><a name="Does_atlc"> Does </A><a href="atlc.1.html"><code>atlc</code></a> need to know the dimensions of transmission lines?</LI><LI><STRONG>Answer: </STRONG> <CODE>atlc</CODE> does not need to know the absolute dimensions (in mm or inches), but it does need to know the relative sizes of all the conductors. </LI></UL></LI>
+
+
+	<LI><UL><LI><STRONG>Question: </STRONG> <a name="Bitmap_files">Bitmap </a>files are large, can I use JPEG instead? </LI><LI><STRONG>Answer: </strong> No. JPEG files use a compression method that is not lossless  -i.e. data is lost from which you can never recover. As such JPEG is not suitable for this application. TIFF could in principle be used, but there are no plans to add support for files other than .bmp. I might add support for the FITs data file format, but this is not a priority</LI></UL></LI>
+
+<LI><UL><LI><STRONG>Question: </STRONG> <a name="I_want">I</a> want to try a number of different transmission lines, all with rectangular cross sections. Drawing them as bitmaps is a bit tedious. Is there a simpler way?</LI><LI><STRONG>Answer: </STRONG> Yes, there is. The programme  <a href="create_bmp_for_rect_in_rect.1.html"><code>create_bmp_for_rect_in_rect</code></a> is for this purpose, as it can automatically draw bitmaps for a <STRONG>rect</STRONG>angular conductor <STRONG>in</STRONG>side another <STRONG>rect</STRONG>angular conductor, like the following transmission line. <br><img src="jpgs/rect2.jpg" ALT="create_bmp_for_rect_in_rect_diag"><br> You need to supply as command line arguments the dimensions of the structure (in mm, inches, miles or whatever you want, as long as the same unit is used throughout), and of course the permittivities of the dielectrics. See  the section <a href="generators.html">Automatic Bitmap Generators</A> for more information on   <a href="create_bmp_for_rect_in_rect.1.html"><code>create_bmp_for_rect_in_rect</code></a>. </LI></UL></LI>
+
+	<LI><UL><LI><STRONG>Question:</strong> <a name="border"> I ran</a>  <a href="create_bmp_for_rect_in_rect.1.html">create_bmp_for_rect_in_rect</a> with the -v option, so that it produced some extra information to stderr.  <a href="create_bmp_for_rect_in_rect.1.html">create_bmp_for_rect_in_rect</a> indicated that it would create a grid of 615 x 201, yet the bitmap was larger at 625 x 211 pixels. Why is this ? </LI><LI><STRONG>Answer:</STRONG> The dimensions you enter on <a href="create_bmp_for_rect_in_rect.1.html">create_bmp_for_rect_in_rect's</a> command line are the <STRONG>inside</STRONG> dimensions of the outer conductor, which you enter as floating point numbers. <a href="create_bmp_for_rect_in_rect.1.html">create_bmp_for_rect_in_rect</a> will convert those to the best integer fit it can, but it  least have at least a 1 pixel border all the way around for the outer conductor. By default, the border is made 5 pixels, so it can be seen easily on a bitmap without needing to zoom in too far. Hence the bimap is 10 pixels wider and 10 pixel higher than expected. </LI></UL></LI>
+	
+	
+<LI><UL><LI><STRONG>Question:</STRONG><a name="ten"> What</a> are the 12 programs, that form the atlc package? </LI><LI><STRONG>Answer:</STRONG>See the web page describing the <a href="man-pages.html">manual pages</a></LI></UL></LI>
+	
+</OL>
+
+
+
+
+
+
+
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</BODY>
+
+</HTML>

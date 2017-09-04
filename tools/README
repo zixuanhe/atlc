@@ -1,0 +1,39 @@
+Here are a couple of tools that I use. Both are very quickly put
+together to solve a job in an easy and portable way. 
+
+1) 'teston'. This allows one to quickly run a configure/make on a remote
+machine. It copies via scp the files to a remote computer and then
+executes them there, sending the results back to the local machine. 
+
+This was developed for testing purposes
+
+Usage: teston [options] remote_host package
+
+It does *NOT* work on the local host, for reasons I can't understand.
+The 'configure' script goes all wrong. I've no idea why, and the
+'autoconf' and 'automake' mailing lists could not answer it either. If
+you know whey, let me know. 
+
+2) 'runremote' is a script that calls 'teston' (see above) to run
+an application on a large number of machines in parallel. It must makes
+lots of calls to 'teston'. 
+
+Usage: runremote package
+
+The program 'runremote' is expected to be hacked for each system. 
+It is designed for testing here, but the hostnames are hardcoded, so it
+will certainly need hacking if you want to use it. 
+
+
+3) 'mymd5sum'. 
+md5 is a well known, good checksum generator. Not all systems have
+it, those that do call it different names (md5, md5sum) and output the
+data in sligtly different formats. The program 'mymd5sum' computes
+and MD5 checksum, reporting only on the checksum, not the filename
+as most other implementations do.
+
+4) Program 'filelength' reports the length of a file in bytes. I was not
+sure if ls -l was portable, so this one is.
+
+Dr. David Kirkby, 20th Aprol 2003
+

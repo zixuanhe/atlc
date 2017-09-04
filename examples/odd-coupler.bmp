@@ -1,0 +1,4 @@
+% atlc -v -d 9ed89e=4.3 odd-coupler.bmp
+
+odd-coupler.bmp 3 Er_odd=   2.159 Er_even=   2.179 Zodd=  48.371 Zeven= 51.889 Zo=  50.099 Zdiff=  96.741 Zcomm=  25.945 Ohms VERSION=4.6.0
+

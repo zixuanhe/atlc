@@ -1,0 +1,54 @@
+#! /bin/sh
+# A bitmap is created of a symmetrical_stripline. By adding the -v option
+# to create_bmp_for_symmetrical_stripline the theoretical impedance
+# is computed. 
+# atlc is then called, and its eastimate calaculated, which will differ 
+# slightly from the theoretical data 
+
+#: ${ZoTheory='ksdkj'}
+#: ${Zoatlc='iofdklkljf'}
+
+if [ "x$mpirun_found" = "xyes" ]  ; then
+  ZoTheory=`$top_builddir/src/create_bmp_for_symmetrical_stripline -v 1134 201 290 $top_builddir/tmp/50ohm-201h.bmp | awk '{print $4}' | tail -1`
+  Zoatlc=`mpirun -np 2 $top_builddir/src/atlc -S $top_builddir/tmp/50ohm-201h.bmp | awk '{print $6}' | tail -1`
+else
+  ZoTheory=`$top_builddir/src/create_bmp_for_symmetrical_stripline -v 1134 201 290 $top_builddir/tmp/50ohm-201h.bmp | awk '{print $4}' | tail -1`
+  Zoatlc=`$top_builddir/src/atlc -S $top_builddir/tmp/50ohm-201h.bmp | awk '{print $6}' | tail -1`
+fi
+
+touch $top_builddir/tmp/50ohm-201h.bmp $top_builddir/tmp/50ohm-201h.Ex.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/50ohm-201h.bmp`
+EXMD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/50ohm-201h.Ex.bmp`
+
+#echo "Zoth=$ZoTheory Zoatlc=$Zoatlc md5=$MD5SUM exmd5=$EXMD5SUM"
+
+if test -z "$ZoTheory"  ;  then
+  exit 1
+fi
+
+if test -z "$Zoatlc"  ; then
+  exit 1
+fi
+
+if test -z "$MD5SUM"  ; then
+  exit 1
+fi
+
+if test -z "$EXMD5SUM"  ; then
+  exit 1
+fi
+
+if [ $ZoTheory = 49.989477  ] && [ $Zoatlc = 49.899 ] && [ $MD5SUM = dae5292fe04dfd64abe1ae4e926d7365 ] && [ $EXMD5SUM = 03bdcc0c9f6361f2630f77817b8684d9 ]; then
+  rm -f $top_builddir/tmp/50ohm-201h.bmp $top_builddir/tmp/50ohm-201h.Ex.bmp
+  rm -f $top_builddir/tmp/50ohm-201h.Ey.bmp $top_builddir/tmp/50ohm-201h.E.bmp
+  rm -f $top_builddir/tmp/50ohm-201h.U.bmp $top_builddir/tmp/50ohm-201h.V.bmp
+  rm -f $top_builddir/tmp/50ohm-201h.Er.bmp
+
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi
+
+

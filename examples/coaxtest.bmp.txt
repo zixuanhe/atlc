@@ -1,0 +1,1 @@
+coaxtest.bmp 2 Er=  4.80 Zo=   6.106 Ohms C= 1196.9 pF/m L=   44.6 nH/m v= 1.368e+08 m/s v_f= 0.456 VERSION= 4.6.0

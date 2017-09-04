@@ -1,0 +1,1 @@
+ground-negative-short.bmp 3 Er_odd=   1.000 Er_even=   1.000 Zodd= 102.935 Zeven= 102.935 Zo= 102.935 Zdiff= 205.869 Zcomm=  51.467 Ohms VERSION=4.6.0

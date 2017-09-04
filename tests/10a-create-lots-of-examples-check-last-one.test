@@ -1,0 +1,15 @@
+#! /bin/sh
+
+Zodd=`$top_builddir/src/create_bmp_for_stripline_coupler -v 1.0 1.0 0.02 1 $top_builddir/tests/coupler8.bmp | tail -4 | head -1 | awk '{print $2}'`
+Zeven=`$top_builddir/src/create_bmp_for_stripline_coupler -v 1.0 1.0 0.02 1 $top_builddir/tests/coupler8.bmp | tail -4 | head -1 | awk '{print $4}'`
+Zo=`$top_builddir/src/create_bmp_for_stripline_coupler -v 1.0 1.0 0.02 1 $top_builddir/tests/coupler8.bmp | tail -4 | head -1 | awk '{print $6}'`
+rm $top_builddir/tests/coupler8.bmp
+
+if [ $Zodd = 40.395419 ] && [ $Zeven = 76.541465 ]  && [ $Zo = 55.605076 ] ; then
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0  >> tests.log
+  exit 1
+fi
+

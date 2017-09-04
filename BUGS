@@ -1,0 +1,31 @@
+  1 There was a theoretical risk of an error occurring when running
+    atlc with multi-threaded coded on multi-processor systems. As
+    such, the option to configure atlc for multiple processors has 
+    been disabled. This will be re-enabled asap - by Feb 2004
+  
+  2 Not every version of make will build atlc. GNU make will do, which
+    is of course free. Sun's make will NOT, neighter will that from  
+    SGI under IRIX. There's not much I can do about this, since the 
+    problem is with automake. But GNU make **will** build atlc okay. 
+
+  3 Data on machines is only gathered properly on a few machines (Solaris,
+     Tru64, AIX IRIX and HP-UX). On Linux and  *BSD, it is next to useless. 
+
+  4 Sometimes the CVS is not as current as it should be. 
+
+  5.The lack of any way of changing brightness of images without a 
+    cpu-intensive re-run. 
+
+  6.There are no manual pages for several programs 
+
+  7.HTML versions of the man pages have diagrams that are completely stupid. #
+    This is a problem with the program 'man2html' I'm using - I think so anyway. 
+
+  8 Sometimes documention in one file is out of date with documention in
+    another. The web pages might not agree with those in docs/html-docs.
+    or README's contradict each other. Where possible I've tried to   
+    remember to update the ChangeLog and add a date to a file, but this
+    does not always happen I'm afraid. 
+
+
+Dr. David Kirkby,  December 7th 2003 Re: atlc-4.6.0 

@@ -1,0 +1,12 @@
+#! /bin/sh
+
+touch $top_builddir/tmp/test_stripline_coupler.E.even.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_stripline_coupler.E.even.bmp`
+if [ $MD5SUM != b2c0571b29ff7021e2d70ea8289b442f ] ; then
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+else
+  rm $top_builddir/tmp/test_stripline_coupler.E.even.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+fi

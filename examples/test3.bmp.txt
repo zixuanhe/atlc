@@ -1,0 +1,1 @@
+test3.bmp 2 Er=  0.75 Zo=  15.183 Ohms C=  190.1 pF/m L=   43.8 nH/m v= 3.465e+08 m/s v_f= 1.156 VERSION= 4.6.0

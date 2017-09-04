@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="Calculte Zodd and Zeven Using atlc">
+<META name="KEYWORDS" content="Zodd odd even mode impedance coupler directional">
+<TITLE>atlc How to determine the properties of an arbitrary coupler</TITLE>
+</HEAD>
+<BODY>
+<H1>How to determine the properties of an arbitrary coupler, given its physical dimensions.</H1>
+<p>Consider the transmission lines below, which has three metal conductors - a ground shown in green and the two inner conductors shown red and blue, coupled together. <p><img src="jpgs/coupler.jpg" width="400" ALT="coupled lines">
+<p>Such a structure has two characteristic impedances - an odd-mode impedance Zodd and an even-mode impedance Zeven. If the structure is drawn in red, blue and green, <CODE>atlc</CODE> will interpret this as a coupler and therefore computes both impedances.
+<pre>
+wren  % atlc -v  couplerxx.bmp
+
+couplerxx.bmp Er= 1.0000 C= 55.1412 pF/m L= 201.7820 nH/m Zo= N/A Ohms Zodd= 60.4927 Ohms Zeven= N/A Ohms v= 2.9979 e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 54.1717 pF/m L= 205.3932 nH/m Zo= N/A Ohms Zodd= 61.5753 Ohms Zeven= N/A Ohms v= 2.9979 e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 54.0835 pF/m L= 205.7283 nH/m Zo= N/A Ohms Zodd= 61.6758 Ohms Zeven= N/A Ohms v= 2.9979 e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 54.0683 pF/m L= 205.7862 nH/m Zo= N/A Ohms Zodd= 61.6931 Ohms Zeven= N/A Ohms v= 2.9979 e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 54.0657 pF/m L= 205.7958 nH/m Zo= N/A Ohms Zodd= 61.6960 Ohms Zeven= N/A Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 36.6079 pF/m L= 303.9368 nH/m Zo= 74.9774 Ohms Zodd= 61.6960 Ohms Zeven= 91.1180 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 35.5586 pF/m L= 312.9064 nH/m Zo= 76.0757 Ohms Zodd= 61.6960 Ohms Zeven= 93.8070 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 35.4672 pF/m L= 313.7124 nH/m Zo= 76.1736 Ohms Zodd= 61.6960 Ohms Zeven= 94.0486 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 35.4513 pF/m L= 313.8534 nH/m Zo= 76.1908 Ohms Zodd= 61.6960 Ohms Zeven= 94.0909 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 35.4486 pF/m L= 313.8773 nH/m Zo= 76.1937 Ohms Zodd= 61.6960 Ohms Zeven= 94.0980 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0
+couplerxx.bmp Er= 1.0000 C= 35.4486 pF/m L= 313.8773 nH/m Zo= 76.1937 Ohms Zodd= 61.6960 Ohms Zeven= 94.0980 Ohms v= 2.99792e+08 m/s v_f= 1.0000 VERSION= 4.0.0</pre>
+<p>
+Note that atlc first computes the odd-mode impedance, and then on a second run computes the even-mode impedance. The characteristic impedance is Zo=sqrt(Zodd*Zeven), so this is also computed on the second run. The accuracy of the calculation of odd and even-mode impedances in couplers is discussed in the <a href="accuracy.html#Accuracy_coupler">accuracy section</a> </p>
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A>
+It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net"> Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</BODY>
+</HTML>

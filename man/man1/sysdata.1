@@ -1,0 +1,518 @@
+.TH sysdata 1 "atlc-4.5.0 28th Sep 2003" "Dr. David Kirkby"
+.ds n 5
+.SH NAME
+\fBsysdata\fR - find basic hardware system data
+.SH SYNOPSIS
+\fBsysdata\fR
+.br
+.SH DESCRIPTION
+After the \fBatlc\fR package is built, a small benchmark is run as part of the testing procedure. This benchmark
+tries to get some information about the hardware. The program \fBsysdata\fR displays the same hardware information
+that the benchmark will display, but runs in a fraction of a second, whereas the benchmark can take from 19 s
+(quad 1.4 GHz Itainium 2 machine) to 14,906 s (for a very old 33.3 MHz Cray Y-MP). There are no options or
+arguments to \fBsysdata\fR
+.PP
+The information gathered on hardware and software both developed by the same company (i.e. Solaris on Suns, AIX
+on IBM RS/6000, IRIX on SGI, ... etc etc) is generally more informative than the free systems (Linux, NetBSD,
+OpenBSD, FreeBSD) where it is usually impossible to get much hardware information. 
+.SH EXAMPLES
+Here are some examples of the use of \fBsysdata\fR on a number of systems. The large number of examples is for
+my own use as much as anything, so I can keep track of the development of sysdata and see easily where it needs
+extending. Examples are presented for:
+.br
+.PP
+1) Sun Ultra 80 running Solaris 9
+.br
+2) HP C3000 running HP-UX 11
+.br
+3) SGI Octane running IRIX 6.5.16
+.br
+4) IBM RS/6000 running AIX 5.2
+.br
+5) Dec Alpha 600a Personal Workstation running Tru64 5.1B
+.br
+6) Cray Y-MP running UNICOS 9
+.br
+7) Sun SPARCstation 20 running NetBSD 1.6
+.br
+8) Sun SPARCstation 20 running OpenBSD 3.2
+.br
+9) Sun SPARCstation 20 running Debian Linux
+.br
+10) Sun SPARCstation 20 running Solaris 2.5  
+.br
+11) Generic PC with 350 MHz Pentium II running Redhat Linux 7.2
+.br
+.PP
+.br
+Here's the output from \fBsysdata\fR on these 11 systems. 
+.PP
+.br
+\fBe.g. 1 (Sun Ultra 80 running Solaris 9)\fR
+.br
+Hardware provider:    Sun_Microsystems
+.br
+Hardware platform:    SUNW,Ultra-80
+.br
+Machine:              sun4u
+.br
+Sysname:              SunOS
+.br
+Release:              5.9
+.br
+Version:              Generic_112233-06
+.br
+Nodename:             sparrow
+.br
+#CPUs supported:      4
+.br
+#CPUs online:         4
+.br
+CPU type:             sparcv9
+.br
+FPU type:             sparcv9
+.br
+Speed:                450 MHz
+.br
+RAM:                  4096 Mb
+.br
+L1 data cache         unknown kB
+.br
+L1 instruction cache: unknown kB
+.br
+L2 cache:             unknown kB
+.PP
+Here's an example on a HP 9000 series Visualize C3000 workstation, fitted with one 400 MHz PA-RISC 8500 CPU and 1.5 Gb of RAM
+.PP
+\fBe.g. 2 (HP 9000 series Visualize C3000)\fR
+.br
+Hardware provider:    HP      
+.br
+Hardware platform:    unknown
+.br
+Machine:              9000/785
+.br
+Sysname:              HP-UX
+.br
+Release:              B.11.00
+.br
+Version:              A
+.br
+Nodename:             robin
+.br
+#CPUs supported:      1
+.br
+#CPUs online:         1
+.br
+CPU type:             532
+.br
+FPU type:             1048577
+.br
+Speed:                400.0 MHz
+.br
+RAM:                  1536 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+.PP
+.br
+Here's another example this time on an SGI Octane R10000 with 2 x 195 MHz processors. Note the CPU and FPU types
+reported at not the R10000 and R10010 that are reported by SGI's hinv. \fBsysdata\fR is not meant to replace other
+more sophisticated ways of obtaining system information (such as hinv on IRIX), but its data is useful to record for benchmarking purposes. 
+.br
+.PP
+\fBe.g. 3 (SGI Octane R1000) \fR
+.br
+Hardware provider:    SGI
+.br
+Hardware platform:    unknown
+.br
+Machine:              IP30
+.br
+Sysname:              IRIX64
+.br
+Release:              6.5
+.br
+Version:              04101931
+.br
+Nodename:             owl
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         2 
+.br
+CPU type:             2343
+.br
+FPU type:             2304
+.br
+Speed:                195 MHz
+.br
+RAM:                  1024 Mb
+.br
+L1 data cache         32 kB
+.br
+L1 instruction cache: 32 kB
+.br
+L2 cache:             1024 kB
+.br
+.PP
+Here's an example using an IBM RS/6000 F50 with 4 x 332 MHz CPUs and 1 GB of RAM.
+.PP
+.br
+\fBe.g. 4 (IBM RS/6000 F50)\fR
+.br
+Hardware provider:    IBM
+.br
+Hardware platform:    unknown
+.br
+Machine:              000245984C00
+.br
+Sysname:              AIX
+.br
+Release:              2
+.br
+Version:              5
+.br
+Nodename:             starling
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         4
+.br
+CPU type:             unknown
+.br
+FPU type:             unknown
+.br
+Speed:                unknown MHz
+.br
+RAM:                  1024 Mb
+.br
+L1 data cache         unknown kB
+.br
+L1 instruction cache: unknown kB
+.br
+L2 cache:             unknown kB
+.PP
+.br
+And here's an example from a single 599 MHz processor Dec Alpha 600a Personal Workstation running Tru64 5.1B
+.PP
+.br
+\fBe.g. 5 (Dec Alpha 600a Personal Workstation)\fR
+.br
+Hardware provider:    unknown
+.br
+Hardware platform:    Digital_Personal_WorkStation_600au
+.br
+Machine:              alpha
+.br
+Sysname:              OSF1
+.br
+Release:              V5.1
+.br
+Version:              2650
+.br
+Nodename:             dobermann.localhost.ntlworld.co
+.br
+#CPUs supported:      1
+.br
+#CPUs online:         1
+.br
+CPU type:             EV5.6_(21164A)
+.br
+FPU type:             unknown
+.br
+Speed:                599 MHz
+.br
+RAM:                  1024 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+.PP
+.br
+Here's some data collected on a very old Cray Y-MP, which was introduced in 1991.
+.PP
+.br
+\fBe.g 6 (Cray Y-MP running UNICOS)\fR
+.PP
+.br
+Hardware provider:    Cray
+.br
+Hardware platform:    Y-MP
+.br
+Machine:              CRAY_Y-MP
+.br
+Sysname:              sn5176
+.br
+Release:              9.0.2.2
+.br
+Version:              sin.0
+.br
+Nodename:             sn5176
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         4
+.br
+CPU type:             unknown
+.br
+FPU type:             unknown
+.br
+Speed:                33.3 MHz
+.br
+RAM:                  unknown Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+
+That is all the examples of commercial hardware running the operating systems made by the manufacturers of the
+hardware. The following are free UNIX versions. In these cases the data gathered is never as complete. In
+particular the amoumt of memory reported if often less than the real amount due to memory taken by the
+operating system (kernel etc). The number of processors the system can support is never available. 
+.PP
+Here's the first such non-commercial UNIX from a single processor Sun SPARCstation 20 running NetBSD 1.6. 
+.PP
+.br
+\fBe.g. 7 (Sun SPARCstation 20 running NetBSD 1.6)\fR
+.br
+Hardware provider:    unknown
+.br
+Hardware platform:    unknown
+.br
+Machine:              sparc
+.br
+Sysname:              NetBSD
+.br
+Release:              1.6
+.br
+Version:              NetBSD_1.6_(GENERIC)_#0:_Mon_Sep__9_08:2sparc
+.br
+Nodename:             blackbird
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         1 
+.br
+CPU type:             rg:/autobuild/sparc/OBJ/autobuild/src/sys/arch/sparc/compile/GENERIC
+.br
+FPU type:             unknown
+.br
+Speed:                unknown MHz
+.br
+RAM:                  255 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+.br
+.PP
+Here's data from a Sun SPARCstation 20 running OpenBSD 3.2. The machine has 320 Mb of RAM, not 318 Mb as
+indicated. The number of processors the system supports is reported as unknown, but should the system have been
+running Solaris 9, as in the example 1 (sparrow), then this information would have
+been determined, but it is not available under OpenBSD - or Solaris 2.5 for that matter.
+.PP
+.br
+\fBe.g. 8 (Sun SPARCstation 20 running OpenBSD 3.2)\fR
+.br
+Hardware provider:    unknown
+.br
+Hardware platform:    unknown
+.br
+Machine:              sparc
+.br
+Sysname:              OpenBSD
+.br
+Release:              3.2
+.br
+Version:              GENERIC#36
+.br
+Nodename:             crow.crow.localdomain
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         1 
+.br
+CPU type:             unknown
+.br
+FPU type:             unknown
+.br
+Speed:                unknown MHz
+.br
+RAM:                  319 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+.br
+The next machine is a Sun SPARCstation 20 running Debian Linux. The version of Debian is unknown, but clearly
+\fBsysdata\fR is unable to determine this.
+.PP
+.br
+\fBe.g. 9 (Sun SPARCstation 20 running Debian Linux)\fR
+.PP
+.br
+Hardware provider:    unknown
+.br
+Hardware platform:    unknown
+.br
+Machine:              sparc
+.br
+Sysname:              Linux
+.br
+Release:              2.2.20
+.br
+Version:              #1_Fri_Nov_16_15:48:02_EST_2001
+.br
+Nodename:             dove
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         1
+.br
+CPU type:             unknown
+.br
+FPU type:             unknown
+.br
+Speed:                unknown MHz
+.br
+RAM:                  281 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+
+Here's data from a Sun SPARCstation 20 running Solaris 2.5 (SunOS 5.5). The machine probably does have 352 Mb of RAM as
+reported. The number of processors the system supports is reported as unknown, but should the system have been
+running Solaris 9, as in the example 1 (sparrow), then this information would have been determined, but it is not available under Solaris 2.5. 
+.PP
+.br
+\fBe.g. 10 (Sun SPARCstation 20 Solaris 2.5)\fR
+.br
+Hardware provider:    Sun_Microsystems
+.br
+Hardware platform:    SUNW,SPARCstation-20
+.br
+Machine:              sun4m
+.br
+Sysname:              SunOS
+.br
+Release:              5.5
+.br
+Version:              Generic
+.br
+Nodename:             bluetit
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         2
+.br
+CPU type:             sparc
+.br
+FPU type:             sparc
+.br
+Speed:                125 MHz
+.br
+RAM:                  352 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+
+.br
+.PP
+Here's a standard PC, fitted with one processor
+.PP
+.br
+\fBe.g. 11 (350 MHz Pentium II PC running Redhat Linux)\fR 
+.br
+Hardware provider:    unknown
+.br
+Hardware platform:    unknown
+.br
+Machine:              i686
+.br
+Sysname:              Linux
+.br
+Release:              2.4.18-5
+.br
+Version:              #1_Mon_Jun_10_15:31:48_EDT_2002
+.br
+Nodename:             tiger
+.br
+#CPUs supported:      unknown
+.br
+#CPUs online:         1
+.br
+CPU type:             unknown
+.br
+FPU type:             unknown
+.br
+Speed:                unknown MHz
+.br
+RAM:                  123 Mb
+.br
+L1 data cache         unknown kb
+.br
+L1 instruction cache: unknown kb
+.br
+L2 cache:             unknown kb
+.br
+
+.SH FILES
+sysdata does not read/write any files. 
+.SH SEE ALSO
+atlc(1)
+.br
+create_bmp_for_circ_in_circ(1)
+.br
+create_bmp_for_circ_in_rect(1)
+.br
+create_bmp_for_microstrip_coupler(1)
+.br
+create_bmp_for_rect_cen_in_rect(1)
+.br
+create_bmp_for_rect_cen_in_rect_coupler(1)
+.br
+create_bmp_for_rect_in_circ(1)
+.br
+create_bmp_for_rect_in_rect(1)
+.br
+create_bmp_for_stripline_coupler(1)
+.br
+create_bmp_for_symmetrical_stripline(1)
+.br
+design_coupler(1)
+.br
+find_optimal_dimensions_for_microstrip_coupler(1)
+.br
+hinv - SGI's IRIX only.
+.br
+readbin(1)
+.P 
+.br
+http://atlc.sourceforge.net                - Home page 
+.br
+http://sourceforge.net/projects/atlc       - Download area
+.br
+atlc-X.Y.Z/docs/html-docs/index.html       - HTML docs
+.br
+atlc-X.Y.Z/docs/qex-december-1996/atlc.pdf - theory paper
+.br
+atlc-X.Y.Z/examples                        - examples
+.br

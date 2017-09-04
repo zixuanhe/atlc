@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="FAQ for atlc">
+<META name="KEYWORDS" content="atlc tutorial arbitrary transmission line calculator">
+<TITLE>The arbitrary transmission line calculator (atlc) Tutorial</TITLE>
+</HEAD>
+<BODY>
+
+<H1><CODE>create_bmp_for_rect_in_rect</CODE></H1>
+<strong><a name="create_bmp_for_rect_in_rect">create_bmp_for_rect_in_rect</a></strong> is used for generating a bitmap containing a  <strong>rect</strong>angular conductor placed <STRONG>in</STRONG>side  another <strong>rect</strong>angular conductor. There can be two dielectrics and the inner conductor can be placed at any position inside the outer conductor. This makes <STRONG>create_bmp_for_rect_in_rect</STRONG> very powerful. If there is only one dielectric and the two rectangular conductors are coaxial with one another, then <a href="create_bmp_for_rect_cen_in_rect.1.html">create_bmp_for_rect_cen_in_rect</a> is easier to use. 
+
+<pre>
+parrot /export/home/davek/atlc-2.02/src % create_bmp_for_rect_in_rect
+Usage: create_bmp_for_rect_in_rect [-b bmp_size] [-f outfile] [-v] W H a b c d w h Er1 Er2 
+
+where W, H, a, b, c, d, w, and h  are all in mm or all in inches
+(they *must* use the same units. Non-integers allowed for all parameters)
+options are:
+  -b bmp_size
+     Sets the size of the bitmap, the range 1 to 15 (default 3).
+  -f outfile 
+     Write output to 'outfile' instead of stdout
+  -v         
+     Write diagnostic information to stderr
+-----------------------------------------------------------------------  ^
+|                                                                     |  |
+|               Dielectric, permittivity=Er1                          |  |
+|                                                                     |  |
+|       &lt----------------d-------------------------&gt;                  |  |
+|                                                                     |  |
+|             &lt----------w-----------&gt;                                |  |
+|             ------------------------   ^                            |  |
+|             |                      |   |                            |  |
+|             |  Metallic conductor  |   |                            |  H
+|&lt-----b-----&gt;|  conductor (can be   |   c                            |  |
+|             |  off-centre)         |   |                            |  |
+|             |                      |   |                            |  |
+|       |------------------------------------------- ^                |  |
+|       |..........................................| |                |  |
+|       |.....Dielectric, permittivity=Er2.........| |                |  |
+|&lt--a--&gt;|.......(can be off centre )...............| h                |  |
+|       |..........................................| |                |  |
+|       |..........................................| |                |  |
+-----------------------------------------------------------------------  v
+&lt;----------------------------------W---------------------------------&gt;
+
+***WARNING*** Since the output from create_bmp_for_rect_in_rect is binary data (the bitmap) it
+will screw up your terminal unless you redirect the output to a file. The '-f' option can be used to send the output to 'outfile' 
+parrot /export/home/davek/atlc-2.02/src % 
+
+</pre>
+
+Here's an example of using <code>create_bmp_for_rect_in_rect</code>.<br>
+<img src="jpgs/test.jpg" alt="test for create_bmp_for_rect_in_rect" height="128"><br>
+The outer conductor (green) has internal dimensons of 61.5 x 20.13 mm (W=61.5, H=20.13), the dielectric PTFE (blue) is 50 x 5.1 mm (d=50.0, h=5.1) and the conductor has dimensions of 15 x 1 mm (w=15.0, h=1.0). The left hand edge of the dielectric is 5.1 mm from the outer conductor's side wall (a=5.1) and the left hand edge of the conductor is 22.5 mm (b=22.5) from outer conductor's side wall. Since PTFE has a relative permittivity of 2.1 (a value known by <code>atlc</code> and <code>create_bmp_for_rect_in_rect</code>) it is simply put on the command line, as is the vacuum (white region). 
+
+<pre>
+create_bmp_for_rect_in_rect 61.5 20.13 5.1 22.5 0.5 50 15.0 5.0 1.0 2.1; test.bmp
+</pre>
+
+The output was redirected to a file <code>test.bmp</code>, which would then be read with atlc. 
+
+<pre>
+% atlc test.bmp
+</pre>
+
+That is all that needs to be done.<br>
+<br>
+It should be noted that <code>create_bmp_for_rect_in_rect</code> must attempt to fit your dimensions to a square grid. If all dimensions are small integers, this is easy to do, but in some cases this is not possible without having very large grids. In this case, <code>create_bmp_for_rect_in_rect</code> can only generate an approximation of what you want. For example, assume a structure is 120x240.0001 mm wide. It's impossible to represent that on a square grid, without having a grid of at least 1200000 x 2400001, which would be prohibitively large and requre an enormous amount of time for <code>atlc</code> to analyse. In this case, <code>create_bmp_for_rect_in_rect</code> will approximate this structure. Here is a very approximate idea of the sizes of the bitmaps, and the time to analyse in atlc, for various values of b. 
+
+<table border="10">
+<tr>
+<td>b</td>
+<td>size (kb)</td>
+<td>time (min:sec, for single 125 MHz CPU, Er1=Er2)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>35</td>
+<td>0:10</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>74</td>
+<td>0:38</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>74</td>
+<td>0:38</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>195</td>
+<td>3:59</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>278</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</table>
+
+<br>
+<br>
+There are a few options to create_bmp_for_rect_in_rect that might be useful.<br><br>
+ One that might be very useful, is the -v option, which prints information about the grid sizes to stderr. 
+
+<pre>
+% create_bmp_for_rect_in_rect -v 61.5 20.13 5.1 22.5 0.5 50 15.0 5.0 1.0 2.1  test.bmp
+User requested: WW=61.500000 HH=20.130000 a=5.100000 b=22.500000 c=0.500000
+d=50.000000 w=15.000000 h=5.000000Er1=1.000000 Er2=2.100000
+
+Internally the programme is using the following grid:
+W=492 H=161 a=41 b=180 c=4 d=400 w=120 h=40. 
+The  grid size is 0.125000 mm, inches or whatever
+
+This means we are simulating a transmission line with these dimensions:
+W=61.500000 H=20.125000 a=5.125000 b=22.500000 c=0.500000 d=50.000000
+w=15.000000 h=5.000000 (mm, inches or whatever)
+These may be slightly different to what you indicated on the command line,
+but they are the best approximation possible, given the grid size
+parrot /export/home/davek/atlc-2.02/src % 
+
+</pre>
+
+<br>
+<br>
+Another the -b option, which alters the size of the bitmap produced, and so the accuracy. The default bitmap size is 3, which equates to bitmaps of around 250 kb, which should mean they can be analysed with <code>atlc</code> in a reasonable time. It's possible to reduce the size of the bitmap, so giving lower accuracy, but in less time, by setting b to 1 or 2, as like this.<br>
+<pre>
+% create_bmp_for_rect_in_rect  -b 1 61.5 20.13 5.1 22.5 0.5 50 15.0 5.0 1.0 2.1  test2.bmp
+% atlc test2.bmp
+</pre>
+
+or of course accuracy can be improved, by making b larger, as in: 
+
+<pre>
+% create_bmp_for_rect_in_rect  -b 6 61.5 20.13 5.1 22.5 0.5 50 15.0 5.0 1.0 2.1  test3.bmp
+% atlc test3.bmp
+</pre>
+
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</html>

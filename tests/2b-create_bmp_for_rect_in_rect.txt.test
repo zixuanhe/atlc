@@ -1,0 +1,31 @@
+#! /bin/sh
+# Currenty (13th April 2003) this test only works when atlc is
+# configured as a single threaded or built with pthrads, but not
+# for the MPICH libraries, atlc gives a huge number of error messages. 
+
+if [ "$mpirun_found" = "yes" ] ; then
+  mpirun -np 2 $top_builddir/src/atlc  -S $top_builddir/tmp/test_rect_in_rect.bmp > $top_builddir/tmp/test_rect_in_rect.txt
+else 
+  $top_builddir/src/atlc  -S $top_builddir/tmp/test_rect_in_rect.bmp > $top_builddir/tmp/test_rect_in_rect.txt
+fi
+touch $top_builddir/tmp/test_rect_in_rect.txt
+
+# The capacitance should be 121.0 pF/m and is in column 9
+
+CAP=`cat $top_builddir/tmp/test_rect_in_rect.txt | awk '{print $9}'`
+Zo=`cat $top_builddir/tmp/test_rect_in_rect.txt | awk '{print $6}'`
+
+if [ -z "$CAP"  ] || [ -z "$Zo" ] ; then
+  echo "FAILED:" $0 >> tests.log
+  exit 1 
+fi
+
+
+if [ $CAP = 121.0 ] && [ $Zo = 44.61 ] ; then
+  rm -f $top_builddir/tmp/test_rect_in_rect.txt $top_builddir/tmp/test_rect_in_rect.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 $CAP $Zo >> tests.log
+  exit 1
+fi

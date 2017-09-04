@@ -1,0 +1,25 @@
+#! /bin/sh
+# Check only that atlc can correctly calculate the impedance Zo given a valid bitmap
+# This does not require that any of the programs create_bmp_for* work. 
+
+# Delete any files that may be left by mistake
+
+# There should now be no coax2* files, except $top_srcdir/examples/coax2.bmp
+rm -f $top_builddir/tmp/coax2.*
+cp $top_srcdir/examples/coax2.bmp $top_builddir/tmp
+
+# Add the -S and -s options together to prevent all ( .bmp or .bin files ) being created. 
+if [ "$mpirun_found" = "yes" ] ; then
+  Zo=`mpirun -np 2 $top_builddir/src/atlc -s -S $top_builddir/tmp/coax2.bmp | awk '{print $6}'`
+else
+  Zo=`$top_builddir/src/atlc -s -S $top_builddir/tmp/coax2.bmp | awk '{print $6}'`
+fi
+
+if [ $Zo != 70.199 ] ; then
+  echo "FAILED:" $0 >> tests.log 
+  exit 1
+fi  
+
+rm -f  $top_builddir/tmp/coax2.bmp
+echo "PASSED:" $0 >> tests.log 
+exit 0

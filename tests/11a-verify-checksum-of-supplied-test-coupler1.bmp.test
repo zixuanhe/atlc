@@ -1,0 +1,14 @@
+#! /bin/sh
+# There should be a bitmap included in the distribution
+# The checksum of this will be checked.
+mkdir $top_builddir/tmp 2>/dev/null
+cp $top_srcdir/examples/test-coupler1.bmp $top_builddir/tmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test-coupler1.bmp `
+if [ $MD5SUM = dab33365f45d8d8b7e3544444ce833c4 ]; then
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else 
+  echo "FAILED:" $0  >> tests.log
+  exit 1
+fi
+

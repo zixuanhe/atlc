@@ -1,0 +1,35 @@
+#! /bin/sh
+# This is one of a set of test that generate checksums after files are
+# created. Generally a bitmap if first produced by a program such as sym_strip, 
+# rect_in_rect, rect_cen_in_rect, circ_in_circ, circ_in_rect, 
+# generate_coupler_bitmap etc.
+
+# In a few cases, the checksum is performed on a file that is 
+# supplied with the package, rather than one that is 
+# generated. 
+
+# The checksum of the bitmaps generated is compared to what is known to be 
+# the correct checksum using a program 'mymd5sum' which is a cut-down version of
+# the normal md5 or md5sum command.  It does not print the filename 
+# to stdout, as the normal version does. 
+
+# I have tried to test these checksums on as many systems as possible and 
+# know all tests pass on all systems I have checked this on. Typically the
+# systems have been mainly Suns, but running various operating systems. 
+# such as Solaris 9, NetBSD, Solaris 2.5, Linux but also a PC running
+# rehat Linux and a Dec Alpha. Any failure probably indicates a 
+# program bug, so PLEASE PLEASE let me know about it!!
+# Dr. David Kirkby, drkirkby@ntlworld.com
+
+$top_builddir/src/create_bmp_for_circ_in_rect 20 200 100 50 -4.98 10.2  $top_builddir/tmp/cir.bmp >/dev/null 2>/dev/null
+
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/cir.bmp`
+rm $top_builddir/tmp/cir.bmp
+if [ $MD5SUM != a081de7d22ef36046ea1db730b99856d ] ; then
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+else
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+fi
+

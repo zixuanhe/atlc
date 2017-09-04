@@ -1,0 +1,1 @@
+test_stripline_coupler.bmp 3 Er_odd=   1.000 Er_even=   1.000 Zodd=  64.074 Zeven=  65.283 Zo=  64.676 Zdiff= 128.148 Zcomm=  32.642 Ohms VERSION=4.6.0

@@ -1,0 +1,89 @@
+.TH readbin 1 "atlc-4.4.2 28th Sept 2003" "Dr. David Kirkby"
+.ds n 5
+.SH NAME
+\fBreadbin\fR - ATLC's binary file information provider
+.SH SYNOPSIS
+\fBreadbin  filename.bin\fR
+.br
+.SH WARNING
+This man page is not a complete set of documentation - the complexity of the atlc project makes man pages not an ideal way to document it, although out of completeness, man pages are produced. 
+The best documentation that was current at the time this version was produced should be found on your
+hard drive, usually at 
+.br
+/usr/local/share/atlc/docs/html\-docs/index.html 
+.br
+although it might be elsewhere if
+your system administrator chose to install the package elsewhere. Sometimes, errors are corrected
+in the documentation and placed at http://atlc.sourceforge.net/ before a new release of atlc is
+released.  Please, if you notice a problem with the documentation - even spelling errors and typos,
+please let me know. 
+
+.SH DESCRIPTION
+\fBreadbin\fR  reports on the number and type of pixels created 
+by the program atlc. 
+.PP 
+.SH OPTIONS
+.br
+There are no options for readbin
+.SH EXAMPLE
+% readbin coax2.V.bin
+.br
+file length=127008 bytes = 15876 pixels
+.br
+there are: 489 ones, 10852 zeros, 0 -ones, 4535 other values
+.br
+.SH FILES
+atlc-X.Y.Z/docs/html-docs/index.html
+.br
+the full documentation. 
+bitmapfile.bmp
+   Original bitmap file. Must be 24-bit colour uncompressed.
+.br
+.br 
+bitmapfile.Ex.bin
+.br 
+   X-component of E-field as a binary.  
+.br
+bitmapfile.Ey.bin
+.br
+   y-component of E-field as a binary. .
+.br 
+bitmapfile.E.bin
+.br 
+   Sqrt(Ex^2+Ey^2), as a binary. 
+bitmapfile.V.bin
+.br 
+bitmapfile.V.bin
+.br 
+   Voltage as a binary. 
+.PP
+All the saved binary files (.bin's) are saved as a double precision
+number for each of the pixels. The first double is the top left, the
+last the bottom right. 
+.PP
+.SH SEE ALSO
+
+atlc(1)
+create_bmp_for_circ_in_circ(1)
+create_bmp_for_circ_in_rect(1)
+create_bmp_for_microstrip_coupler(1)
+create_bmp_for_rect_cen_in_rect(1)
+create_bmp_for_rect_cen_in_rect_coupler(1)
+create_bmp_for_rect_in_circ(1)
+create_bmp_for_rect_in_rect(1)
+create_bmp_for_stripline_coupler(1)
+create_bmp_for_symmetrical_stripline(1)
+design_coupler(1)
+find_optimal_dimensions_for_microstrip_coupler(1)
+.P 
+.br
+http://atlc.sourceforge.net                - Home page 
+.br
+http://sourceforge.net/projects/atlc       - Download area
+.br
+atlc-X.Y.Z/docs/html-docs/index.html       - HTML docs
+.br
+atlc-X.Y.Z/docs/qex-december-1996/atlc.pdf - theory paper
+.br
+atlc-X.Y.Z/examples                        - examples
+.br

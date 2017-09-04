@@ -1,0 +1,18 @@
+#! /bin/sh
+# A bitmap is created of a symmetrical_stripline. By adding the -v option
+# to create_bmp_for_symmetrical_stripline the theoretical impedance
+# is computed. 
+# atlc is then called, and its estimate calaculated, which will differ 
+# slightly from the theoretical data 
+
+ZoTheory=`$top_builddir/src/create_bmp_for_symmetrical_stripline -v 2222 401 578 $top_builddir/tmp/50ohm-401h.bmp | awk '{print $4}' | tail -1`
+if [ $ZoTheory = 50.026376  ]  ; then
+  rm $top_builddir/tmp/50ohm-401h.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi
+
+

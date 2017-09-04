@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. ">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+<meta name="author" content="Dr. David Kirkby">
+<META name="DESCRIPTION" content="FAQ for atlc">
+<META name="KEYWORDS" content="FAQ atlc transmission line calculator">
+<TITLE>The arbitrary transmission line calculator FAQ</TITLE>
+</HEAD>
+<BODY>
+
+<p>Here are a number of examples of using <COde>atlc</code>. Most of the example files can be found in the examples directory or if atlc is installed on the system, they will normally be located at /usr/local/share/atlc/examples. The very largest files, are not distributed to save disk space.</p>
+<TABLE>
+<TR>
+<TD><STRONG>Cross section</STRONG></TD>
+<TD><STRONG>Properties</STRONG></TD>
+<TD><STRONG>E-field</STRONG></TD>
+<TD><STRONG>Ex field </STRONG></TD>
+<TD><STRONG>Ey-field</STRONG></TD>
+<TD><STRONG>Voltage</STRONG></TD>
+<TD><STRONG>Energy</STRONG></TD>
+<TD><STRONG>Permittivity</STRONG></TD>
+</TR>
+<TR>
+<TD><img src="jpgs/multi-dielectric.jpg"  width="100" height="100" ALT="multiple dielectric"></TD>
+<TD><STRONG>multi-dielectric.bmp:</STRONG> <br>C= 94.3325 pF/m <br>L= 274.7756 nH/m <br>Zo= 53.9708 Ohms</TD>
+<TD><img src="jpgs/multi-dielectric.E.jpg"  width="100" height="100" ALT="multiple dielectric E-field"></TD>
+<TD><img src="jpgs/multi-dielectric.Ex.jpg"  width="100" height="100" ALT="multiple dielectric Ex-field"></TD>
+<TD><img src="jpgs/multi-dielectric.Ey.jpg"  width="100" height="100" ALT="multiple dielectric Ey-field"></TD>
+<TD><img src="jpgs/multi-dielectric.V.jpg"  width="100" height="100" ALT="multiple dielectric V-field"></TD>
+<TD><img src="jpgs/multi-dielectric.U.jpg"  width="100" height="100" ALT="multiple dielectric U-field"></TD>
+<TD><img src="jpgs/multi-dielectric.Er.jpg"  width="100" height="100" ALT="multiple dielectric Er-field"></TD>
+</TR>
+<TR>
+<TD><img src="jpgs/ushape.jpg"  width="100" height="100" ALT="ushaped-line"></TD>
+<TD><STRONG>ushape.bmp:</STRONG> <br>C= 76.4283<br>L= 145.5809 nH/m <br>Zo= 43.6441 Ohms</TD>
+<TD><img src="jpgs/ushape.E.jpg"  width="100" height="100" ALT="ushaped-line-E"></TD>
+<TD><img src="jpgs/ushape.Ex.jpg"  width="100" height="100" ALT="ushaped-line-Ex"></TD>
+<TD><img src="jpgs/ushape.Ey.jpg"  width="100" height="100" ALT="ushaped-line-Ey"></TD>
+<TD><img src="jpgs/ushape.V.jpg"  width="100" height="100" ALT="ushaped-line-voltage"></TD>
+<TD><img src="jpgs/ushape.U.jpg"  width="100" height="100" ALT="ushaped-line-energy"></TD>
+<TD><img src="jpgs/ushape.Er.jpg"  width="100" height="100" ALT="ushaped-line-permittivity"></TD>
+</TR>
+<TR>
+<TD><img src="jpgs/coax2.jpg"  width="100" height="100" ALT="Coax"></TD>
+<TD><STRONG>coax2.bmp:</STRONG> <br>C= 47.6374 pF/m<br> L= 233.5667 nH/m<br> Zo= 70.0215 Ohms</TD>
+<TD><img src="jpgs/coax2.E.jpg"  width="100" height="100" ALT="Coax-E-field"></TD>
+<TD><img src="jpgs/coax2.Ex.jpg"  width="100" height="100" ALT="Coax-Ex field"></TD>
+<TD><img src="jpgs/coax2.Ey.jpg"  width="100" height="100" ALT="Coax-Ey-field"></TD>
+<TD><img src="jpgs/coax2.V.jpg"  width="100" height="100" ALT="Coax-Voltage"></TD>
+<TD><img src="jpgs/coax2.U.jpg"  width="100" height="100" ALT="Coax-Energy"></TD>
+<TD><img src="jpgs/coax2.Er.jpg"  width="100" height="100" ALT="Coax-Energy"></TD>
+</TR>
+<TR>
+<TD><img src="jpgs/very-odd.jpg"  width="100" height="100" ALT="very odd transmission line"></TD>
+<TD><STRONG>very-odd.bmp:</STRONG><br>C=59.1756 pF/m <br>L= 188.0251 nH/m<br> Zo= 56.3685 Ohms</TD>
+<TD><img src="jpgs/very-odd.E.jpg"  width="100" height="100" ALT="E-field"></TD>
+<TD><img src="jpgs/very-odd.Ex.jpg"  width="100" height="100" ALT="Ex field"></TD>
+<TD><img src="jpgs/very-odd.Ey.jpg"  width="100" height="100" ALT="Ey field"></TD>
+<TD><img src="jpgs/very-odd.V.jpg"  width="100" height="100" ALT="Voltage"></TD>
+<TD><img src="jpgs/very-odd.U.jpg"  width="100" height="100" ALT="Energy"></TD>
+<TD><img src="jpgs/very-odd.Er.jpg"  width="100" height="100" ALT="Energy"></TD>
+</TR>
+
+</TABLE>
+<br>
+The full details of exactly what the files mean is given <a href="fileformat.html">here.</a> 
+<p>In the case of the open structures (such as microstrip or twin-wire cables) the electric field extends to infinity, as there is no surrounding conductor like in the case of the coax, u-shaped conductor of the very odd shape. By putting an open structure onto a finite grid, which does not extend to infintiy, we have introduced an error. You should check that the electric field in the file <code>
+ of such structures is zero close to the edges - if not, a significant error will be introduced. </p>
+
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public Licence</A><p>
+
+<BR>
+<BR>
+
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A><a href="http://validator.w3.org/check/referer"><img border="0"
+src="valid-html40.gif"
+alt="Valid HTML 4.01!" height="31" width="88"></a>
+<a href="http://bluefish.openoffice.nl/"><img SRC="jpgs/bluefish.jpg" WIDTH="88" HEIGHT="31" ALT="Bluefish"></a>
+
+
+<p>The following is a trap for smammers, so they can gather loads of ficticious email address, so don't click<a href="http://homepage.ntlworld.com/drkirkby/list1.html"> anywhere</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"> o</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html">n</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"> this</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"> line</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"> th</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"> anks.</a>
+</body>
+</html>

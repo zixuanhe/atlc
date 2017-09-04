@@ -1,0 +1,18 @@
+#! /bin/sh
+
+# The following creates some of the example bitmaps and checks the 
+# file lengths are okay. Checking the checksums would be better, 
+# but I can't easily verify that will be right on a lot of machines
+# and it is tedious to do. 
+
+# The following are around 25 Ohm transmission lines. 
+$top_builddir/src/create_bmp_for_symmetrical_stripline 800 201 668  $top_builddir/tmp/25-Ohm-201b.bmp  2> /dev/null
+LENGTH=`$top_builddir/tools/src/myfilelength $top_builddir/tmp/25-Ohm-201b.bmp`
+rm $top_builddir/tmp/25-Ohm-201b.bmp
+if [ $LENGTH = 506454 ]; then
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0  >> tests.log
+  exit 1
+fi

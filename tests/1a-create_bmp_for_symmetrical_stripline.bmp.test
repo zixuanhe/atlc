@@ -1,0 +1,19 @@
+#! /bin/sh
+ 
+# If the user is building in a different directory to the 
+# source, we want to be able to install the examples, 
+# so copy those over. 
+
+echo "Testing started at" `date` "on" `hostname` >  $top_builddir/tests/tests.log
+mkdir $top_builddir/tmp 2>/dev/null >/dev/null
+$top_builddir/src/create_bmp_for_symmetrical_stripline -v 950 201 68 $top_builddir/tmp/test_sym_strip.bmp > /dev/null 2> /dev/null
+
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_sym_strip.bmp`
+if [ $MD5SUM = 74b72c91834147d14396cc25db7c9e14 ] ; then
+  echo "PASSED:" $0 >> tests.log 
+  exit 0
+else
+  echo "FAILED:" $0  >> tests.log 
+  exit 1
+fi
+exit 0

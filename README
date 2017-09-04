@@ -1,0 +1,43 @@
+atlc - Arbitrary Transmission Line Calculator.
+
+Program for analysing arbitrary transmission lines and directional
+couplers. See HTML documentation in docs/html-docs
+
+*********************************************************************
+IMPORTANT - if altc won't compile on your system, configure with the 
+option --without-hardware-info. It should then compile. 
+*********************************************************************
+
+atlc is available as source code in a file atlc-version.tar.gz. Some
+older binary releases are in existance but I would advise against 
+using version of atlc prior to 4.6.0 for multiple dielectrics. 
+
+See the file INSTALL if building from sources. Online documentation may
+be found at http://atlc.sourceforge.net/
+
+This is the directory layout. .
+./m4                     // Some autoconf macros
+./docs                   // Various bits of documentation. 
+./docs/html-docs         // As on the atlc web site at atlc.sourgeforge.net
+./docs/html-docs/jpgs    // JPGS needed for the html docs above.
+./docs/qex-december-1996 // A old paper I wrote for QEX, gives the theory.
+./docs/theory            // Some very rough ideas I have (Word Format)
+./man                    // Standard UNIX man pages.
+./examples               // Some examples
+./tests                  // Self-tests and a benchmark.
+./tools                  // Some tools that are useful for checking the code
+./tools/src              // Source code for above
+./src                    // The main source code
+./tmp                    // Used during tests to dump data. 
+
+After building (see INSTALL, which I've modified to be specific to
+atlc) you should run 'make check' after running 'make'. 
+One built, if you want to install the examples and binaries, run
+'make install'. As the examples are large (~220 Mb) you might    
+choose not to install them. In which case run 'make install-exec'
+rather than 'make install'. If you later want to install the 
+examples, run 'make install-data'
+
+If wishing to contact me by email, mail me on drkirkby at gmail.com
+
+Dr. David Kirkby, G8WRB. 27th March 2011 Re: atlc-4.6.1

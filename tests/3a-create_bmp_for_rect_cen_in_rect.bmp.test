@@ -1,0 +1,12 @@
+#! /bin/sh
+
+
+$top_builddir/src/create_bmp_for_rect_cen_in_rect -b 4 500 100 20 20 1 $top_builddir/tmp/test.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test.bmp`
+if [ $MD5SUM = a4545fdbafdb3150d8dc65eb8ca5e6ef ]; then
+  echo "PASSED:" $0 >> tests.log 
+  exit 0
+else
+  echo "FAILED:" $0  >> tests.log 
+  exit 1
+fi

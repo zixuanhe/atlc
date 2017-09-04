@@ -1,0 +1,1 @@
+coax-500-25.bmp 2 Er=  1.00 Zo= 180.022 Ohms C=   18.5 pF/m L=  600.5 nH/m v= 2.998e+08 m/s v_f= 1.000 VERSION= 4.6.0

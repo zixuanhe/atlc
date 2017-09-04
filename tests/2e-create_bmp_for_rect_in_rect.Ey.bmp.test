@@ -1,0 +1,11 @@
+#! /bin/sh
+touch $top_builddir/tmp/test_rect_in_rect.Ey.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_rect_in_rect.Ey.bmp`
+if [ $MD5SUM = 9aef8ac66f608178f6e0f41194392f82 ]; then
+  rm $top_builddir/tmp/test_rect_in_rect.Ey.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+fi

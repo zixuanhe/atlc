@@ -1,0 +1,15 @@
+#! /bin/sh
+# There should be a supplied bitmap file test-coupler1.bmp
+# We will generate all the bitmaps and check they 
+# are all okay. 
+touch $top_builddir/tmp/test-coupler1.Ex.even.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test-coupler1.Ex.even.bmp`
+rm $top_builddir/tmp/test-coupler1.Ex.even.bmp
+if [ $MD5SUM != 91e787e9bf465b187a5bc3f7c1c17138 ]; then
+  echo "FAILED:" $0  >> tests.log
+  exit 1
+else 
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+fi
+

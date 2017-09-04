@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="atlc - Using with directional couplers. ">
+<META name="KEYWORDS" content="directional directional coupler impedance odd even mode">
+<TITLE>atlc </TITLE>
+</HEAD>
+<BODY>
+<H1>Coupled transmission lines</H1>
+Unlike a standard two-conductor transmission line, such as coaxial cable that has a ground and  one other conductor, a  transmission line with 3 conductors forms a directional coupler. A directional coupler has 2 characteristic impedances - an odd-mode impedance Zodd and an even-mode impedance Zeven. <p>
+The support for coupled lines is not completely finished  yet, although since version 4.1.0 it is quiite reasonable. It is now possible to perform most tasks one would want to do with such a program. <STRONG>From a user's specification of a frequency response and coupling factor of a directional coupler, it is now possible to generate a physical layout that will have those specifications!</STRONG>. It is hoped this will be useful. 
+<OL><LI><a href="determine_dimensions_of_couplers.html">Determine the physical dimensions of a directional coupler, given its specifications of frequency response and coupling factor.</a> </LI> This is probably what most people will be interested in doing, so it is listed first. <p>Using the program <CODE>design_coupler</CODE> it is possible to fully automate the process of designing a directional coupler. Note that the directional coupler designed must have a fixed physical shape shown below in 3D<p>
+<img src="jpgs/3dcoup.jpg" width="616" height="140" ALT="a directional coupler"><br>
+A 2D view of the end is shown too<br>
+<img src="jpgs/coupler3.jpg"  width="616" height="140" ALT="a directional coupler">
+<br>although the shape is in practice quite a practical one to use for air-spaced lines. In fact, most people would consider it the easiest directional coupler to make for such situations. An example of using design_coupler to design a coupler can be found by running it with the -e command line option. <p>However, <CODE>design_coupler</CODE> can  <STRONG>not</STRONG> be used to fully automate the process of designing directional couplers on PCBs, but other methods exist to make that job easier. Some manaul and fairly tedious work is needed to design a directional coupler on a PCB having the properties (frequency response, coupling factor) that you want. However, it can be done with the aid of the package of programs provided in <EM>atlc</EM>. <p>
+<LI><a href = "calculate_zodd_and_zeven.html">Determine the properties of an arbitrary directional coupler, given its physical dimensions. </a> Using <CODE>atlc</CODE>, one can determine the properties of any of the couplers below:<br><img src="jpgs/coupler4.jpg"  ALT="directional couplers"><br>where the green, red and blue are the three conductors and the other colours are different dielectrics (white being vacuum)</LI><p>
+	<LI><a href="generate_for_coupler.html">Generate a bitmap for a stripline coupler with <CODE>create_bmp_for_stripline_coupler</CODE></a>  for analysis with <CODE>atlc</CODE>. Using the program <CODE>create_bmp_for_stripline_coupler</CODE>, one can very quickly generate a bitmap of a directional coupler like this :<br>
+<img src="jpgs/coupler3.jpg"  width="616" height="140" ALT="a directional coupler"><br>for analysis by the program <CODE>atlc</CODE>. In fact, since there is an analytical solution for this coupler (strictly only valid when the conductors are of zero thickness and W infinitely wide),  <CODE>create_bmp_for_stripline_coupler</CODE> calculates the theoretical answer too. This was primarily designed for <a href="accuracy.html#Accuracy_coupler">checking for errors in atlc with coupled lines</a>, which were always found to be less than 0.8% </LI>
+<p></OL></BODY></HTML>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>

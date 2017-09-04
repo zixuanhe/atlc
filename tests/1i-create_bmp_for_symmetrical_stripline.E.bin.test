@@ -1,0 +1,17 @@
+#! /bin/sh
+# It is pointless checking the checksum's on binary files as they will
+# differ on differnt Endian'ness and with different rounding errors on FP
+# units. Hence only the length is checked on the binary files
+
+touch $top_builddir/tmp/test_sym_strip.E.bin
+
+LENGTH=`$top_builddir/tools/src/myfilelength $top_builddir/tmp/test_sym_strip.E.bin`
+
+if [ $LENGTH = 1603600 ]; then
+  rm -f $top_builddir/tmp/test_sym_strip.E.bin 
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0  >> tests.log
+  exit 1
+fi

@@ -1,0 +1,15 @@
+This file is README.threads
+
+Prior to verison 4.5.1, atlc could be configured to use 
+mutltiple-threads to exploit multi-processors. This has 
+been disabled, as I have some concerns the code may not 
+be 100% correct and whilst is it unlikely, the results 
+could be wrong. It is very unlikely, but its a chance
+I don't want to take, so multi-threaded support has 
+been disabled. A new algorithm has been worked out - 
+it just needs to be coded. Howfully this will be done
+by early Feburary 2004 at the latest. 
+
+Dr. David Kirkby, 7th December 2004. Re: atlc-4.6.0
+
+

@@ -1,0 +1,1 @@
+400ohm-1551h.bmp 2 Er=  1.00 Zo= 417.700 Ohms C=    8.0 pF/m L= 1393.3 nH/m v= 2.998e+08 m/s v_f= 1.000 VERSION= 4.6.0

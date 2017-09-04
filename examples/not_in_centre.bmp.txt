@@ -1,0 +1,1 @@
+not_in_centre.bmp 2 Er=  2.10 Zo=  24.261 Ohms C=  199.2 pF/m L=  117.3 nH/m v= 2.069e+08 m/s v_f= 0.690 VERSION= 4.6.0

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<META name="DESCRIPTION" content="atlc's Binary File Format">
+<META name="KEYWORDS" content="atlc transmission line calculator error messages">
+<TITLE>atlc's Binary File Format.</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Error messages.</H1>
+Like any programme, <COde>atlc</code> generates error messages. Most are pretty obvious in meaning, but you might get an error like this, which is not quite so obvious:
+
+<pre>
+sparrow /export/home/davek/atlc/src/non_gui % !at
+atlc x.bmp
+Error#7: The colour r=0x8b g=0x8d b=0xff (0x8b8dff) exists at pixel 242,6.
+However, atlc does not know how to interpret this colour. This is not a
+conductor (pure red, green or blue), nor is it one of the 13 dielectrics that
+are predefined in Erdata.h, nor is a corresponding dielectric constant defined
+on the command line with the -d option. Sometimes this occurs when a
+graphics package is used to make the bitmap, but it performs some form of
+anti-aliasing or smooting. If this is the case, redraw the image turning such
+options off. If this is not the case then re-run atlc adding the -d option
+to define the relative permittivity of the dielectric
+
+e.g. atlc -d 8b8dff=1.9 x.bmp  
+
+if this colour has a permittivity of 1.9. If there are multiple undefined
+dielectrics, then there will need to be multiple copies of the -d option given.
+
+</pre>
+You may get this error if you simply try to use a different colour for another dielectric but forgot to define it. This can also happen if your graphics programme interpolates the colours in your image. For example, assume you intend drawing an elliptical conductor inside a rectangular cross section. The square grid will never fit an ellipse precisely, so the shape will look like this, which is shown on a very low-resolution image to make it more obvious<br>
+<img src="jpgs/not-aliased.jpg" ALT="Not aliased" width="128" height="128"><br>
+However, many graphics packages implement 'anti aliasing' or 'smoothing' or other such method to smooth the edges of sharp objects. Hence what your graphics package <STRONG>may</STRONG> produce is like this <br>
+<img src="jpgs/aliased.jpg" ALT="Aliased" width="128" height="128"><br>
+For most applications, the smoother edges are preferable. However, this is not so if the bitmaps are to be read by <COde>atlc</code>. At any sensible size of bitmap, the smoothing will not be obvious, so you may find <COde>atlc</code> exits, when the image looks fine.<br>
+You should be aware of this problem and turn off any such smoothing functions in your graphics package. In <a href="http://www.gimp.org">Gimp</A>, you should make sure that both <STRONG>feather</STRONG> and <STRONG>antialising</STRONG> are turned off (buttons up) for any tool you use. (double click on the ellipse or rectangle tools, to view or set these options)<br>
+Sometimes one makes a mistake and sets a background, (rgb=255,0,1), instead of  rgb=255,0,0. However, whatever causes this message, it is a result of using a colour which <COde>atlc</code> is not able to interpret. 
+<p>atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html">.</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html">.</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html">.</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html">.</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html">.</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html">.</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html">.
+</a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</html>

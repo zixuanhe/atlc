@@ -1,0 +1,10 @@
+These are m4 macros used by autoconf. Many come from:
+http://www.gnu.org/software/ac-archive/htmldoc/index.html
+
+gsl.m4, which did exist in version of atlc up to 4.4.5
+has been removed, as the gsl library is no logner needed
+as the functionality has been included in the atlc
+source. 
+
+Re: atlc-4.5.0 10th October 2003
+

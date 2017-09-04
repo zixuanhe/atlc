@@ -1,0 +1,34 @@
+#! /bin/sh
+# Dr. David Kirkby. 
+
+# This test checks for the existance of a file in the source 
+# tree with a length of zero bytes. This is considered an
+# error, as no such file should exist. 
+
+# Use find to search for a file of zero bytes, putting
+# any such files in $top_builddir/tmp/atlc-zero-bytes
+
+mkdir $top_builddir/tmp 2> /dev/null
+rm -f $top_builddir/tmp/atlc-zero-bytes
+
+# since tmp/atlc-zero-bytes will be found, that must be ignored.
+find $top_srcdir -type f -size 0c -print | grep -v tmp/atlc-zero-bytes > $top_builddir/tmp/atlc-zero-bytes
+
+# The file $top_builddir/tmp/atlc-zero-bytes contains a list of all the 
+# files which are zero bytes. Hopefully there are none, in
+# which case $top_builddir/tmp/atlc-zero-bytes will itself be zero bytes
+# long. We check for that and if not fail the test. If it fails,
+# the list of zero byte files are in $top_builddir/tmp/atlc-zero-bytes
+# If the test passes, the empty file $top_builddir/tmp/atlc-zero-bytes
+# passes. 
+
+if [ -s $top_builddir/tmp/atlc-zero-bytes  ]; then 
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+else
+  rm $top_builddir/tmp/atlc-zero-bytes
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+fi
+
+

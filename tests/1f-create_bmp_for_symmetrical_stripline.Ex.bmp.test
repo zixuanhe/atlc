@@ -1,0 +1,16 @@
+# !/bin/sh
+# It is pointless checking the checksum's on binary files as they will
+# differ on differnt Endian'ness and with different rounding errors on FP
+# units. Hence only the length is checked on the binary files
+
+touch $top_builddir/tmp/test_sym_strip.Ex.bmp
+
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_sym_strip.Ex.bmp`
+if [ $MD5SUM = 9c64551379b6ddc17b4d73c2c5c8f79e ]; then
+  rm $top_builddir/tmp/test_sym_strip.Ex.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+else
+  echo "FAILED:" $0  >> tests.log
+  exit 1
+fi

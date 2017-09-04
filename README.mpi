@@ -1,0 +1,12 @@
+'atlc' *did* have C code to allow it to use the Message Passing Interface (MPI),
+which whould allow 'atltc' to run on distributed processors on a network
+of computers. In order to do this, you needed to install the MPICH
+library from 
+http://www-unix.mcs.anl.gov/mpi/mpich/indexold.html
+
+However, at the time of writing, This has been disabled and so there
+is not a lot of point in configuring atlc for MPI support. MPI support
+is a number one pririty now, so soon a better implementation will be
+added to atlc. 
+
+Dr. David Kirkby, 15th Auguest 2003, Re: Version 4.3.7

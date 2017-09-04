@@ -1,0 +1,100 @@
+#! /bin/sh
+# Check that the -s and -S options are indeed doing
+# what they are supposed to be doing. 
+# going to execute a pwd as soon as entering the test. 
+
+# Delete any files that may be left by mistake
+
+# There should now be no coax2* files, except $top_srcdir/examples/coax2.bmp
+rm -f $top_builddir/tmp/coax2.*
+cp $top_srcdir/examples/coax2.bmp $top_builddir/tmp
+
+# Check the -S and -s options together prevent all ( .bmp or .bin files ) being created. 
+if [ "$mpirun_found" = "yes" ] ; then
+  mpirun -np 2 $top_builddir/src/atlc -s -S $top_builddir/tmp/coax2.bmp > /dev/null
+else
+  $top_builddir/src/atlc -s -S $top_builddir/tmp/coax2.bmp > /dev/null
+fi
+
+if [ -f $top_builddir/tmp/coax2.Ex.bmp ]  || [ -f $top_builddir/tmp/coax2.Ey.bin ] || [ -f top_builddir/tmp/coax2.Er.bin ] ; then
+  echo "FAILED:" $0 >> tests.log 
+  exit 1
+fi  
+
+# Delete any files created. There should be none.
+
+
+# Check that -S suppresses the creation of .bin, but not .bmp's
+if [ "$mpirun_found" = "yes" ] ; then
+  npirun -np 2$top_builddir/src/atlc -S $top_builddir/tmp/coax2.bmp > /dev/null
+else
+  $top_builddir/src/atlc -S $top_builddir/tmp/coax2.bmp > /dev/null
+fi
+
+if [ -f $top_builddir/tmp/coax2.Ex.bin ]  || [ -f $top_builddir/tmp/coax2.Ey.bin ] || [ -f $top_builddir/tmp/coax2.Er.bin ] || [ ! -f  $top_builddir/tmp/coax2.Er.bmp ] ; then
+  echo "FAILED:" $0 >> tests.log 
+  exit 1
+fi
+
+rm  -f $top_builddir/tmp/coax2.Ex.bmp
+rm  -f $top_builddir/tmp/coax2.Ey.bmp
+rm  -f $top_builddir/tmp/coax2.E.bmp
+rm  -f $top_builddir/tmp/coax2.U.bmp
+rm  -f $top_builddir/tmp/coax2.V.bmp
+rm  -f $top_builddir/tmp/coax2.Er.bmp
+
+rm  -f $top_builddir/tmp/coax2.Ex.bin
+rm  -f $top_builddir/tmp/coax2.Ey.bin
+rm  -f $top_builddir/tmp/coax2.E.bin
+rm  -f $top_builddir/tmp/coax2.U.bin
+rm  -f $top_builddir/tmp/coax2.V.bin
+rm  -f $top_builddir/tmp/coax2.Er.bin
+
+# Check that no options creates.bmp's and  bin's
+
+# Check that -s suppresses the creation of .bmp's, but not .bin's
+if [ "$mpirun_found" = "yes" ] ; then
+  mpirun -np 2 $top_builddir/src/atlc -s $top_builddir/tmp/coax2.bmp > /dev/null
+else
+  $top_builddir/src/atlc -s $top_builddir/tmp/coax2.bmp > /dev/null
+fi
+
+if [ -f $top_builddir/tmp/coax2.Ex.bmp ]  || [ -f $top_builddir/tmp/coax2.Ey.bmp ] || [ ! -f $top_builddir/tmp/coax2.Er.bin ]  ; then
+  echo "FAILED:" $0 >> tests.log 
+  exit 1
+fi
+
+rm  -f $top_builddir/tmp/coax2.Ex.bmp
+rm  -f $top_builddir/tmp/coax2.Ey.bmp
+rm  -f $top_builddir/tmp/coax2.E.bmp
+rm  -f $top_builddir/tmp/coax2.U.bmp
+rm  -f $top_builddir/tmp/coax2.V.bmp
+rm  -f $top_builddir/tmp/coax2.Er.bmp
+
+rm  -f $top_builddir/tmp/coax2.Ex.bin
+rm  -f $top_builddir/tmp/coax2.Ey.bin
+rm  -f $top_builddir/tmp/coax2.E.bin
+rm  -f $top_builddir/tmp/coax2.U.bin
+rm  -f $top_builddir/tmp/coax2.V.bin
+rm  -f $top_builddir/tmp/coax2.Er.bin
+
+# Check that no options creates.bmp's and  bin's
+if [ "$mpirun_found" = "yes" ] ; then
+  $top_builddir/src/atlc $top_builddir/tmp/coax2.bmp > /dev/null
+else
+  $top_builddir/src/atlc $top_builddir/tmp/coax2.bmp > /dev/null
+fi
+
+if [ ! -f $top_builddir/tmp/coax2.Ex.bmp ]  || [ ! -f $top_builddir/tmp/coax2.Ey.bmp ] || [ ! -f $top_builddir/tmp/coax2.Er.bin ]  ; then
+  echo "FAILED:" $0 >> tests.log 
+  exit 1
+fi
+  rm   $top_builddir/tmp/coax2.Ex.bin $top_builddir/tmp/coax2.Ey.bin
+  rm   $top_builddir/tmp/coax2.E.bin $top_builddir/tmp/coax2.U.bin
+  rm   $top_builddir/tmp/coax2.V.bin $top_builddir/tmp/coax2.Er.bin
+  rm   $top_builddir/tmp/coax2.Ex.bmp $top_builddir/tmp/coax2.Ey.bmp
+  rm   $top_builddir/tmp/coax2.E.bmp $top_builddir/tmp/coax2.U.bmp
+  rm   $top_builddir/tmp/coax2.V.bmp $top_builddir/tmp/coax2.Er.bmp
+  rm -f  $top_builddir/tmp/coax2.bmp
+  echo "PASSED:" $0 >> tests.log 
+exit 0

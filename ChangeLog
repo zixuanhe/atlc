@@ -1,0 +1,2044 @@
+****** Version 4.6.1 Released 27th March 2011  *******
+Just minor bug fix and cleanup. 
+
+renamed 'src/non_gui' to just 'src'
+
+Adding a file "WARNING" in the top level. 
+
+Added a new test: WARNING-The-next-test-is-a-benchmark-and-takes-a-long-while.test
+which does not actually test anything, but issues an obvious warning.
+
+Changed my email address in every file. 
+
+Ensured all tests pass even if compliled with -DDEBUG, as before the 
+extra debugging information was causing some tests to fail. 
+
+Removed the code which indicates the amount of RAM, as that was 
+inaccurate, so I gave up with it. 
+
+In the file convert_create_bmp_for_rect_in_rect_dimensions_to_integers.c
+changed test from if(W>=H) to if(WH>=HH) as the former compares
+two values which are both zero. Thanks to Jim Bingham for bringing that
+to my attention. 
+
+Likewise for convert_create_bmp_for_circ_in_rect_dimensions_to_integers.c
+
+In src/atlc.c, add the line:
+fclose(image_data_fp);
+to stop a theoeretical resource leakage. It was not really a leak,
+as the code exits a couple of lines later, but it stops 'cppcheck' 
+complaining. 
+
+Done likewise on read_bitmap_file_headers.c, 
+
+src/write_fields_for_directional_couplers removed some things
+between #ifdef DEBUG, as it declared file pointers and wrote opened
+the files, but never wrote anything or closed them. Again found by cppcheck. 
+
+In src/non_gui/write_fields_for_two_conductor_lines.c, removed some code
+betweend #ifdev DEBUG, as it stops atlc compiling if CFLAGS includes
+-DDEBUG
+
+In the file src/non_gui/byteswap.c, removed some things between
+#ifdef DEBUG, as that too stopped atlc building properly
+
+****** Version 4.6.0 Released 9th December 2003  
+top level directory:
+
+atlc/update 
+has been modified so it updates the NEWS.html file. 
+
+atlc/examples directory.
+Have removed the following files from the distribution:
+atlc/examples/100-Ohm-201b.bmp \
+atlc/examples/100-Ohm-401b.bmp \
+atlc/examples/200-Ohm-201b.E.bmp \
+atlc/examples/200-Ohm-201b.Er.bmp \
+atlc/examples/200-Ohm-201b.Ex.bmp \
+atlc/examples/200-Ohm-201b.Ey.bmp \
+atlc/examples/200-Ohm-201b.U.bmp \
+atlc/examples/200-Ohm-201b.V.bmp \
+atlc/examples/200-Ohm-201b.bmp \
+atlc/examples/200-Ohm-401b.bmp \
+atlc/examples/200-Ohm-801b.bmp \
+atlc/examples/25-Ohm-201b.bmp \
+atlc/examples/25-Ohm-401b.bmp \
+atlc/examples/25-Ohm-401h.bmp \
+atlc/examples/25-Ohm-801h.bmp \
+atlc/examples/50-Ohm-201h.bmp \
+atlc/examples/50-Ohm-401h.bmp 
+
+I'm not sure they were that usful, given there are plenty of 
+files like 50ohm-201h.bmp etc. 
+
+Remove atlc/examples/13inner_22outer_coax.bmp.txt too, as there was
+no 13inner_22outer_coax.bmp to match up with it. 
+
+atlc/docs/html-docs/accuracy.html 
+Completed updated all results to those obtained with ver 4.6.0
+Put into 4 sections detailing:   
+Section 1. Two conductor Transmission Lines with a Uniform Dielectric
+Section 2. Two-conductor Transmission Lines with a non-uniform dielectric
+Section 3. Accuracy of atlc with coupled lines
+Section 4. Conclusions about the accuracy of atlc
+
+Added a completly new section:
+2.1 Comparision of atlc and a dual dielectric coaxial cable
+
+
+
+atlc/src/non_gui/create_bmp_for_symmetrical_stripline.c
+This no longer computes the theretical impedance if the 
+structure is too narrow. Only computes if the -v option
+is added. 
+
+atlc/src/create_bmp_for_circ_in_circ.c
+Will now print sensible error messages if the inner conductor is too big
+or if the inner and outer will touch since the offset is too large
+
+atlc/src/set_oddity_value.c
+This sets a global array unsigned char **oddity; to a value describing
+if the pixel is matallic, has conductors to the right/left etc.
+cell_type was not adequate for this, since once you had set one cell,
+you did not know the result for those around it. #
+
+atlc/src/non_gui/print_data_for_directional_couplers.c
+No longer fails to print intermediate values of impedance if 
+verbose is >2 as it did before. 
+
+atlc/src/non_gui/write_fields_for_two_conductor_lines.c
+This can now write the oddity values from set_oddity_value()
+to a bitmap file, although this has been commented out by default. 
+
+atlc/src/
+A huge number of changes were made to this release. Not every
+one is fully documented, as to do so I would have spent as long
+documenting the code as writing it. 
+****** Version 4.5.1 Released 16th October 2003   ****
+A problem with multiple dielectrics has been discoved, and aslo with 
+multi-threaded operating. As such, both have been disabled. This affects
+many files. 
+
+configure.ac
+changed version to 4.5.1
+No longer accepts the option --with-threads, since I have some
+suspicions about threaded code. 
+
+docs/html-docs/examples.html
+Removed the example of multi-dielectrics, as that is not working
+properly now. 
+
+docs/html-docs/FAQ.html
+Changed the answer to 'No' about the qestion of multi-dielectrics
+
+docs/html-docs/multi-processing.html
+Mentioned this has been disabled. 
+
+docs/html-docs/accuracy.html
+Pointed out multiple dielectrics are not working properly
+
+src/non_gui/definitions.h
+Removed two duplicate function definitions for 
+free_cmatrix and ustring, whilst removing the #define
+around the #ifdef ENABLE_MPI so there is only one  
+definition of do_columns now. 
+
+Added the variable 'size' to several functions - 
+do_fd_calculation.c, write_fields_for_directional_couplers.c,
+write_fields_for_two_conductor_lines.c
+
+
+src/non_gui/do_fd_calculation.c
+Added variable 'size' as a command line argument to stop
+it needing to be declared global. 
+
+src/non_gui/do_fd_calculation.c
+Added variable 'size' as a command line argument to stop
+it needing to be declared global. 
+
+src/non_gui/write_fields_for_two_conductor_lines.c
+Added variable 'size' as a command line argument to stop
+it needing to be declared global. 
+
+src/non_gui/atlc.c
+size_t size is no longer global but local to main. This would at first
+checking appear to stop the issue with all (which was one or two) 
+test failures on AIX 5.2. Later I found this is not so and there
+is a problem in the multi-threaded code for atlc.
+
+tests/WARNING--The-next-test+benchmark-takes-a-long-while.test
+return 0 (pass), as previously it did multi-dielectrics. 
+
+tests/Makefile.am
+Removed 2[b-h]* from the tests. 2a-create_bmp_for_rect_in_rect.bmp.test
+is still used. 
+
+
+****** Version 4.5.0 Released 13th September 2003 ****
+
+The ChangeLog shows version 4.5.0 being released on
+the 13th September, when it fact it was the 11th of 
+October. 
+
+WRONG XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+****** Version 4.5.0 Released 13th September 2003 ****
+WRONG XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+NEWS
+mention lattest news - mainly correction of a few errors
+and the fact its no longer necessary to link in gsl. 
+
+remoterun 
+changed, as the old version was accidently deleted and 
+I could not be bothered to read from tape. Might not be
+100% okay, but it is not needed for use of atlc - only
+during testing. 
+
+'update' added to CVS tree
+Added a file called 'update' that generates docs/html-docs/*.1.html
+and docs/html-docs/BUGS.html This uses header and footer for the 
+generation of docs/html-docs/BUGS.html
+
+'header' and 'footer'' added to CVS tree
+used with 'update' to generate docs/html-docs/BUGS.html
+
+README.checks
+Removed, as information is out of date. 
+
+tests/find-zero-length.test
+Added a file to check for the existance on zero length
+files in the source distribution. 
+
+configure.ac
+Incremented version to 4.5.0
+Removed tests for gsl and all that involved. 
+Removed tets for the sizeof short, int and long
+as they are not needed. 
+
+man/man1/create_bmp_for_stripline_coupler.1
+changed email address to make it less easy for spammers to grab. 
+
+man/man1/man-pages.html 
+Added a new man page for design_coupler.1.html
+
+src/calculate_Zodd_and_Zeven.c:
+Added #include gsl_types.h and #include "gsl_definitions.h"
+
+src/non_gui/usage_create_bmp_for_symmetrical_stripline
+made it print the fact the -v option computes the 
+theoeretical impedance. Before the binary did it, but
+the usage message did not say so. 
+
+docs/html-docs/jpgs/home-email.jpg 
+Added new file with my email address, that is not easy to 
+read automatically. 
+
+Removed all occurance of my email address from the html
+files, so that those published on the web are less likely
+to attract spam. 
+
+src/ 
+All the following had my email address removed
+usage_create_bmp_for_stripline_coupler.c 
+usage_create_bmp_for_rect_in_rect.c 
+usage_create_bmp_for_rect_in_circ.c
+usage_create_bmp_for_rect_cen_in_rect_coupler.c 
+usage_create_bmp_for_rect_cen_in_rect.c 
+usage_create_bmp_for_microstrip_coupler.c
+usage_create_bmp_for_circ_in_rect.c 
+usage_create_bmp_for_circ_in_circ.c 
+usage_atlc.c swap_conductor_voltages.c setup_arrays.c
+read_bitmap_file_headers.c
+print_data_for_two_conductor_lines.c
+print_data_for_directional_couplers.c
+print_copyright.c
+memory.c
+get_options.c
+get_file_pointer_with_right_filename.c
+get_Er1_and_Er2_colours.c
+finite_difference_single_threaded.c 
+finite_difference_multi_threaded.c
+finite_difference_mpi.c
+find_maximum_values.c
+find_energy_per_metre.c
+find_electric_fields.c
+fill_rect_in_rect.c
+fill_rect_in_circ.c
+fill_circ_in_circ.c
+exit_with_msg_and_exit_code.c
+do_fd_calculation.c
+create_bmp_for_rect_in_rect.c
+create_bmp_for_rect_in_circ.c
+create_bmp_for_rect_cen_in_rect_coupler.c
+
+tests/8a-design_coupler.bmp.test
+Removed the test for gsl library and so to exit with 77 if not present. 
+
+Added a second checksum:
+aebd9a6d1c1db548d39723edec454640
+that is acceptable, as this will be produced on 
+Windoze machines.
+
+tests/6e-create_50ohm_401Pixel_high_symmetrical_stripline.test
+
+tests/7n-create_bmp_for_stripline_coupler.bmp.pre-atlc.txt.test
+Removed the test for gsl library and so to exit with 77 if not present. 
+
+tests/10b-create-lots-of-examples-check-last-one.test
+Removed the test for gsl library and so to exit with 77 if not present. 
+
+tests/10a-create-lots-of-examples-check-last-one.test
+Removed the test for gsl library and so to exit with 77 if not present. 
+
+src/non_gui/gsl_sf_ellint_Kcomp.c
+Added new file that basically has the gsl_sf_ellint_Kcomp
+function for computing the elliptic integral. This requires
+several functions for it to opperate, as it calls several 
+functions. These are all in the same file gsl_sf_ellint_Kcomp.c
+
+
+src/non_gui/definitions.h
+Added quite a few function definitions, #defines etc to allow
+the gsl_sf_ellint_Kcomp function to work. It needed several
+other functions added. 
+
+
+****** Version 4.4.4 Released 13th September 2003 ****
+configure.ac
+Version incremented to 4.4.4
+
+NEWS
+mention made of the fact the sources have been
+changed primarily so it should build under Windoze.
+
+docs/html-docs/jpgs/Makefile.am
+added bluefish.jpg properly to the file - it was 
+missing partically before, so bluefish.jpg was
+not included in the distribution. 
+
+docs/html-docs/create_bmp_for_symmetrical_stripline.1.html
+Autogenerated, reflecting changes in man page, which
+was a change in the warning information about the 
+inability of man pages to fully describe the atlc
+project. 
+
+docs/html-docs/create_bmp_for_symmetrical_stripline.1.html
+Autogenerated, reflecting changes in man page, which
+was a change in the warning information about the 
+inability of man pages to fully describe the atlc
+project. 
+
+man/man1/sysdata.1
+Removed text saying man page is not a full set of 
+docs, since in the case of the simple sysdata.1, the
+man page adequately describes the function. This is 
+no so really with some of the other man pages, because
+your can't really describe fully how to use such   
+programs with man pages. 
+
+src/non_gui/create_bmp_for_rect_in_rect.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/find_optimal_dimensions_for_microstrip_coupler.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/create_bmp_for_symmetrical_stripline.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/create_bmp_for_rect_in_circ.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/create_bmp_for_rect_cen_in_rect_coupler.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/create_bmp_for_rect_cen_in_rect.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/create_bmp_for_microstrip_coupler.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+src/non_gui/create_bmp_for_circ_in_rect.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+tests/8a-design_coupler.bmp.test
+Changed so the temporary storage is no longer in /tmp
+but instead in $top_builddir/tmp/results. This should be 
+compatible with Windoze, but I don't know for sure if it is
+yet. I don't build Windoze binaries. 
+
+tools/src/mymd5sum.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+tools/src/myfilelength.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+tools/src/locatediff.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+tests/benchmark.c
+Changed fopen to open in binary mode, to make it work 
+under Windoze. 
+
+
+****** Version 4.4.3 Released 11th September 2003 ****
+
+Replace 'kb' and 'Mb' with 'kB and MB, as I was advised the lower
+case is used for bit and the upper case for byte. These required 
+changes in tests/benchmarks.test
+
+man/man1/sysdata.1
+Added a man page for the program sysdata in man/man1/sysdata.1
+This has about 11 examples, which are there more for my own use
+that anyones elses. When possible I'll try to expand the files
+that gather data about the hardware.
+
+man/man1/*.1
+Corrected many typo, spelling errors etc in all the man pages.
+more significantly, the 
+
+
+docs/html-docs/accuracy.html
+Corrected a few typos and made the page a bit clearer
+I hope. Any HTML that did not strictly follow the stanard has
+been corrected, so it should pass the test at 
+http://validator.w3.org/check/referer
+hence an W3C logo has been added at the bottom of the page.
+
+docs/html-docs/accuracy.html
+A bluefish logo has been added too.
+
+The spamtrap on the page has been changed a bit, which is a bit
+annoying as it is now visable. But the code was not strict 
+HTML before, so there were problems in making it valid 
+otherwise. 
+
+tests/Makefile.am
+References to the gsl library have been removed, so the 
+thread tests will pass if the gsl library is not present.
+This was changed just in case someone runs a binary 
+in pkgadd format on a Sun without having the gsl library
+installed. Some binaries will break, but Test_threads_a
+and Test_threads_b should now still pass, even if 
+the gsl library is not present. No functions from gsl
+are needed on these two files, so it was sensless linking
+them against the library. 
+
+tests/try_portable.c
+The code has been changed a bit so it should now (I hope)
+compile under Windoze too. Someone has done a Windoze port
+but found a bug in the code, which has been corrected. 
+
+tests/try_solaris.c
+Added code to make it cleaner and so no variables 
+get declared if not needed.
+
+****** Version 4.4.2 Released September 6th 2003 ****
+
+src/non_gui/readbin.c
+swapped the second (size) and third (number) arguments around
+on an fread, as were the wrong wary around - not that I think
+it will make any difference. 
+
+src/non_gui/atlc.c
+swapped the second (size) and third (number) arguments around
+on an fread, as were the wrong way around - not that I think
+it will make any difference. 
+
+src/non_gui/check_for_boundaries.c
+put a check in for j=0 which could cause a progrom on the 
+Digital UNIX (spe145.testdrive.compaq.com) system on 
+the HP testdrive site. A real bug found at least!!!!
+
+tests/try_bsd.c
+put some checks for NGROUPS, including a couple more 
+header files if NGROUPS is not defined. This causes a 
+problems on OpenBSD 3.2 for SPARC (my SS20), so was 
+fixed.
+
+
+tests/try_linux.c
+Added a call to get the number of CPUs. Appears not to be
+documented, so a bit risky and gives the number of processors
+configured, rather than online, but its is better than nothing. 
+
+****** Version 4.4.1 Released September 4th 2003 ****
+
+configure.ac
+Changed version to 4.4.1 
+Added sys/sysctl.h and sysctl as these are used on BSD try_bsd.c
+to gather information on a BSD UNIX system. 
+
+docs/html-docs/index2.html
+Changed a typo or two. Added an entry for Unixware, as someone emailed
+me to say iversion 4.0.0 works on UnixWare. 
+
+tools/src/locatediff.c
+Corrected an error so this now works. A change recently caused this to
+break. It now reads both files. 
+
+tests/try_irix.c
+Much improved, finds information about cache and main ram on IRIX now
+Also speed of CPU, and type of CPU and FPU, although the latter are not
+decoded into a sensible number like R10000. 
+
+tests/benchmark.test  
+information now prints the fact the IRIX information is good, not 
+poor as in prior versions. 
+
+THANKS 
+Added new testers and thanks the cray site's administrators. 
+
+Now informs the amount of RAM on Linux and BSD systems is a little
+larger than the value reported.
+
+tests/Makefile.am
+Added a new binary sysdata, which prints data in this format. 
+
+Hardware provider:    Sun_Microsystems
+Hardware platform:    SUNW,Ultra-80
+Machine:              sun4u
+Sysname:              SunOS
+Release:              5.9
+Version:              Generic_112233-06
+Nodename:             sparrow
+#CPUs supported:      4
+#CPUs online:         4
+CPU type:             sparcv9
+FPU type:             sparcv9
+Speed:                450 MHz
+RAM:                  4096 Mb
+L1 data cache         unknown kb
+L1 instruction cache: unknown kb
+L2 cache:             unknown kb
+
+src/non_gui/finite_difference_multi_threaded.c 
+removed the argument 'number_of_iterations' as not used
+
+src/non_gui/write_bitmap_out.c
+added checks for the return value of fwrite
+
+src/non_gui/write_fields_for_two_conductor_lines.c
+added checks for the return value of fwrite
+
+src/non_gui/memory.c
+removed all unneeded functions from this file
+
+src/non_gui/convert_create_bmp_for_rect_in_rect_dimensions_to_integers.c
+removed extern variables Ers, colours and names, as these are defined
+in the header files definitions.h, Ers.h and Erdata.h
+
+src/non_gui/man_functions...
+Tidied up, to keep Sun's lint happier
+
+BUGS
+Removed bug about linking with old versions of gsl. 
+Corrected the fact hardware data is gathered on IRIX
+okay and its only Linux and BSD it fails on. 
+
+
+****** Version 4.4.0 Released August 30th 2003 ****
+BUGS 
+Added  0 - those I don't know about, 
+Added  3 - tools/src/locatediff don't work on AIX. 
+Added 11 - documentation gets out of date
+Added 12 - CVS sometimes get out of date  
+
+configure.ac
+Updated the version to 4.4.0, as there are some major(ish)
+changes to allow compilation on the Cray Y-MP EL, which
+previously atlc would not work on. 
+
+Added a test for the size of a short, since on a Cray Y-MP, an int is 8
+bytes, so this screwed up things in src/non_gui/definitons.h, as 
+it needed to define int32 as something. 
+
+Changed the default from not enabling hardware information to enabling it.
+It can be changed with --disable-hardware-info
+
+Added a test for _SC_CRAY_NCPU and _SC_CRAY_CPCYCLE, which will help
+debugging any problems. 
+
+Added check for sys/vid.h, which I'm hoping is just on IRIX. 
+
+NEWS
+mention atlc now runs on toys and supercomuters and the fact an option has 
+nw become the default. 
+
+README.hardware-info
+new file added, listing information about what hardware data is 
+gathered on what systems. 
+
+README.--enable-hardware-info
+removed, as the option no longer exists - it's the default. 
+
+INSTALL
+Changed install insturctions, as --enable-hardware-info is now the 
+default. 
+
+Makefile.am
+Added README.hardware-info removed README.--enable-hardware-info
+
+tests/Makefile.am
+Added test 5c-check_numeric_data_from_atlc-2conductor.test
+as well as try_irix.c and try_unicos.c
+tests/try_unicos.c
+Added a function try_unicos() to obtain data about the hardware of 
+a Cray supercomputer. 
+
+tests/try_linux.c
+Removed some variables that were now now longer needed and so generated
+a warning from the compiler. Variables were operating_systems, i, ret
+and one other I think. 
+
+tests/try_solaris.c
+Removed some variables that were now now longer needed and so generated
+a warning from the compiler. Variables were operating_systems, i, ret
+and one other I think. 
+
+tests/try_irix.c
+Added a file to find out information on the SGI running IRIX. 
+Currently little information is found. 
+
+tests/try_unicos.c
+Added a file to find out information on the Cray. 
+
+tests/Makefile.am
+Added entries for try_irix.c and try_unicos.c
+
+tests/benchmark.test
+Changed the wording about what data is collected on each system, as
+previously it stated only Solaris was reasonably well supported, but
+that is not true now, so it has been changed. 
+
+tests/1g-create_bmp_for_symmetrical_stripline.U.bmp.test
+Added the md5 checksum 2a9644a0206c2314006e298f07aae233 as being okay,
+since this is generated on the Cray Y-MP and differs by only a single
+pixel and a single gray-level, from that on the Sun, suggesting 
+its just rounding errors. (I don't think the Cray implements IEEE maths
+anyway). 
+ 
+tests/7g-create_bmp_for_stripline_coupler.U.odd.bmp.test
+Added a new checksum 09f68e1466d68bf8a03e1f90eff411bb which
+is produced on a Cray. 
+
+src/non_gui/write_bitmap_out.c
+MAJOR change, so this now writes data out in ONE consistant manner
+that should be very portable. Note this is used only for programs 
+like create_bmp_for_*, and it not used by 'atlc' itself. 
+
+src/non_gui/write_fields_for_two_conductor_lines.c
+changed the name 
+extern bitmap_file_buffer to 
+bmp_buff as the latter was
+shorter and space was at a premium, to stop one needing huge long
+lines everywhere. 
+
+src/non_gui/read_bitmap_file_headers.c
+MAJOR change, so this now writes data out in ONE consistant manner
+that should be very portable. This is used only for programs 
+like create_bmp_for_*, AND 'atlc' itself. 
+
+src/non_gui/byteswap.c
+Removed all functions except byteswap_doubles. 
+
+src/non_gui/definitions.h
+Added definition for try_unicos.c
+Removed all entries for byteswap*, except
+byteswap_doubles, which is used by readbin.c
+Changed definitons of Bitmap_Head_Struct + Bitmap_File_Head_Struct
+as these now use just ints for portability. 
+
+src/non_gui/Makefile.am
+Removed byteswap.c from all binaries except readbin
+
+
+****** Version 4.3.8 Released August 21sth 2003 ****
+NOTE THE CHANGELOG FOR VERSION 4.3.8 SHOWS 4.3.7 AT THE TOP. THIS WAS AN
+ERROR. THE DETAILS ARE VALID FOR 4.3.8. 
+configure.ac
+Added the lines
+AC_CHECK_DECL(_SC_PHYS_PAGES,,)
+AC_CHECK_DECL(_SC_PAGESIZE,,)
+to enable me to check if _SC_PHYS_PAGES and _SC_PAGESIZE
+are defined for debugging purposes only. No use of them is 
+made, but it help to determine why code might not work later
+on, if its known whether these are defined or not. Problems
+reported by someone indicate problems, which would be easier
+to track with this option enabled. 
+Added a check for errno.h, as it was needed on Suse. Prior to this
+many files had #ifdef HAVE_ERRNO_H, but obviously the inclusion of
+errno.h was not critical on those systems. On Suse it was. 
+
+tests/try_portable.c
+check the return value or uname, to see if it fails or 
+not. If it does fail, print message and error if errno
+is defined. Replaces any spaces with underscores in the 
+ouputs from any part of the utsname structure.
+
+tests/try_linux.c
+Removed any code to check for systems parameters using 
+uname- it should all be found in try_portable.c, which
+is called before any other try_* functions. 
+
+****** Version 4.3.7 Released August 6th 2003  ********
+
+README.--enable-hardware-info
+New file added, to give information on what data is obtained on what
+hardware platform. 
+
+BUGS
+Added a problem with test failures on IBM's AIX with thread support and
+removed one about teston now working on the local host, as it now does.
+There is a html version of the file in docs/html-docs/BUGS, which should
+really be renamed, or some automated way of generating text from HTML,
+or perhaps just text and a link. No sure how best to do this really, but
+it is not entirely satisfactory. 
+
+configure.ac
+removal of code assocatiated with MPI
+
+teston
+change an example, so it shows how to configure with the
+--enable-hardware-info rather than the --with--mpi, as the former is a
+new option and the latter is now removed. 
+
+README.threads
+More updated information on what atlc has been tested on, and clearer
+infomration on using it. 
+
+README.help
+mention I'd like information on building on MP machines others than for
+AIX, IRIX, Redhat Linux and Solaris, rather than just Solaris, as the
+former have all been tested
+
+README.checks
+Major updates to this, as the data in the file was based on an old
+version of atlc, that failed numerous tests when multi-threaded, due to
+the differing algorithms. Some data on machines has been removed, as it
+some of the machines I no longer have in a running state. 
+
+NEWS
+
+Most other changes are just to keep the compiler a little happier in
+src/non_gui, but some more significant changes in tests subdirectory. 
+
+src/non_gui/readbin
+Forced length to be case to size_t, to make gcc -Wconversion happier.
+
+src/non_gui/design_coupler.c
+changed 10 to 10.0 to make a double and so keep the compiler happier
+when calling pow
+
+src/non_gui/create_bmp_for_stripline_coupler.c
+extra casts and general tidying up, to make compiler give less warnings.
+
+src/non_gui/write_bitmap_out.c
+cast to (size_t) to keep compiler happier. 
+
+src/non_gui/memory.c
+included sys/types.h  and remote the #define of size_t to an int, again
+to keep the compiler happier. 
+
+/src/non_gui/atlc.c
+cast numbers to long, to be consistant with the declaration of ustring()
+and free_ustring().
+
+src/non_gui/convert_create_bmp_for_coupled_microstrip_dimensions_to_integers.c
+changing numbers in the pow(x,y) to force them to be doubles, rather
+than ints to keep the compiler happier. 
+
+src/non_gui/convert_create_bmp_for_circ_in_circ_dimensions_to_integers.c
+changing numbers in the pow(x,y) to force them to be doubles, rather
+than ints to keep the compiler happier. 
+
+src/non_gui/calculate_colour_data.c
+changed type of image_type from char to int. Not sure why this was done,
+but probably to keep compiler happier. 
+
+src/non_gui/definitions.h
+changes to enable strong type-checking in C code. 
+
+
+tests/try_aix.c
+Added string.h to the list of include files.
+Removed need for type long long. 
+
+tests/try_hpux.c
+Removed need for type long long. 
+
+tests/try_solaris.c
+Removed need for type long long. 
+
+tests/try_linux.c
+Added file to get infomation on Linux system, but so far it 
+does not get that much info - only uname stuff and the ram
+in Mb. 
+
+tests/try_tru64.c
+Changed to avoid a compiler warning about not returning anything 
+from the file, despite the fact it is declared to return an 
+integer. 
+Removed need for type long long. 
+
+tests/benchmark.c
+no longer declares opperating_system, which was an integer that was
+
+tools/src/locatediff.c
+forcing variables to be of size (size_t), to reduce compiler warnings. 
+assigned a value, but never used" benchmark.c
+
+tests/benchmark.test
+now writes to text and html files more consistantly.
+
+tests/Makefile.am
+Addes teh file try_linux.c and removes @MPILIBS@, as MPI now removed
+from code. 
+
+docs/html-docs/accuracy.html
+iremoval of incorrect statement that *ohm-*.bmp were not packaged, but
+built. They are now packaged for my convenience. Also mention of make
+check
+
+docs/html-docs/building.html
+several small changes, but main one being removal of any data about MPI
+
+docs/html-docs/make-check.html
+added new file, describing the testing process. 
+
+
+****** Version 4.3.6 Released August 3rd 2003  ********
+The main change is to configure.ac, to remove an unwanted
+(and useless) --with-extra-benchmark-data option.
+
+Many sources have been tidied up, to make gcc -Wconversion
+happy. 
+
+docs/html-docs/accuracy.html
+Removed errors, which incorrectly stated that the lager bitmaps were
+not distributed - they are now. 
+
+
+docs/html-docs/make-check.html.html
+Added a new file, describing how the automatic testing of atlc
+is performed. 
+
+
+****** Version 4.3.5 Released July 26th 2003  ********
+
+src/non_gui/atlc.c
+Changed number_of_workers from static to global, as 
+it did not compile properly. 
+
+tests/benchmark.test
+changed the benchmark so speedup is printed properly
+(T_sequential/T_parallel) and not the other way around. 
+
+changed at t1 to a t2 on the line that is printed so
+the code works okay when compiled multi-threaded. 
+
+changed the conditions under which the efficiency was
+computed so that it works okay when the number of cpus
+is unknown. It no longer prints 'Inf', but instead 'unknown'
+
+
+tests/benchmark.c
+Now calls an AIX specific routine, which does nothing!
+
+tests/try_tru64.c
+Much improved. Gets CPU time now, along with ram and cpu speed.
+
+tests/try_hpux.c
+Minor improvements, works pretty good now. 
+
+****** Version 4.3.4 Never released  ********
+
+README.aix 
+Removed. Works fine under AIX now. Two issues were 
+resolved:
+use of char when I needed signed char. Rounding error
+caused one pixel to change in colour by one graylevel
+
+src/non_gui
+Changed many files in src/non_gui that referenced
+char **cell_type; 
+I was not aware declared in this way, there is no
+standard for whether cell_type consists of signed or 
+unsigned characters. Hence it was not portable. This
+caused a very large number of failures on AIX. This 
+has now been corrected. One failure remains (see above).
+
+Added a file src/non_gui/memory.c to include funtions
+scmatrix and free scharmatrix, which  allocate and 
+deallocate matrixes with signed characters. 
+
+src/non_Gui/Makefile.am
+Removed unnecessary entries of GSL_LIBS, which causes
+the SGI linker to generate a warning, that the gsl
+library was not used to resolve any functions. 
+
+
+
+
+****** Version 4.3.3 Released July 17th 2003  ********
+README.aix 
+Added a new file, highlighting problems on AIX.
+
+configure.ac 
+Added a --enable-debug option, although little use is made
+of this in the code. 
+
+Added --with-extra-benchmark-data which should be an optional
+featuure, not an optional package as the configure script says
+it is. This needs correcting at a later date. 
+
+tests/benchmark.c
+changed the file so that the header file sys/processor.h only
+got included if the file existed and processor_info() was 
+defined
+
+#ifdef HAVE_PROCESSOR_INFO /* function processor_info() is in Solaris */
+#ifdef HAVE_SYS_PROCESSOR_H /* and in OSX */
+#include <sys/processor.h> /* But not on Tru64 */
+#endif /* <sys/processor.h> does not exist on OSX */
+#endif
+
+and made sure that areas of the code that needed aspects of
+processor_info always had this header file. The reason is that OSX seems
+to have the fuction processor_info(), but does not have the header file
+and don't seem to have it defined anywhere. 
+
+Made tests/benchmark.c write benchmark results to tests.log
+
+tests/benchmark.c now gathers information about the processors
+on an HP-UX box. 
+
+src/non_gui/Makefile.am
+Added function error_check()
+
+src/non_gui/reaadbin.c
+Changed an fopen(,"r") to fopen(,"rb"); so it works on
+Windoze based systems. 
+
+docs/html-docs
+BUGS - removed and replaced by docs/html-docs/BUGS.html
+
+****** Version 4.3.2 Released June 12th 2003  ********
+
+Top level
+
+testson. 
+Added a new file 'teston' which allows for rapid testing 
+on a number of remote machines. Developers might find this
+of general use - it is not specific to atlc. 
+
+README
+Correected a couple of typos. Added 'tests' to the list of
+directories, as that was missing. Also tools and tools/src.
+
+definitions.h
+Remoted a few lines which were commented out
+Put void as a function argument - ie foo(void) instead of foo();
+
+
+
+tests subdirectrory.
+
+tests/benchmark.c 
+This should not be able to obtain the number of cpus on a wider range of
+machines, and get the cpu speed on at least some Alpha systems. 
+
+Should be able to determine the RAM on Solaris and Tru64 UNIX.
+
+tests/benchmark.tests
+Supplied with the new information from tests/benchmark.c
+this should now display more sensible information. 
+
+****** Version 4.3.1 Released June 7th 2003  ********
+Unfortunately, the ChangeLog for 4.3.1 was never updated. 
+
+
+****** Version 4.3.0 Released April 5th 2003  ********
+
+Top level directory
+
+Added a new directory 'm4' to hold autoconf macros.
+Moved the top level autoconf macros to 'm4'
+
+Added file 'benchmark' to run a test. It takes 
+about 1:17 on Ultra 80 with no thread support. 
+
+ChangeLog
+Updated the ChangeLog of course!!
+
+configure.in changed to configure.ac
+Renamed configure.in to configure.ac, as this is now the preferable
+name for the old configure.in
+Significan chanes made to this. Now there is an m4 macro to check for
+gsl library and the optimal way to link for threads and the optimal 
+way to link for MPI. 
+Now accepts gsl version of 0.8 and above. It works on 0.8 but not 0.5. I
+don't quite know where the border line lines, but requesting 0.8 dones
+not seem unreasonable.
+
+Added a check for automake 2.57 or above. 
+
+Replaced 'dnl' witrh '#' for a comment.
+
+Added a macro gsl.m4 
+http://www.ugcs.caltech.edu/info/gsl/usage_4.html
+to check for a sepcific version of gsl and to add
+entries on CFLAGS and LD_FLAGS
+
+Directory atlc/src/no_gui
+atlc/src/no_gui/usage_atlc.c
+Removed references to WITH-MP and replaced with ENABLE-POSIX-THREADS
+as this was a bug. Now changed code so that if the -t option is
+disabled, the code prints the reason (Windoze or not configured
+with --with-threads). Previously it gave two possible reasons.
+
+
+atlc/src/no_gui/atlc.c
+removed thr_setconcurrancy and replaced with pthread_setconcurrancy
+as this is portable, whereas the other is Solaris specific. 
+
+atlc/src/do_fd_calculation.c
+This now calls function finite_difference_single_threaded or
+finite_difference_multi_threaded, depending on how the software is
+configured and the presence of -t0 option to atlc. 
+
+atlc/src/non_gui/finite_difference_multi_threaded.c
+The name of the function has been changed from finite_difference to
+finite_difference_multi_threaded - no longer are there two functions
+with the same name. The correct one function is called from
+do_fd_calculation.c, depending on whether the software is configured
+with threads or whether the user has elected to run a single threaded
+algorithm on a multi-threaded system, by passing the option -t0 to atlc,
+which indicates it will use the single threaded algorithm. 
+
+Changed the algorithm considerably. This has several advantages over the
+old one.
+a) The algorithm should be suitable with minor modification for MPI use.
+b) The code now produces exactly the same results whether run for single
+or multi-threaded. finite_difference_single_threaded.c needed to be
+changed to enable this.
+d) A barrier is now used for syncronisation. 
+This algorithm is apparently not very cache friendly, so it could do
+with some teaking, but at least its a decent starting point, producing
+the same data from single threaded or multi-threaded use. 
+
+atlc/src/non_gui/do_fd_calculation.c
+This now calls one of two functions.
+
+a) Code is now inline, rather than a function call.
+Directory atlc/tools/src:
+
+atlc/tools/src/Makefile.am
+Change bin_PROGRAM to noinst_PROGRAMS so that the programs
+used only for testing are not installed. They serve no useful
+function apart from when running the tests in atlc/tests.
+
+atlc/tools/src/memory.c
+Removed 'memalign' since it seems to be in some libraries, but with
+no header files. Also, there seems to be POSIX specific versions of 
+it and finally, the compilers will force this with the right
+switches. Hence overall, it seems more hassle than its worth to 
+have 'memalihn' anywhere. For this reason, the check was removed
+from configure.ac too. 
+
+src/gui/Makefile.am
+Commented out most of the things, so a C++ compiler is not needed. The 
+# files in this directory servered no useful purpose, but the icons at 
+# least might be useful. Whether or not a GUI will be added is anyone's
+# guess. 
+
+MPI code has been almost fully removed, to start this from scratch again.
+
+****** Version 4.2.12 Released 30/3/2003  ********
+
+Top level:
+renamed configure.in to configure.ac, as I gather this is now the 
+prefereed name for the file. 
+
+****** Version 4.2.11 Released 30/3/2003  ********
+Many many changes!! Not all are documented!
+Started to the use autoconf macro acx_pthread.m4 to configure POSIx
+threads properly. 
+
+Implemented an md5 checksum program for testing checksums, as this is
+very accurate. The one I was using (a hacked 'sum' command) is not that
+good and so could miss a change in a file quite easily. 
+
+Spent a lot of time on the test routines. These now always pass and
+will work with a VPATH build too. 'make discheck' works fine now.  
+
+Removed several bugs from the function 'do_fd_calculation' so it now
+does not cause any floating point exceptions cc is configured to not
+implement the IEEE standard. 
+
+Put new algorithms for finding the electric field into find_electric_fields.c,
+but they seem less accurate than the old versions, so these are not used for 
+now at least. 
+
+Change from 'char *foo' to 'const char *foo' in many files, as this
+keeps Sun's compiler a bit happier. Note the Sun compiler (Sun WorkShop
+6 update 2 C 5.3 2001/05/15) still moans about a lot of things that gcc
+thinks is fine. 
+
+Added the following files that were ommited when put into CVS
+
+**top level directory changes made by drkirkby **
+gtk.m4
+depcomp
+src/non_gui/output_from_design_coupler-Sun-Ultra-80.txt
+src/non_gui/Makefile.am
+
+removed a double entry for the header file definitions.h
+in create_bmp_for_stripline_coupler_SOURCES.
+Added a new binary create_bmp_for_rect_cen_in_rect_coupler
+
+
+Makefile.am 
+Remmoved entry for README.alpha. It's contents were out of date but we might 
+want to add a file with the same name later. Who knows?
+
+configure.in 
+Added a line to check for the mpi.h header file, immaterial of whether
+or not the user request MPI support. This will aid debugging. 
+Changed the message about being unable to build 'make_coupler' to
+'design_coupler' since the binary had been renamed.
+
+configure  
+Autogenerated file, needed updating due to change in configure.in
+with reguare to MPI support (see entry for configure.in above.)
+
+**man directory - changed made by drkirkby**
+Renamed many files to take account of the new binary files names. Hence
+they all needed updating. A new man page for design_coupler has 
+been written. Currently there are the following man pages in
+man/man1
+atlc.1
+create_bmp_for_circ_in_circ.1
+create_bmp_for_circ_in_rect.1
+create_bmp_for_microstrip_coupler.1
+create_bmp_for_rect_cen_in_rect.1
+create_bmp_for_rect_cen_in_rect_coupler.1
+create_bmp_for_rect_in_circ.1
+create_bmp_for_rect_in_rect.1
+create_bmp_for_stripline_coupler.1
+create_bmp_for_symmetrical_stripline.1
+design_coupler.1
+find_optimal_dimensions_for_microstrip_coupler.1
+readbin.1
+
+src/non_gui
+usage_create_bmp_for_symmetrical_stripline.c
+corrected a simple spelling error
+
+renamed error_and_exit() to exit_with_msg_and_error_code()
+and are in the process of changing every command to exit
+with that, rather than with exit().     
+
+check_parameters_of_create_bmp_for_microstrip_coupler.c
+Added better error checking, as the orginal code just did one silly 
+check. The improved error checking was done to try to find a 
+reason there are problems on a Dec Alpha running Linux and gcc-2.95.4
+
+do_fd_calculation.c
+changed (on a termporary basis) ITERATIONS from 100 to 10
+Added code so that with -vvvv we can see how many iterations were used
+
+calculate_Zodd_and_Zeven.c
+Added code to check for both the gsl libary AND
+gsl header filess before considering gsl proplerly
+present. A bug was noticed when using Sun's compiler whereby
+the gsl library was found in /usr/local/lib, but the gsl
+header files, which are in /usr/local/include/gsl were not
+found. 
+
+print_data_for_two_conductor_lines.c
+Added option to print data to high-precision
+
+
+Added file convert_doubles_to_integers.c although 
+at present this is not working as planned. It is not
+linked in with any code at present. 
+
+usage_atlc.c no longer exits with 0, but
+returns to the calling routine
+
+atlc.c 
+Now returns OKAY or 
+PROGRAM_CALLED_WITH_WRONG_NUMBER_OF_ARGUMENTS
+depending on how it was called. 
+Add commments/changes to why the more logical 
+fread was not used
+changed type of cell_type from int to char to save
+ram. 
+
+All files with symmmetrical remaned to 
+symmetrical (not the 3 m's beforehand) 
+
+removed the following files, since they were renamed
+to other file names. 
+convert_circ_in_rect_dimensions_to_integers.c
+convert_circ_in_rect_dimensions_to_integers.c
+
+All files with the name programme have had this changed
+to program. 
+
+create_bmp_for_stripline_coupler.c 
+now the verbose level is working properly
+
+exit_codes.h 
+Added numerous new entries
+
+design_coupler.c 
+Removed the -Q option for very quite and 
+implemented it so -q is quite and -qq is quiter
+still. 
+
+check_error
+Now exits with UNACCEPTABLE_ERROR_WHEN_CONVERTING_TO_INTEGERS 
+rather than 2 which confused matters for me. I need to tidy up
+all the exit codes. 
+check_parameters_of_create_bmp_for_rect_in_rect.c 
+Renamed a function to check_create_bmp_for_rect_in_rect_int
+since it originally had the wrong name. 
+
+Editied create_bmp_for_stripline_coupler.c. so that it only
+prints information about theoretical values if called with the 
+-v option. -vv gives more information and -vvv gives even more.
+
+calculate_impedance_for_create_bmp_for_symmetrical_stripline.c
+now calls usage_calculate_impedance_for_create_bmp_for_symmetrical_stripline  
+
+usage_create_bmp_for_symmmetrical_stripline..c
+now has a new name for the function 'usage_create_bmp_for_symmmetrical_stripline()'
+and mentions the additional -v option 
+Also, the name of the binaries mentioned have changed, to reflect
+the new naming converntion. 
+
+calculate_Zodd_and_Zeven.c now includes #include <stdlib.h>
+
+tests
+These have been modified and should be up to date on CVS
+
+******Version 4.2.8 Released 12 Jan 2003 ********
+Copied onto Sourceforge CVS *all* the 4.2.8 files. Some 
+were missing before. 
+
+examples/Makefile.am
+Changed the CLEANFILE line to DISCLEANFILES, so that
+running 'make clean' will not delete the example files
+created, but running 'make distclean' will. 
+Added a lot of txt files (see note below). 
+
+man
+News names for man pages 
+
+lots of changes to files name 'cvsignore
+
+examples/twin-wire4.bmp
+Added to the CVS repositry. Had prevously ignored this
+large file. 
+
+in examples diretory
+Added ....bmp.txt files, as the output of running atlc
+on each of the .bmp files. 
+
+src/non_gui/usage_atlc.c
+src/non_gui/usage_circ_in_rect.c
+src/non_gui/usage_create_bmp_for_circ_in_circ.c
+src/non_gui/usage_create_bmp_for_circ_in_rect.c
+src/non_gui/usage_create_bmp_for_microstrip_coupler.c
+src/non_gui/usage_create_bmp_for_rect_cen_in_rect.c
+src/non_gui/usage_create_bmp_for_rect_in_circ.c
+src/non_gui/usage_create_bmp_for_rect_in_rect.c
+src/non_gui/usage_create_bmp_for_stripline_coupler.c
+src/non_gui/usage_create_bmp_for_symmmetrical_stripline.c
+src/non_gui/usage_design_coupler.c
+src/non_gui/usage_find_optimal_dimensions_for_microstrip_coupler.c
+src/non_gui/usage_readbin.c
+All above files have been modified to print a version number if 
+run incorrectly. Perhaps adding a -V option that just prints 
+the version and exits would not be a bad idea, at a later date
+
+docs/atlc9.doc docs theory2.doc and design-ideas.sxw moveed to
+docs/theory/atlc9.do docs/theory/theory2.doc and docs/theory/design-ideas.sxw
+
+html-docs/README
+added more informaton about the Word and StarOffice
+files giving information about the theory of the newer versions
+of atlc. 
+
+docs/theory/README 
+Changed to indicate there are now 3 theory files, one PDF and 
+suggesting the use of books.
+
+docs/html-docs/theory.html
+Changed to indicate there are now 3 theory files, one PDF and 
+suggesting the use of books.
+
+docs/html-docs/banner-page.html
+Changed to point to docs/html-docs/theory.html, rather than the
+one pdf file I wrote for QEX back in 1996.
+examples/cvsignore
+Removed *.bmp and added *.bin. Put cvsignore on CVS
+
+src/non_gui/do_fd_calculation 
+added a return(0) to prevent the compiler from preventing a warning.
+
+src/non_gui/setup_arrays.c
+Uncommented the check_for_shorts line, as it does do something 
+very useful. 
+
+src/non_gui/check_for_shorts.c
+Remove remarks about setting a floating conductor to +1 V
+as floating conductors are not supported. 
+
+examples/README
+Updated examples/README, so it is more up to date,
+listing only the files in the 4.2.8 distribution
+and no more. The theretical impedance for some 
+examples are included, where there is an exact
+theoerically answer. Sometimes the structure tries
+to approximate a stucture that has an exact theoreticas
+answer, but never can exactly (we can't make the bitmaps
+infinitely wide!!). There are noted where appropiate.
+Not all the theoretical answers are at this point in the
+README. 
+
+configure.in 
+Changed to look for optimised
+math library (libmopt) and optimised c 
+library (libcopt) as are used on SPARC systems.
+
+Removed one copy of the function 
+get_data_interactively() from definitions.h, as
+it was defined twice. 
+
+tools/README
+corrected a simple spelling error.
+
+configure.in
+Remmoved the extra docs/Makefile in it.
+ 
+src/non_gui/setup_arrays.c
+Moved line 'data->dielectrics_in_bitmap=0;' to after declaration of
+local variables.  gcc 2.96 will not accept the initialization as it
+was when compiling c code, and generates an error.
+
+src/non_gui/atlc.c
+Removed extraneous dereference, replacing the line '*end++;' 
+with 'end++;' in the argument processing section.
+
+examples/create
+This was removed from CVS, as 'make check' already did this and
+it has been removed a while ago, but not from the CVS.
+
+src/non_gui/find_optimal_dimensions_for_microstrip_coupler.c
+
+******Version 4.2.7 Released 8/1/03********
+Corrected a bug such that -s and -S did not work.
+
+Corrected a bug in setup_arrays.c wherby the number
+of blue conductors was not set to zero at the start
+so the total number reported was wrong. 
+
+Made changes to write_fields_for_directional_couplers.c
+such that the the images for even mode are now 
+written. 
+
+Further attempts to improve the documentation. 
+
+******Version 4.2.6 Released 1/1/03********
+Corrected a bug in do_do_calculation.c, which
+was bought to my attention by (thanks Dan).
+
+Added two files into the distrtibution from
+former versions 'cop1.bmp' and 'rect9.bmp'
+since these were metnioned in the tutorial,
+but not available. 
+
+Slightly improved the look of the homepage by
+editing index2.html 
+
+Updateed 'tutorial.html' as it was a bit out 
+of date, showing old versions of files. 
+
+Added more tests. Some more could be usefully added,
+but for now this will have to do. All the 11* tests
+have been dropped as for some reason they don't run
+properly. 
+
+******Version 4.2.5 Released 1/1/03********
+Arragned for the Makefile.am's to have a line
+CLEANFILES = ... to remove the example files
+if the user does a 'make clean'.  
+Running 'make distcheck' should now work
+
+Reinstated some more tests.
+
+Corrected a problem with some of the tests
+-create-lots-of-examples-check-last-one.test' such that
+a lot of example files were created with a length of 
+zero bytes. This was becaused I changed the format
+of all the crate_bmp_for_... files so they no longer 
+printed to stdout, but -create-lots-of-examples-check-last-one.test'
+relied on them printing to stdout to work.
+
+Images of permittivity are now okay, but not sure
+about the Ex, Ey, U etc. These have not been checked
+for 2-conductor lines, which needs doing. 
+
+
+******Version 4.2.4 Released 31/12/02********
+
+Changed all the files create_bmp_for_....
+such that they now write to a file on the command
+line, rather than stdout. All programs for the generation 
+of bitmaps now have the same naming converntion 
+(create_bmp_for_.....) and all write to a file and 
+not stdout. 
+
+Changed man pages to reflect the changes in all the 
+create_bmp_for_...
+
+Some half-sensible bitmaps are now produced with atlc
+if the -s option is not present. The binary files
+(.bin) are now printed properly for couplers. It is 
+quite possible this does not work for 2 conductor lines
+(it has not be tested). This needs more testing. 
+
+The files atlc-x.y.z/tests/Makefile.am now has 
+lists of the files to be added to the distribution,
+rathe than just *.test, as the latter caused problems
+with 'make distcheck'.
+
+The file atlc-x.y.z/docs/html-docs/index.html now
+loads index2.html rather than frontpage.html.
+
+added file atlc/docs/html/create_for_Makefile.am to 
+make it easier to generate a list of files that needed
+to be included in atlc/docs/html/Makefile.am
+
+******Version 4.2.2  Released  28/12/02 *****
+Less data is now printed as it was confusing I feel to show too
+much informattion. An option will be added to show more, but at 
+present this is not implemented. 
+
+Added options -s and -S in 'atlc' to enable the bitmap (.bmp) and binary
+(.bmp) files to not be written. The default is to write these files. 
+
+Remove options to write data to a text file and append data to
+a text file from atlc. Changes meant it got more difficult
+to implement and there seems little point when > and
+>> do those functions.
+
+Changed man page on atlc, so reflect changes in the program   
+itself. 
+
+Added the program 'create_bmp_for_coupled_microstrip' which does
+exactly what the name says. Run it to see what options and 
+command line arguments it expects, as there is no man page at 
+the minute. 
+
+*ALL* the files that create bitmaps have been renamed to create_bmp_for_xyz,
+where xyz determines the geometry. There are now the following files
+for creating bitmaps:
+
+create_bmp_for_circ_in_circ
+create_bmp_for_circ_in_rect
+create_bmp_for_coupled_microstrip
+create_bmp_for_coupler
+create_bmp_for_rect_cen_in_rect
+create_bmp_for_rect_in_circ
+create_bmp_for_rect_in_circ.c
+create_bmp_for_sym_strip
+
+Currently some write to stdout, some to files. I will eventually change it 
+so they all write to files, as the data is binary and writing by default
+to stdout is not a great idea. 
+
+Added program 'find_optimal_dimensions_for_microstrip_coupler' which does 
+an exhaustive search of different geometires for microstrip couplers. 
+
+
+********************Version 4.2.0-alpha  Released  24/12/02 ********************
+Made major changes to the code to make it easier to read. Hopefully
+direcitonal couplers are working for multiple-dielectrics now, 
+but I've no idea. The documentation is out of date with the code
+which has undergone major revisions. I will update the docs and correct
+and bugs as soon as I have time. 
+
+********************Version 4.1.6  Released  22/12/02 ********************
+Made it more obvious there is a bug that prevents the use of atlc
+where there is more than one dielectric on a directional coupler.
+
+Updated the documentation so removing references to make_coupler
+
+Changed the atlc homepage a bit, as it was out of date. 
+
+********************Version 4.1.4  Released  15/12/02 ********************
+Corrected bug found in design_coupler.c that prevented it compiling
+under old versions of gcc. 
+
+Added a few more tests that fail if gsl is not included. 
+
+Updated the documentation. Some showed the output from 
+atlc 2.x, which was a lot less accurate than 4.x.
+
+Added a line for pth in Makefile.am. Threads on machines
+othe than Solaris still needs some work. 
+
+Added the file 'IMPORTANT.html' back into the release. For
+some reason this got lost and was not present in any recent 
+release, despite being on the web page and still valid.
+
+Updated the FAQ, as some information was out of date.
+
+********************Version 4.1.1  Released  14/12/02 ********************
+**************************************************************************
+
+Changed the default number of threads a mutli-threaded version of the
+prorgram runs from 2 to 4, as I now own a quad processor machine. It is
+changed in definitions.h
+
+The program 'make_coupler' has been renamed to generate_coupler_bitmap,
+as it never really did make a coupler, but only generate a bitmap for
+one with the dimensions you gave. 
+
+Added a new program 'design_coupler' which is very able. It can find the
+required odd and even mode impedances given the coupling factor and
+frequency range, and then design you a coupler with the right
+dimensions!
+
+Added much better documentation to support the directional couplers. New
+files 'calculate_zodd_and_zeven.html',
+'determine_dimensions_of_couplers.html' have been created. 
+
+No significant changes have taken place to the code for two conductor
+lines. I still need to address the problem of consistancy amoungst some
+of the programs. 
+
+A new directory 'tests' has been set up and automake configured such
+that running 'make check' now performms a lot of checks and creates
+all the examples. 
+
+********************Version 4.0.1  Released  21/4/02 *********************
+**************************************************************************
+
+Added copyright notices to all files and added a -C option on all 
+binaries to print out information on copyright. 
+
+Corrected an error in READED.threads, since it refered to the -p options
+for number of processors, which I later changed to -t threads to be more
+accurate. 
+
+Added my e-mail addres to the AUTHORS file. 
+
+Update the TODO list. 
+
+Remvoed the printing of L and C in the documentation (frontpage.html and
+index2.html) for couplers, as these are mode-dependant and so one value
+is not enough. 
+
+Added a CVS entry on the banner page. 
+
+Spent some time spell checking many of the html documents. 
+
+Made some changes in the rect_in.. circ_in.. so that the integer values
+create on a machine should be exactly the same on each machine. It was
+possible before that some numbers would be generated on one machine and
+some on another, due to rounding errors. This hopefully stops that. 
+
+Changed src/non_gui/tests to point out what a dodgy gcc does. 
+Added a few scrips 'tests' in other directories to src/non_gui, since
+someone was looking for them and could not find them. Hence I've tried to
+make it a bit clearer. 
+
+********************Version 4.0.0 Released 11/4/02  *********************
+**************************************************************************
+Put a bit more info in the README.windows
+Removed check for "intelligent life" in configure.in, as this was not working
+with autoconf 2.13.
+
+Added a function do_fd_calculation() and therefore added the file
+do_fd_calculation.c This helps clean up atlc.c a lot, since a lot of
+repetition has been removed. It needed quite a bit in it to handle the
+case of coupled lines and all the different things that have to be
+printed in this case. 
+
+Changed setup_arrays.c so that it now sets a variable 'coupler' to TRUE
+if there is a blue ( - 1 V) conductor. 
+
+Got resuls out from the coupler. No idea if they are right. Pretty sure
+they are wrong in fact. 
+
+Corrected a typo in FAQ.html which meant the local copy of the QEX
+paper could not be downloaded from the FAQ.
+
+Answered that loss can't be measured in the FAQ.
+
+Wrote a programme 'make_coupler' which writes a bitmap with two striplines 
+between two parallel groundplanes as below.
+
+------------^------------------------------------------------------------------
+            |                                               
+            |              <---w---><-----s----><---w-->
+            H              ---------            --------
+            |                                      
+            |                               
+------------v------------------------------------------------------------------
+This has an exact analystical solution, so the file calculate_Zodd_and_Zeven.c
+was created to find the exact theoretical values. This makes it possible
+to compare the theory with atlc.
+
+I got the equations from an e-mail sent to me by AA1LL / KB1CZP 
+<aa1ll@email.com>. This required elliptic integrals, so its necessary to
+link into the GNU scientific library, gsl to use it fully, although the
+bitmap will be generated without the library.
+
+Added information to accuracy.html on accuaracy with coupled lines. 
+
+Changed finite_difference_multi_threaded.c & finite_difference_multi_threaded.c
+to handle correctly the case of coupled lines - at least for vacuum
+dielectric. 
+
+Added a couple of tests in the file 'tests' to check the coupler 
+related items. 
+
+
+********************Version 3.0.7 Dated 6/4/2002**************************
+**************************************************************************
+Corrected the file man/makehtml, as it was not making an html page for
+rect_cen_in_rect from the rect_cen_in_rect.1 man page. 
+
+Put an error number each time a programme exits, so it is clear what
+error caused it. 
+
+Made a set of diectories called 'binaries' and subdirectories from that.
+Please the latest Windows executables in binaries/Windows. 
+
+Changed the line 
+image_data=ustring(0L,width*height*3); in atlc.c
+to
+image_data=ustring(0L,size);
+ 
+Removed all references to stdio.h and math.h in all files, since they
+are included in definitions.h
+
+Changed the line 
+if( (image_data_fp=fopen(output_filename, "r")) == NULL)
+to 
+if( (image_data_fp=fopen(output_filename, "rb")) == NULL)
+in atlc.c, so the bitmap is opened as a binary in Windoze.
+
+put the line 
+if((fp=fopen(temp,"w+b"))==NULL) instead of 
+if((fp=fopen(temp,"w+b"))==NULL)
+in get_file_pointer_with_right_filename.c
+as the bitmaps were screwed up when written to disk in text mode, which
+was happening under Windoze. 
+
+Used a more complex method suggested by AD5GB to get open the bitmap
+file for reading. I don't see why it should be necessary, but it keeps
+Windows happy. 
+
+defined M_PI if not already done so in definitions.h
+
+Changed malloc call to a calloc in string.h
+
+Corrected an error in the docs where it said in accuracy.html that the
+error was 1.8% on the bottom of a table. That may have been so, but it
+is a lot better now. 
+
+
+********************Version 3.0.6 Dated 3/4/2002*************************
+**************************************************************************
+(note there was no release 3.0.5, as it got screwed up going up to
+Sourceforge, after which is is impossible to overwrite the file). 
+
+
+Removed all reference to the voltage v and instead replaced these by
+Vij. The reason being that  Randall DuCharme <ad5gb@yahoo.com> has
+advised me that the symbol v is defined in IBM's AIX operating sysytem.
+Hence it would not compile without some hacking. 
+
+Since the voltage is now called Vij, it makes sense for its indices to
+be i and j and not w and h. Hence I've replaced at least some of the
+v[j][h] to v[i][j]. 
+
+Changed reference to longs and replaced by ints in write_bitmap_out.c,
+since it was clear the longs would break it on 64-bit machines. 
+
+Checked atlc one my Sun Ultra 60 with a 64-bit compiler using Sun's CC
+compiler. All was okay and the generated bitmaps looked fine. 
+
+Found a problem on the Sourforge Compile Farm with the programme
+sym_strip. It crashed at the last but one line, where these is
+flose(fp). Put in code to check if the file pointer was valid. This
+can't be a bad thing, but it did not solve the problem. 
+
+Another bug spotted on Sourceforge's compile farm. rect_in_rect,
+circ_in_circ, circ_in_rect, and beadbin (but not atlc) all declare 
+a character q, then use
+q=get_options
+whereas get_options returns an int, not a character. I don't know why the 
+compiler does not spot that one. Anyway, it caused get_options to loop forever. 
+
+All programme now seem to run okay on drkirkby@usf-cf-ppc-linux-1:,
+which is a linux powered PowerPC RS6000. Not attempted compileing
+multi-threaded. 
+
+
+Attempted compiling on the Sourceforge Sun Ultra 60. This is the same as
+my machine, so one might expect it to work okay. In fact, atlc 
+compiles and runs okay on every machine tests (Dec Alpha, Suns
+running Solaris, Suns running linux, linux PC, ... 
+
+Correct typo, where it said 'is is' in usage_sym_strip.c
+
+Changed the order and name or parameters in rect_cen_in_rect, so
+it now
+
+% rect_cen_in_rect W H w h Er1  > filename.bmp
+
+Changed man page to suite. It was silly before. 
+
+Removed note in the bitmap generators (rect_in_rect, circ_in_circ etc)
+about piping into atlc, since atlc does not support reading from 
+standard input. 
+
+Changed circ_in_circ so the information it can provide about theoretical
+impedances is only produced if the -v flag is given. 
+
+corrected usage_circ_in_rect.c, as information at the bottom on usage
+was all wrong. 
+
+Added a test suite in the script src/tests. I might well add a version of
+sum to the distribution, as it appears to be implementation dependant. 
+
+Removed #include <malloc.h> as it is depricated according to gcc and
+files compile fine without it. Also removed stddef.h from nrutil.c, as
+that too is not needed. 
+
+Changed the names of the variables opterr, optind, optopt and optarg to be
+my_opterr, my_optind, my_optopt and my_optarg in get_options.c This is to
+avoid a warning from one of the compilers (I think on a Mac) about the fact
+that it is defined elsewhere. 
+
+
+********************Version 3.0.4 Dated 1/4/2002*************************
+**************************************************************************
+NOTE 3.0.3 never released, since the upload to sourceforge failed. 
+
+Corrected bug in write_fields.c which caused a crash under Linux
+(as reported by Randall DuCharme <ad5gb@yahoo.com>) and With 
+Borland C++ builder on my SunPCi card. 
+
+Corrected a bug in atlc.c, which was causing a crash on the SunPCi
+card and possibly a crash (not yet confirmed) under Solaris on 
+a Sun Ultra 30 belonging to Randall DuCharme <ad5gb@yahoo.com>
+
+Added an option to atlc.c to avoid writing the bitmap files. 
+
+Corrected a bug in readbin.c, which caused it to report any 
+number >.99 as a one, when it might well be METAL_ER. Also checked more
+carefully for -1 V, by only looking from -0.999999999 to - 1.000000000001
+
+Added the following lines to readbin and atlc.c, which are necessary
+when compiling with C++ Builder version 3. I need to do likewise to the
+rect_in_rect etc, but for now I have not. 
+
+#ifdef WINDOWS
+#pragma hrdstop
+#include <condefs.h>
+#endif
+
+(I need to define WINDOWS when compiling on Windoze).
+
+Corrected usage_atlc so it now does not take the filename, but knows it
+is atlc. 
+
+Added (void) to the defintion of any function that takes no arguments. I
+found that while gcc is happy to accept a fuction with an argument that is
+declared like this:
+int somefunction()
+Borland C++ Builder was not happy with that. Hence I now declare functions
+as taking void when they don't take argments. This keeps Borland C++
+builder happy and allows for stricter checking with gcc. 
+
+Added a piece of code 'get_options.c' which was necessary since 
+Borland C++ Builder does not have such a function.  
+
+Stopped print_data taking an argument 'version' and then reading it from
+VERSION. It now just reads from VERSION
+
+Remved 'ER' from check_for_boundaries.c and all references to it, which
+were all in comments. The Borland C++ Builder is better at spotting such
+problems than gcc, so is Sun's C compiler. 
+
+Added code to check if the upper number (eg nh) is less than or equal to
+the lower number (eg nl) in functions free_* in files nrutuil.c and
+string.c This stops the Borland C++ Builder complaining about the
+arguments not being used and also does some sanity checking. 
+
+********************Version 3.0.2 Dated 30/3/2002*************************
+**************************************************************************
+Fixed a problem with the Makefile.am's which meant not all the files were 
+included and the sym_strip.1 was spelt wrong. 
+
+********************Version 3.0.1 Dated 29/3/2002*************************
+**************************************************************************
+SIGNIFICANT IMPROVEMENTS TO ACCURACY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SIGNIFICANT IMPROVEMENTS TO ACCURACY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SIGNIFICANT IMPROVEMENTS TO ACCURACY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+In a comparisson of 3 analytic models (coax, eccentric coax and
+stripline), and 31 tests (roughly a third of each), the maximum error
+was only 0.945 % and the RMS error is only 0.259 %. The programme now
+undereads more than overreads, so I still think there may be a
+systematic error, but any problems are now very small. Despite the fact
+atlc is supporting multiple dielectrics, I've not managed to find any
+models with exact analytic solutions to compare against atlc. When
+calculationg the E-field across a dielectric, the method used does not
+properly consider a boundary between two dielectrics. Hence I can expect
+the error with multiple dielectrics to be a bit higher than with one.
+This will be sorted out later. 
+
+Added a man page for sym_strip and updated all other man pages. Keeping
+the documentation up to date is a problem. 
+
+Since many of the bitmaps used in the examples are large, I decided to
+not bother distributing them all, but instead write a script 'create' to
+make them. 'create' may be found in both  the examples and src
+directories. 
+
+Added a small script 'makehtml' in man, to create easily html version of
+the man pages. 
+
+It was necessary to take into account when a dielectric is next to
+metal, as otherwise the E-fields calculated in the dielectric are in
+erro when next to metal. This is done. check_for_boundaries.c has been changed
+to indicate whether a dielectric has metal to the left, right, above or
+below it.  
+
+function calculate_colour_data() added to calculate the colour a pixel
+should be set to - this is called by write_fields(). 
+
+Added a file find_electric_fields.c, which has 3 functions in it -
+find_Ex(), find_Ey() and find_E(). This avoids different parts of the
+programme using different definitions for Ex, Ey and E. 
+
+Changed write_fields almost completely. It now prints more files
+and uses less ram, as not all the data is stored before writing to 
+disk. Now only one set is stored in ram before writing to disk.
+This is a bit slower, but it will save a lot of ram. 
+
+After thinking about it a lot, I feel it is necessary to change the -1 V
+conductor (which has never been used) from black to blue. Since I've
+stated before that black is -1 V and blue is a dielectric with a
+permittivity of 2.1, this is a bit annoying. However, it seems illogical
+to have a negative electric field shown as blue, and negative voltages
+as blue, yet have -1 V as black. Hence the definition of -1 V is changed
+and another colour (a light blue) has been selected to reprsent the
+permittivity of PTFE. 
+
+Made a significant improvement to accuracy, but using the following
+defintion for Ex
+Ex=0.5*(v[i+1][j]-v[i-1][j]);
+but changing it a bit when at a boundary with metal. i.e.
+if((cell_type[i][j]&METAL_LEFT)==METAL_LEFT)
+  Ex=(v[i+1][j]-v[i][j]);
+Same is done in an obvious manner for Ey and the right hand side. This
+has made a significant improvement to accuracy, so html docs have been
+re-written.
+
+Changed the definition of Ex and Ey in write_fields.c, since they were
+defined at dV/dx, and dV/dy, but the electric field is defined as the
+reverse of that. i.e. ex=-dV/dx and Ey is -dV/dy. 
+
+Added some code in write_fields.c to print the energy (CV^2) too. 
+
+********************Version 3.0.0 Dated 24/3/2002*************************
+**************************************************************************
+Added support for multiple dielectrics. More work needs to be done to
+confirm the accuracy of this, but it is now working at least. 
+
+Spent a lot of time thinking carefully about exactly where the voltage
+are defined (top left of a pixel) and exactly where the E-field should
+be calculated (centre of a pixel) and exactly what the E-field is. The
+results seem no more accurate than before (still a small over-estimate
+of Zo), but at least it should give anyone else chance to find a fault.
+Before it was too obvious that a few problems remained on exactly what
+happens on a boundardy. 
+
+Programme should be able to cope with 4 different dielectrics in a
+square - i.e. it can be really arbitrary. 
+
+Changed the value of r in atlc.c from 1.5 to 1.95. This has made a HUGE
+INCREASE IN SPEED!!! The programme is now about 6x quicker than before.
+
+Added a function check_for_boundaries(), which looks for changes of
+index and metals around a pixel. Its not really used now, but it has the
+potential for speeding the code up, since it can avoid a lot of checking
+every time the FD loop executes. It makes sence to do the checking once
+and use those results. 
+
+Removed all C++ commments, as this would stop it compiling on a C
+compiler. One of the Sun compilers I have is only C. 
+
+Added a file 'fd.c' which is not in the makefile. It is included in the
+C functions finite_difference_*.c. It is better to use it like this
+rather than put the code inline, for speed reasons. It is called several
+times. Putting it in one file insures all the times its called are
+calling exactly the same code. It is too easy to have errors otherwise.
+
+
+
+Added a programme 'thin_strip; which produces a stipline like this:
+
+          ------^-------------------------------------
+                |
+                H        -----w------
+                |
+-infinity ------v------------------------------------ +infinity
+
+This has a well defined impedance, which is given in "Field Theory of Guided 
+Waves", Colin R.E., 2nd edition, pp 259-273, IEEE Press, (1990).
+
+I realised the programme was taking too much memory. Reading in a 24 Mb
+bitmap, resulted in the programme using 179 Mb of RAM. It was discoverd
+that the variable 'cell_type' defined in atlc, was an integer array,
+when a character one would have done, saving 3 bytes per pixel of RAM. I
+Added functions charmatrix and freecharmatrix in nrutil.c, for allocation
+and dealocation of the matrix.
+
+Removed the '-m' option from usage_atlc.c, since the option no longer
+worked - it was removed some time ago. 
+
+Removed the '-F' option from usage_atlc.c, since the option  did not 
+work. I decided not to bother fixing it, but instead of writing data
+to a user-specified file name, write it to example.txt, when the 
+bitmap file is example.bmp. 
+
+Removed the handling of option 'h' in atlc.c, since the option no longer
+existed. 
+
+Printed a messge with usage_atlc, so that it indicated that if
+multi-processor support was not compiled into atlc. 
+
+Added a few commments are correct a few typos in other commments, in the
+file finite_difference_multi_threaded.c
+
+Checked the system reasonably well with multi-threading enabled on my
+dual preocessor Sun Ultra 60. The programme speeds up quite a bit,
+depending on the size of the job. Certainly runing with two threads
+(either by defining #define MAX_CPUS 2 in definintions.h, or the -p2
+command line option, seem to work best for my dual processor machine. Running
+a few more threads (up to 5 or so) does not slow the system much, but as
+more and more are added, there is a definate slowdown. 
+
+renamed usage to usage_atlc, to be consistant with all the other
+programmes (usage_rect_in_rect etc) 
+
+Added quit a few comments to atlc.c, and generally made the code tidier,
+with more consistant indenting. 
+
+Added a file/function swap_conductor voltages, which converts +1V to -1V
+and visa-versa. This is needed to compute the impedance of coupled
+lines. 
+
+**************************Version 2.32 Dated 9/3/2002***************************
+********************************************************************************
+Wrote manpage for readbin
+Moved man page from man to man/man1.
+Removed function free_ucmatrix, free_ucmatrix and byteswap, none of which
+were used. 
+Added a new ability to calculate Zo assuming a round conductor - which
+it might not be. Its useful to check the software against coax, which
+has well defined values. Needs -v option to see the result. 
+Added a new programme (only one file) 'readbin' which analyses the .bin
+files and reports on the number of each colour pixel. 
+Corrected write_fields.c, so that a conductor is printed with zero
+E-field. Sometimes this was not so, as there was no check before writing
+the E-fields out that the pixels was not a conductor. 
+Added new file/function check_for_shorts(), which causes the programme to
+exit if a conductor of one voltage is in contact with a conductor of
+another voltage. 
+Compiled with Sun's CC compiler, which threw up a few prolems. It's more
+fussy that gcc!!  Hence made these changes:
+a) Replaced strncmp(bitmap_file_buffer, with strncmp((char *)
+   bitmap_file_buffer, on line 41 of read_bitmap_file_headers.c. 
+b) Changed atlc.c so a fread((void *)... image_data from fread(image_data...
+c) Removed multiple declaration of some variables in rect_in_rect.c,
+circ_in_circ.c
+d) Changed fill_image_vector_with_data in rect_in_rect.c,
+rect_in_circ.c, circ_in_circ.c circ_in_rect.c and definitions.h, such
+that the first argument is an unsigned char *, not char*  as before. 
+e) align_bitmap_image in align_bitmap_image.c changed so its arguments
+are unsigned *char, not *char as before. Updated header file to reflect
+this. 
+f) 
+
+In several C files, changed variables so they were initialised to -1 - it stops
+compiler complaining about possible use of unitialisd variables. 
+Removed multi-line fprintf statement, and made into two statements in rect_in_circ.c
+Changed else if(j=D/2) to else if(j==D/2) in fill_rect_in_circ.c
+Added exit(0) to end of circ_in_circ.c
+Added exit(0) to end of circ_in_rect.c
+Added exit(0) to end of rect_in_circ.c
+Added definition of usage_circ_in_rect() to definitions.h 
+
+Removed the note about version 2.4 from this ChangeLog, as it wasn't released. 
+Corrected a serious bug in setup_arrays.c, where v was set to 0.3 instead of 0 V. 
+Removed 'byteswap' from byteswap.c and definitions.h
+Added code in configure.in to enable -Wall with gcc.
+
+
+************Version 2.2 Dated 2/12/2001**************
+*****************************************************
+Changed some of the html documentation, to be more in line with the
+source and man pages. 
+
+Verion 2.1 Dated 1/12/2001
+Many updates to documentation:
+Added man pages for rect_cen_in_rect
+Added man pages for circ_in_rect
+Added man pages for rect_in_rect
+Added man pages for circ_in_circ
+
+Added binaries for:
+rect_cen_in_rect
+circ_in_rect
+circ_in_circ
+rect_in_circ - this dones NOT work, so it is configured to always exit.
+
+Changed atlc so that it no longer uses the faster convergence algorithm.
+I now know it can fail, so will remove it. 
+
+Changed usage.c and atlc.c so that the -p option is not displayed if not 
+MP enabled.
+usage.c Changed the usage message about '-i fiddle' as it was wrong before, in assuming default to be
+1.
+atlc.c Added a '-c' option, to change the cutoff. 
+atlc.c Changed the reading of the '-i fiddle' option, so its read a double and not a long
+
+25/4/2001, verison 2.01 put on SorgeForce unix only, supports multiple
+CPUs. 
+
+Version 1.09 - Windows verison, put on my web site.
+
+Version 1 - published in QEX, see qex-december-1996/atlc.pdf.

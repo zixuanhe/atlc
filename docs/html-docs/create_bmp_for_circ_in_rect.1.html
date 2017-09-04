@@ -1,0 +1,289 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     <B>create_bmp_for_circ_in_rect</B> - bitmap generator for a  circu-
+     lar conductor inside a rectangular conductor (part of <B>atlc</B>)
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+     <B>create_bmp_for_circ_in_rect</B> <B>[options...</B> <B>]</B>  <B>d</B>  <B>W</B>  <B>H</B>  <B>x</B>  <B>y</B>  <B>Er</B>
+     <B>outfile.bmp</B>
+
+
+</PRE>
+<H2>WARNING</H2><PRE>
+     This man page is not a complete set of documentation  -  the
+     complexity  of the atlc project makes man pages not an ideal
+     way to document it, although out of completeness, man  pages
+     are produced. The best documentation that was current at the
+     time the version was produced should be found on  your  hard
+     drive, usually at
+     /usr/local/share/atlc/docs/html-docs/index.html
+     although it might be elsewhere if your system  administrator
+     chose  to  install  the package elsewhere. Sometimes, errors
+     are  corrected  in   the   documentation   and   placed   at
+     http://atlc.sourceforge.net/ before a new release of atlc is
+     released.  Please, if you notice a problem with the documen-
+     tation - even spelling errors and typos, please let me know.
+
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     <B>create_bmp_for_circ_in_rect</B> is a pre-processor for <B>atlc</B>, the
+     finite difference program that is used to calculate the pro-
+     perties of a two-conductor electrical transmission  line  of
+     arbitrary       cross       section.       The       program
+     <B>create_bmp_for_circ_in_rect</B> is used as a fast  way  of  gen-
+     erating  bitmaps  (there  is  no need to use a graphics pro-
+     gram), for a circular conductor inside a rectangular conduc-
+     tor, like this:
+
+     --------------------------------------------------------  ^
+     |                                                      |  |
+     |                                                      |  |
+     |                                                      |  |
+     |                                                      |  |
+     |                                                      |  |
+     |           Dielectric, permittivity=Er                |  |
+     |                                                      |  |
+     |                                                      |  |
+     |                                                      |  |
+     |                                                      |  |
+     |         &lt;------x------&gt; ^                            |  H
+     |       *****             |                            |  |
+     |    ***********          y                            |  |
+     |   *************         |                            |  |
+     |   **************        |                            |  |
+     |   &lt;-----d------&gt;        v                            |  |
+     |   **************                                     |  |
+     |   *************                                      |  |
+     |    ***********                                       |  |
+     |        ***                                           |  |
+     |                                                      |  |
+     -------------------------------------------------------   v
+     &lt;---------------------------W--------------------------&gt;
+
+     The parameters 'W' and 'H' and the inner dimensions  of  the
+     outer  conductor.  The inner conductor has a diameter of 'd'
+     and is offset from the centre of the outer conductor  by  an
+     amount  'x'  horizontally  and  'y'  vertically.   The space
+     between the inner and outer conductors is  a  dielectric  of
+     relative  permittivity  'Er'.  If  there  is  just  a vacuum
+     dielectric, then 'Er' should be set to 1.0
+
+     The bitmap is printed to standard output, which <B>MUST</B> be  re-
+     directed to either a file in one of the following two ways.
+
+     <B>create_bmp_for_circ_in_rect</B>  <B>d</B> <B>W</B> <B>H</B> <B>x</B> <B>y</B> <B>Er</B> <B>&gt;</B> <B>filename.bmp</B> OR
+     <B>create_bmp_for_circ_in_rect</B> <B>-f</B> <B>filename.bmp</B> <B>d</B> <B>W</B> <B>H</B> <B>x</B> <B>y</B> <B>Er</B>
+
+     The bitmaps produced by <B>create_bmp_for_circ_in_rect</B> are  24-
+     bit bit colour bitmaps, as are required by <B>atlc</B>.
+
+     The permittivities of the bitmap, set by 'Er', determine the
+     colours in the bitmap. If Er1 is 1.0, 1.006, 2.1, 2.2, 2.33,
+     2.5, 3.3, 3.335, 3.7, 4.8,  10.2  or  100  then  the  colour
+     corresponding  to that permittivity will be set according to
+     the colours defined in COLOURS below. If Er is  not  one  of
+     those  permittivities, the region of permittivity Er will be
+     set to the colour 0xCAFF00. The program <B>atlc</B> does  not  know
+     what these permittivites are, so <B>atlc</B>, must be told with the
+     -d command line option, as in example 4 below.
+
+
+</PRE>
+<H2>OPTIONS</H2><PRE>
+     <B>-b</B> <B>bitmapsize</B>
+     is used to set the size of the bitmap, and so  the  accuracy
+     to  which  atlc is able to calculate the transmission line's
+     properties. The default value for 'bitmapsize'  is  normally
+     4,  although  this  is set at compile time. The value can be
+     set anywhere from 1 to 15, but more than 8 is  probably  not
+     sensible.
+
+     <B>-f</B> <B>outfile</B>
+
+     <B>-v</B>
+     Causes <B>create_bmp_for_circ_in_rect</B> to  print  some  data  to
+     stderr. Note, nothing extra goes to standard output, as that
+     is expected to be redirected to a bitmap file.
+
+
+
+
+</PRE>
+<H2>COLOURS</H2><PRE>
+     The 24-bit bitmaps that <B>atlc</B> expects, have 8  bits  assigned
+     to  represent the amount of red, 8 for blue and 8 for green.
+     Hence there are 256 levels of red, green and blue, making  a
+     total of 256*256*256=16777216 colours. Every one of the pos-
+     sible 16777216 colours can be defined precisely by the stat-
+     ing the exact amount of red, green and blue, as in:
+
+     red         = 255,000,000 or 0xff0000
+     green       = 000,255,000 or 0x00ff00
+     blue        = 000,000,255 or 0x0000ff
+     black       = 000,000,000 or 0x000000
+     white       = 255,255,255 or 0xffffff
+     Brown       = 255,000,255 or 0xff00ff
+     gray        = 142,142,142 or 0x8e8e8e
+
+     Some colours, such as pink, turquoise,  sandy,  brown,  gray
+     etc  may mean slightly different things to different people.
+     This is not so with <B>atlc</B>, as the program expects the colours
+     below  to  be EXACTLY defined as given. Whether you feel the
+     colour is sandy or yellow is up to you, but if you use it in
+     your  bitmap, then it either needs to be a colour recognised
+     by atlc, <B>or</B> you must define it with a  command  line  option
+     (see OPTIONS and example 5 below).
+     The following conductors are recognised by atlc:
+     red    = 255,000,000 or 0xff0000 is the live conductor.
+     green  = 000,255,000 or 0x00ff00 is the grounded conductor.
+     black  = 000,000,000 or 0x000000 is the negative conductor
+
+     All bitmaps <B>must</B> have the live (red)  and  grounded  (green)
+     conductor.  The  black conductor is not currently supported,
+     but it will be used to indicate a negative conductor,  which
+     will  be needed if/when the program gets extended to analyse
+     directional couplers.
+
+     The following dielectrics are recognised by atlc <B>and</B> <B>so</B>  <B>are</B>
+     <B>produced</B> <B>by</B> create_bmp_for_circ_in_rect<B>.</B>
+
+     white     255,255,255 or 0xFFFFFF as Er=1.0   (vacuum)
+     white     255,202,202 or 0xFFCACA as Er=1.0006 (air)
+     blue      000,000,255 or 0x0000FF as Er=2.1   (PTFE)
+     Mid gray  142,242,142 or 0x8E8E8E as Er=2.2   (duroid 5880)
+     mauve     255.000,255 or 0xFF00FF as Er=2.33  (polyethylene)
+     yellow    255,255,000 or 0xFFFF00 as Er=2.5   (polystyrene)
+     sandy     239,203,027 or 0xEFCC1A as Er=3.3   (PVC)
+     brown     188,127,096 or 0xBC7F60 as Er=3.335 (epoxy resin)
+     Turquoise 026,239,179 or 0x1AEFB3 as Er=4.8   (glass PCB)
+     Dark gray 142,142,142 or ox696969 as Er=6.15  (duroid 6006)
+     L. gray   240,240,240 or 0xDCDCDC as Er=10.2  (duroid 6010)
+     D. Orange 213,160,077 or 0xD5A04D as Er=100   (for testing)
+     If the permittivity is one not in the above list, then those
+     parts  of  the  image  with Er1 will be set to 0xCAFF00, and
+     those parts with Er2 to 0xAC82AC.
+
+
+</PRE>
+<H2>EXAMPLES</H2><PRE>
+     Here   are    a    few    examples    of    the    use    of
+     <B>create_bmp_for_circ_in_rect</B>.  Again, see the html documenta-
+     tion in atlc-X.Y.Z/docs/html-docs for more examples.
+
+     In the first example, there is just an  air  dielectric,  so
+     Er1=Er2=1.0.   The inner of 1x1 inches (or mm, miles etc) is
+     placed centrally in an outer with dimensions 3 x 3 inches.
+
+     The exact place where the  dielectric  starts  (a)  and  its
+     width (d) are unimportant, but they must still be entered.
+
+     <B>%</B> <B>create_bmp_for_circ_in_rect</B> <B>3</B> <B>3</B> <B>1</B> <B>1</B> <B>1</B> <B>1</B> <B>1</B> <B>1</B> <B>&gt;</B> <B>ex1.bmp</B>
+     <B>%</B> <B>atlc</B> <B>ex1.bmp</B>
+
+     In this second example, an inner of 15.0 mm x 0.5 mm is sur-
+     rounded  by an outer with internal dimensions of 61.5 x 20.1
+     mm. There is a material with permittivity 2.1 (Er  of  PTFE)
+     below    the    inner    conductor.    The    output    from
+     <B>create_bmp_for_circ_in_rect</B> is sent to a file ex1.bmp, which
+     is then processed by <B>atlc</B>
+
+     <B>%</B> <B>create_bmp_for_circ_in_rect</B> <B>61.5</B> <B>20.1</B> <B>5</B> <B>22</B> <B>0.5</B> <B>50</B> <B>15</B> <B>5</B> <B>1.0</B>
+     <B>2.1</B> <B>&gt;</B> <B>ex2.bmp</B>
+     <B>%</B> <B>atlc</B> <B>ex2.bmp</B>
+
+     In example 3, the bitmap is made larger, to  increase  accu-
+     racy, but otherwise this is identical to the second example.
+     <B>%</B> <B>create_bmp_for_circ_in_rect</B> <B>-b7</B> <B>61.5</B> <B>20.1</B> <B>5</B> <B>22</B> <B>0.5</B> <B>50</B> <B>15</B> <B>5</B>
+     <B>1.0</B> <B>2.1</B> <B>&gt;</B> <B>ex3.bmp</B>
+     <B>%</B> <B>atlc</B> <B>ex3.bmp</B>
+
+     In   the   fourth   example,   instead    of    re-directing
+     <B>create_bmp_for_circ_in_rect's</B>  output  to  a file with the &gt;
+     sign, it is done using the -f option.
+     <B>%</B> <B>create_bmp_for_circ_in_rect</B> <B>-f</B> <B>ex4.bmp</B> <B>61.5</B> <B>20.1</B> <B>5</B> <B>22</B>  <B>0.5</B>
+     <B>50</B> <B>15</B> <B>5</B> <B>1.0</B> <B>2.1</B>
+     <B>%</B> <B>atlc</B> <B>ex4.bmp</B>
+
+     In the fifth example, materials with permittivites 2.78  and
+     7.89  are  used.  While  there  is  no  change in how to use
+     <B>create_bmp_for_circ_in_rect</B>, since these permittivities  are
+     not known, we must tell <B>atlc</B> what they are.
+
+     <B>%</B> <B>create_bmp_for_circ_in_rect</B> <B>61</B> <B>20</B> <B>1</B> <B>4</B> <B>22</B> <B>0.5</B> <B>50</B> <B>15</B> <B>5</B>  <B>2.78</B>
+     <B>7.89</B> <B>&gt;</B> <B>ex5.bmp</B> <B>%</B> <B>atlc</B> <B>-d</B> <B>CAFF00=2.78</B> <B>-d</B> <B>AC82AC=7.89</B> <B>ex5.bmp</B>
+
+     In the sixth and final example, the -v  option  is  used  to
+     print     some     extra     data     to     stderr     from
+     <B>create_bmp_for_circ_in_rect</B>.
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+     <B>atlc(1)</B>                       <B>create_bmp_for_circ_in_circ(1)</B>
+     <B>create_bmp_for_microstrip_coupler(1)</B>
+     <B>create_bmp_for_rect_cen_in_rect(1)</B>
+     <B>create_bmp_for_rect_cen_in_rect_coupler(1)</B>
+     <B>create_bmp_for_rect_in_circ(1)</B>
+     <B>create_bmp_for_rect_in_rect(1)</B>
+     <B>create_bmp_for_stripline_coupler(1)</B>
+     <B>create_bmp_for_symmetrical_stripline(1)</B>    <B>design_coupler(1)</B>
+     <B>find_optimal_dimensions_for_microstrip_coupler(1)</B> <B>readbin(1)</B>
+
+     http://atlc.sourceforge.net                - Home page
+     http://sourceforge.net/projects/atlc       - Download area
+     atlc-X.Y.Z/docs/html-docs/index.html       - HTML docs
+     atlc-X.Y.Z/docs/qex-december-1996/atlc.pdf - theory paper
+     atlc-X.Y.Z/examples                        - examples
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>

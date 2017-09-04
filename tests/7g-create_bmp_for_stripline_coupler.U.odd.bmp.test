@@ -1,0 +1,52 @@
+#! /bin/sh
+
+# This is one of a set of test that generate checksums after files are
+# created. Generally a bitmap if first produced by a program such as sym_strip, 
+# rect_in_rect, rect_cen_in_rect, circ_in_circ, circ_in_rect, 
+# generate_coupler_bitmap etc.
+
+# In a few cases, the checksum is performed on a file that is 
+# supplied with the package, rather than one that is 
+# generated. 
+
+# The checksum of the bitmaps generated is compared to what is known to be 
+# the correct checksum using a program 'mymd5sum' which is a cut-down version of
+# the normal md5 or md5sum command.  It does not print the filename 
+# to stdout, as the normal version does. 
+
+# I have tried to test these checksums on as many systems as possible and 
+# know all tests pass on all systems I have checked this on. Typically the
+# systems have been mainly Suns, but running various operating systems. 
+# such as Solaris 9, NetBSD, Solaris 2.5, Linux but also a PC running
+# rehat Linux and a Dec Alpha. Any failure probably indicates a 
+# program bug, so PLEASE PLEASE let me know about it!!
+# Dr. David Kirkby, drkirkby@ntlworld.com
+
+# **************** NOTE ****************
+# This test  (7g-create_bmp_for_stripline_coupler.U.odd.bmp.test)
+# test seems sensitive to the machine it is run on
+# with a Sun UltraSPARC II chip in a Sun Ultra 80 giving different 
+# results from that in a Pentium II PC running Linux. Investigation
+# shows that on one system a pixel is white (255,255,255) and another
+# very nearly whilte (254,254,254). 
+
+# Hence this must mean that the 
+# result of energy is rounded either white or almost white, depending
+# on the system. As such, either checksum is found to be acceptable 
+# in this case, and only this case. 
+# On a Cray, two pixels differ from those on the Sun, so a third
+# checksum is acceptable. 
+# 9eda42b1552b9bd2673e67d441a7d53a checksum on Sun.
+# d7ec3c37b95d995ae4fff362c542f46f checksum on Linux PC
+# 09f68e1466d68bf8a03e1f90eff411bb checksum on Cray Y-MP
+
+touch $top_builddir/tmp/test_stripline_coupler.U.odd.bmp
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_stripline_coupler.U.odd.bmp`
+if [ $MD5SUM != 2f1fb3a1c993c7b4c9fbd3e03e353d02 ] ; then
+  echo "FAILED:" $0 >> tests.log
+  exit 1
+else
+  rm $top_builddir/tmp/test_stripline_coupler.U.odd.bmp
+  echo "PASSED:" $0 >> tests.log
+  exit 0
+fi

@@ -1,0 +1,1 @@
+50ohm-401h.bmp 2 Er=  1.00 Zo=  49.944 Ohms C=   66.8 pF/m L=  166.6 nH/m v= 2.998e+08 m/s v_f= 1.000 VERSION= 4.6.0

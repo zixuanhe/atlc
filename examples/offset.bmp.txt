@@ -1,0 +1,1 @@
+offset.bmp 2 Er=  1.00 Zo=  41.555 Ohms C=   80.3 pF/m L=  138.6 nH/m v= 2.998e+08 m/s v_f= 1.000 VERSION= 4.6.0

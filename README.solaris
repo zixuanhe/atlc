@@ -1,0 +1,25 @@
+1) Sun's make programme in /usr/ccs/bin/make is not able to compile this
+properly, giving an error message like 
+
+mksh: Fatal error in reader: = missing from replacement macro reference
+
+Another problem found on the make in Solaris 2.5 is that it don't know
+how to make acx_mpi.m4. That file is included in the distribution for
+future use, but there is no reason for the program to do anything with
+it. 
+
+Use GNU make to build atlc. This is often installed on systems as gmake.
+Other make versions like smake may work, but I've never tried them. 
+
+3) If you have a copy of Sun's cc compiler, the following 
+CFLAGS are suggested. Using Sun's compiler will give about a 25% reduction 
+in run times. 
+
+'-dalign -fns -fsimple=1 -xalias_level=basic -xdepend -xlibmil -xO5 -I/usr/local/include -R/usr/local/lib'
+
+If you find a better set of options for Sun's cc, that still allow all
+the tests to pass, then please let me know. 
+ 
+Dr. David Kirkby, 16th October 2003 Re: atlc-4.5.1
+
+

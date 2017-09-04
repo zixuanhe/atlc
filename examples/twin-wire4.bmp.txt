@@ -1,0 +1,1 @@
+twin-wire4.bmp 2 Er=  1.00 Zo=  61.873 Ohms C=   53.9 pF/m L=  206.4 nH/m v= 2.998e+08 m/s v_f= 1.000 VERSION= 4.6.0

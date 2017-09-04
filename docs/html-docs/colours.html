@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 TRANSITIONAL//EN -x">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<meta name="generator" content="Mostly bluefish &amp; vi. Sometimes netscape">
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+
+<meta name="DESCRIPTION" content="Colour codes for atlc">
+<meta name="KEYWORDS" content="Colour color atlc">
+<title>Colour codes for atlc software.</title>
+</head>
+<body>
+<H1>Producing suitable bitmaps</H1>
+<a name="produce"> </a><COdE>atlc</code> expects to find the transmission line's cross section to be found in a standard bitmap (.BMP or .bmp) file. There are several forms of bitmaps, some grayscale, some 8-bit colour (256 colours), some 16 bit colour, some 24-bit colour. Some bitmaps are compressed. <COde>atlc</code> expects to see uncompressed 24-bit bitmaps. This may sound restrictive, but in practice most graphics software can save such files. </P>
+
+Since the form of the input file is critical, we will discuss this a little. 24-bit images have 8 bits per colour (8 for red, 8 for green and 8 for blue). Hence there are 256 shades of red, 256 shades of green and 256 shades of blue, giving a total of 256*256*256=16,777,216 possible colours. It follows that 3 bytes of data are needed to describe each pixel (ignoring compressed images which are not supported). Each bitmap has a small header of around 56 bytes, followed by 3 bytes for every pixel. The minimum possible length for a bitmap of x by y pixels is then 56+3*width*height (bytes). In practice, images are usually a little larger than this, as there is some padding. If your images are not at least this size, something is wrong! For a more detailed discussion of bitmap files <STRONG>(unnecessary for using <COde>atlc</code>)</STRONG>, see this <a href="bmp.html">HTML page</A> I found on the web somewhere. <br><br>
+Colours in bitmap files are often written as red,green,blue as in 26,239,179 indicating the amount of red (26), the amount of green (239) and the amount of blue (179). Amounts vary from 0 (none of the colour) to 255 (the maximum possible amount of the colour. Often the colours are written in hexadecimal format as 0x1aefb3 or 0x1AEFB3. Such a colour will look like this. <br><img src="jpgs/1aefb3.jpg" ALT="The colour 0x1AEFB3 or 26,239,179" width="32" height="32">
+
+<br> <br>
+It is absolutely <STRONG>essential</STRONG> that you are able to produce bitmap images with <STRONG>exactly</STRONG> the colours <COde>atlc</code> needs. <br><br>
+
+One conductor must be produced in <STRONG>pure red</STRONG>. i.e 255,0,0 or 0xFF0000. This red will look like the red square on the left. The one on the right is very slightly different, having a very small amount of blue, and so has the colour representation 255,0,1 or 0xFF0001. The colour on the left will be interpreted by <COde>atlc</code> as one conductor, the one on the right will not. Hence it is essential to check the colours produced by your graphics package not only look <EM>about right</EM>, but are <STRONG>exactly</STRONG> right. <TABLE>
+<TR>
+<TD><img src="jpgs/ff0000.jpg" ALT="Pure red 0xFF0000" width="32" height="32"></TD>
+<TD><img src="jpgs/ff0001.jpg" ALT="Re with a little blue 0xFF0001" width="32" height="32"></TD>
+</TR>
+</TABLE>
+<br> 
+Graphics packages such as <A HREF="http://www.gimp.org">Gimp</A> (freely available for no cost on UNIX systems) will allow you to set a colour precisely. <br><br>
+You then need to draw an image of the cross section of the transmission line to be analysed. The scale can be anything you reasonably want, but should result in the largest dimension in your transmission line have 200 or more pixels allocated to it. Making the bitmap much smaller (say 32 pixels in one dimension) will results in fast but inaccurate results. Much larger bitmaps, say 1000x1000, will take a long time to compute. The bitmaps don't have to be square. You should aim to fill the whole of the bitmap with the relevant details, and not have a lot of unused space on the bitmap. For example, the image on the left below is fine, but the one on the right will spend a lot of time computing nothing of value. <br>
+<table>
+<tr>
+<TD><img src="jpgs/full-size.jpg" ALT="Relevant data fills bitmap" width="128" ></TD>
+<TD><img src="jpgs/too-small.jpg" ALT="Wasted space = wasted computing time." width="128"></td>
+</tr>
+</table>
+<h1>Predefined colours in <code>atlc</code></h1>
+The input file to atlc, which is a bitmap, must have the correct colours to indicate what parts of the image are conductors and dielectrics. Parts at ground (0 V) potential must be drawn green, those at +1 V must be drawn red and those at -1V must be drawn blue. Only red and green are noramlly used for conductors, with blue being used only on couplers. Vacuum dielectric must be drawn white. Many other colours have very specific meanings as shown below. 
+<p>
+The following colours are predefined in <code>atlc</code>. These can be used, without the user specifying what they mean. 
+
+<h2>Predefined conductors</h2>
+
+<table>
+<tr>
+<td><img src="jpgs/ff0000.jpg" alt="+1 V conductor" width="128" height="128"></td>
+<td><img src="jpgs/00ff00.jpg" alt="0 V conductor" width="128" height="128"></td>
+<td><img src="jpgs/0000ff.jpg" alt="-1 V conductor" width="128" height="128"></td>
+</tr>
+
+<tr>
+<td>Red<br>
+live conductor<br>
+RGB=0xff0000<br>
+rgb=255,0,0</td>
+<td>Green<br>
+ground conductor<br>
+RGB=0x00ff00<br>
+rgb=0,255,0</td>
+<td>Blue<br>
+-1v conductor<br>
+RGB=0x0000ff<br>
+rgb=0,0,255</td>
+</tr>
+</table>
+
+The following dielectrics are pre-defined. 
+
+<h2>Predefined dielectrics</h2>
+
+<table>
+<tr>
+<td><img src="jpgs/ffffff.jpg" alt="Vacuum" width="128" height="128"></td>
+<td><img src="jpgs/ffcaca.jpg" alt="Air" width="128" height="128"></td>
+<td><img src="jpgs/8235ef.jpg" alt="PTFE" width="128" height="128"></td>
+<td><img src="jpgs/8e8e8e.jpg" alt="RT Duroid 5880" width="128" height="128"></td>
+<td><img src="jpgs/ff00ff.jpg" alt="Polyethelene" width="128" height="128"></td>
+</tr>
+
+<tr>
+<td>White<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=1.0<br>
+Vacuum<br>
+RGB=0xffffff<br>
+RGB=255,255,255</td>
+<td>Pink<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=1.0006<br>
+Air<br>
+RGB=0xffcaca<br>
+RGB=255,202,202</td>
+<td>Light Blue<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=2.1<br>
+PTFE<br>
+RGB=0x8235ef<br>
+RGB=130,52,255</td>
+<td>Gray<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=2.2<br>
+RT duroid 5880<br>
+RGB=0x8e8e8e<br>
+RGB=142,142,142</td>
+<td>Mauve<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=2.33<br>
+Polyethelene<br>
+RGB=0xff00ff<br>
+RGB=255,0,255</td>
+<td></td>
+</tr>
+
+<tr>
+<td><img src="jpgs/ffff00.jpg" alt="Polystyrene" width="128" height="128"></td>
+<td><img src="jpgs/efcc1a.jpg" alt="PVC" width="128" height="128"></td>
+<td><img src="jpgs/bc7f60.jpg" alt="Epoxy resin" width="128" height="128"></td>
+<td><img src="jpgs/dff788.jpg" alt="FR4 PCB" width="128" height="128"></td>
+<td><img src="jpgs/1aefb3.jpg" alt="Fibreglass" width="128" height="128"></td>
+</tr>
+
+<tr>
+<td>Yellow<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=2.5<br>
+Polystyrene<br>
+RGB=0xffff00<br>
+RGB=255,255,0</td>
+<td>Sandy<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=3.3<br>
+PVC (at 1MHz)<br>
+RGB=0xefcc1a<br>
+RGB=239,203,27</td>
+<td>Brown<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=3.335<br>
+Epoxy resin<br>
+RGB=0xbc7f60<br>
+RGB=188,127,96</td>
+<td>Light yellow<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=3.7<br>
+FR4 PCB<br>
+RGB=0xdff788<br>
+RGB=223,247,136,</td>
+
+<td>Terquoise<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=4.8<br>
+Fibreglass PCB<br>
+RGB=0x1aefb3<br>
+RGB=26,239,179</td>
+
+</tr>
+
+<tr>
+<td><img src="jpgs/696969.jpg" alt="RT Duroid 6006" width="128" height="128"></td>
+<td><img src="jpgs/dcdcdc.jpg" alt="RT duroid 6010" width="128" height="128"></td>
+<td><img src="jpgs/d5a04d.jpg" alt="Er = 100" width="128" height="128"></td>
+</tr>
+
+<tr>
+<td>Dark grey<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=6.15.<br>
+RT duroid 6006<br>
+RGB=0x696969<br>
+RGB=142,142,142</td>
+<td>Light gray<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=10.2<br>
+RT duroid 6010<br>
+RGB=0xdcdcdc<br>
+RGB=240,240,240</td>
+<td>Dark Orange<br>
+<font face="symbol">e</font><font face="ariel"><sub>r</sub></font>=100<br>
+Er of 100.0<br>
+RGB=0xd5a04d<br>
+RGB=213,160,77</td>
+</tr>
+</table>
+
+Note, the permitivity of free space (vacuum) is by definition 1.0. Air is very close to 1, but depends on pressure and temperature. Although the difference in permittivity between air and vacuum is smaller than the errors in <code>atlc</code>, having another permittivity very close to 1.0 is useful, as for test purposes. The figures for the plastics given above are only approximate. The permittivity of plastics are usually frequency dependant and temperature dependant. 
+
+<h2>Entering the permittivity of other materials into <code>atlc</code></h2>
+
+If you know the exact value of your dielectric material, draw the dielectric in a new colour, but define the colour with a command line option. For example, if your transmission line has a dielectric of 2.42 somewhere, then you must 
+
+<ol>
+<li>Draw the image, using a different colour (say a golden colour with RGB=0xf9e77d or in decimal RGB=249,231,125)</li>
+
+<li>Run <code>atlc</code> with the following command line option.<br>
+ % atlc -d f9e77d=2.43 somefile.bmp</li>
+</ol>
+
+this sets the colour f9e77 in somefile.bmp to reresent a permittivity of 2.43. 
+<p>
+atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A><p>
+<a href="http://atlc.sourceforge.net">Return to the atlc homepage</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list1.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"></a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"></a>
+<BR>
+<BR>
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A>
+</body>
+</html>
+

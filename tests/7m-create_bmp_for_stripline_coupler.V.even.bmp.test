@@ -1,0 +1,13 @@
+#! /bin/sh
+#echo mpirun=$mpirun
+touch $top_builddir/tmp/test_stripline_coupler.V.even.bmp
+
+MD5SUM=`$top_builddir/tools/src/mymd5sum $top_builddir/tmp/test_stripline_coupler.V.even.bmp`
+if [ $MD5SUM != 23608dc6d4c5de3b589f1df4ce76a4af ] ; then
+    echo "FAILED:" $0 >> tests.log
+    exit 1
+else
+    rm -f $top_builddir/tmp/test_stripline_coupler.V.even.bmp
+    echo "PASSED:" $0 >> tests.log
+    exit 0
+fi

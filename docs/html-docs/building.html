@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META name="generator" content="Mostly bluefish & vi. Sometimes netscape">
+<META http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+<meta name="author" content="Dr. David Kirkby">
+<META name="DESCRIPTION" content="How to build atlc - Arbitrary Transmission Line Calculator from sources.">
+<META name="KEYWORDS" content="Transmission line calculator atlc">
+<TITLE>Building atlc</TITLE>
+</HEAD>
+<BODY>
+
+<H1>Building <COde>atlc</code> from sources</H1>
+<p><EM>atlc</EM> is highly portable program and should run on any UNIX system and some non-UNIX systems. </P>
+An early version for <EM>atlc</EM> forms part of the <a href="http://www.netbsd.org/">NetBSD</a>  project and has been ported to <a href=" ftp://ftp.netbsd.org/pub/NetBSD/packages/pkgsrc/cad/atlc/README.html">23 different systems</a>, including the Acorn 32, Amiga, Arm32, Atari, Cobalt, Dec Alpha, HP 300, i386 PC, Mac 68000, Power PC, Sun SPARC, VAX etc. <STRONG><EM>atlc</EM> has even been run on a Sony Playstation 2!!</STRONG>.  In addition to the systems running NetBSD UNIX, <EM>atlc</EM> has been run on the following operating systems
+<OL>
+	<LI>Solaris 2.5, 8 and Solaris 9 for SPARC</LI>
+	<LI>Solaris 8 for Intel</LI>
+	<LI>Linux 2.4.17 for a Dec Alpha </LI>
+	<LI>Tru64 UNIX 5.1B on a Dec Alpha 600a Personal Workstation</LI>
+	<LI>Redhat 7.2 Linux on PC</LI>
+	<LI>Redhat 6.2 on SPARC. <strong>Fails many tests if configured --with-threads. I think the thread library is broken</strong></LI>
+	<LI>Debian 3.0 Linux on SPARC <strong>Fails many tests if configured --with-threads. I think the thread library is broken.</strong></LI>
+	<LI>NetBSD 1.6 on SPARC</LI>
+	<LI>OpenBSD </LI>
+	<LI>AIX 5.2 on an IBM RS/6000. <strong>Fails one or two tests if configured with <code>--with-threads</code>, but the numerical results are fine and the images show no significant errors</strong></LI>
+	<LI>IRIX 6.5.16 on an SGI Octane</LI>
+	<LI>x86 PC's run Windoze 98 and NT, although no deveopment is now done on these platforms.</LI>
+</OL>
+To install <EM>altc</EM> you should download the souce code from <a href="http://sourceforge.net/projects/atlc/"><COde>atlc</code>'s download area on SourceForge.</A> It is preferable to also have following software too, although none, apart from a compatible version of <CODE>make</CODE>, are essential. 
+<OL>
+	<LI><a href="http://www.gnu.org/software/make/make.html">GNU make</a>, sometimes installed as <CODE>gmake</CODE>. Sun's version of make in <CODE>/usr/ccs/bin/make</CODE> is <STRONG>not</STRONG> suitable, although IBM's version in AIX 5.2 works fine, as does HP's in HP-UX 11 and Tru64 5.1B. If you find you have an unsuitable version of make (and Sun's is the only one known), the GNU one (often called gmake) works fine. </LI>
+<LI>If you have a system with more than one CPU, <EM>atlc</EM> can be configured to use any number of CPUs in parallel to speed execution, using a POSIX compatable thread library, or pthreads. Just add the option <code>--with-threads</code>. Sun's Solaris implementation works fine, as does IBM's AIX and SGI's IRIX, but any other POSIX library should work. If you have multiple CPUs and don't have a thread library, you should trying installing  <a href="http://www.gnu.org/software/pth">GNU Portable Threads</A>, although <em>atlc</em> has not been tested with this. <STRONG>If your computer has only one CPU, there is no point in building atlc to use multiple threads, as it will run slower!</STRONG></LI>
+</OL>
+<br>
+Extract the compressed file, using gunzip, or gzip -d.
+<PRE>% gzip -d atlc-X.Y.tar.gz
+% tar xvf atlc-X.Y.tar
+% cd atlc-X.Y
+% ./configure 
+% make
+% make check  <STRONG> // This is very important, as it checks the binaries.</STRONG>
+</PRE>
+<p>The code tries to gather information about the hardware. This is by its very nature less portable than other parts of <em>atlc</em>. If a compilation or linking problem occurs during <code>make check</code> phase, then re-configure using <code>configure --disable-hardware-info</code>. Please let me know about such failures. </p>
+A total of 90 self-tests are performed in the <CODE>make check</CODE> stage.  <strong>No tests should fail</strong>. Two tests are used to check the operation of the POSIX threads, so will be skipped unless configured with <CODE>--with-threads</CODE>. 
+<br><br>
+
+Finally you can install the software if you wish. 
+<PRE>
+% su
+# make install. </PRE>
+The<CODE> make install</CODE> stage will install:
+<OL>
+	<LI>The executable programs (by default to<CODE> /usr/local/bin</CODE>)</LI>
+	<LI>The man pages (by default to <CODE>/usr/local/man/man1</CODE>)</LI>
+	<LI>Some HTML formatted documentation (generally similar to that on the  <a href="http://atlc.sourceforge.net/">atlc website</a>. By default these are installed to<CODE> /usr/local/share/atlc/docs/html-docs</CODE>.
+	<LI>A copy of a paper published on atlc back in the December 1996 issue of QEX. That along with the C source for this very early version is installed to<CODE> /usr/local/share/atlc/docs/qex_december_199</CODE>6</LI>
+	<LI>Some example files (by default to<CODE> /usr/local/share/atlc/examples</CODE>)</LI>
+</OL>
+<br>
+Options to the <code>configure</code> script, can be listed by running <CODE>configure --help</CODE>. You should also conisider setting the variable <code>CC</code> to the compiler you wish to use and <code>CFLAGS</code> to any flags you need. Since the program <code>atlc</code> is quite CPU intensive, it is useful to test the effect of compiler optimisationflags. Running <code>make check</code> does this for you, since it runs a benchmark, giving you timing information. Some compiler optimisation options can break code, as they make assumptions that might not be valid. Hence always re-run <code>make check</code> if changing any compiler options. 
+<p>
+
+<br>
+atlc is written and supported by <a href="jpgs/home-email.jpg">Dr. David Kirkby (G8WRB)</A> It it issued under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A>
+<br>
+<BR>
+<BR>
+
+<A href="http://sourceforge.net"> <IMG
+src="http://sourceforge.net/sflogo.php?group_id=25836&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net
+Logo"></A><a href="http://validator.w3.org/check/referer"><img border="0"
+src="valid-html40.gif"
+alt="Valid HTML 4.01!" height="31" width="88"></a>
+<a href="http://bluefish.openoffice.nl/"><img SRC="jpgs/bluefish.jpg" WIDTH="88" HEIGHT="31" ALT="Bluefish"></a>
+<p>The following is a trap for smammers, so they can gather loads of ficticious email address, so don't click<a href="http://homepage.ntlworld.com/drkirkby/list1.html"> anywhere</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list2.html"> o</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list3.html">n</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list4.html"> this</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list5.html"> line</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list6.html"> th</a>
+<a href="http://homepage.ntlworld.com/drkirkby/list7.html"> anks.</a>
+ </body>
+ </html>

@@ -1,0 +1,36 @@
+TODO List
+
+Here is a list of the ways I would like to expand atlc, in a rough order 
+of time. 
+  1 Re-enable support for multiple processors. 
+
+  2 Improve accuraracy on transmission lines where there is more
+    than one dielectric - e.g air and PTFE sbustrate board. The
+    current code works, but some improvements could be made. 
+
+  3.Determine the processor type a bit more senisbly in the 
+    benchmark called by 'make check'. At present this is likely
+    to return unknown' or a meaningless number on most platforms.
+    It works pretty well on Solaris, Tru64 and HP-UX, but does
+    not on all systems. 
+
+  4.Implement a better way of enabling a user to change the 
+    contrast/brightness in an image. Current, this can
+    only be done with the '-f option to atlc, but this 
+    requires a re-run of atlc to do this, which is hardly
+    very useful, given atlc is so CPU intensive. There are 
+    faster ways of doing this, just from the binary files
+    (example.E.bin, example.Ex.bin, example.Ey.bin, example.U.bin, 
+    example.V.bin and example.Er.bin)..
+
+
+   5.Get the program 'generate_bmp_for_rect_in_circ' working.
+
+   6 Get a decent GUI. 
+
+If anyone has any suggestions for how to improve atlc, please email me. 
+
+atlc is written and supported by Dr. David Kirkby (G8WRB). It it issued under 
+the GNU General Public License
+
+Dr. David Kirkby,   8th December 2003. 

@@ -1,0 +1,243 @@
+.TH create_bmp_for_circ_in_circ 1 "atlc-4.4.2" "10th Sept 2003" "Dr. David Kirkby"
+.ds n 5
+.SH NAME
+\fBcreate_bmp_for_rect_cen_in_rect\fR - bitmap generator for rectangular conductor inside rectangular conductor (part of \fBatlc\fR)
+.SH SYNOPSIS
+\fBcreate_bmp_for_rect_cen_in_rect [options... ] W H w h Er outfile.bmp\fR
+.br
+.SH WARNING
+This man page is not a complete set of documentation - the complexity of the atlc project makes man pages not an ideal way to document it, although out of completeness, man pages are produced. 
+The best documentation that was current at the time the version was produced should be found on your
+hard drive, usually at 
+.br
+/usr/local/share/atlc/docs/html\-docs/index.html 
+.br
+although it might be elsewhere if
+your system administrator chose to install the package elsewhere. Sometimes, errors are corrected
+in the documentation and placed at http://atlc.sourceforge.net/ before a new release of atlc is
+released.  Please, if you notice a problem with the documentation - even spelling errors and typos,
+please let me know. 
+
+.SH DESCRIPTION
+\fBcreate_bmp_for_rect_cen_in_rect\fR is a pre-processor for \fBatlc\fR, the finite difference program that is used to calculate the 
+properties of a two-conductor electrical transmission line of arbitrary 
+cross section. The program \fBcreate_bmp_for_rect_cen_in_rect\fR is used as a fast way of
+generating bitmaps (there is no need to use a graphics program), for a rectangular conductor placed centrally inside another rectangular conductor, like this:
+.P
+-----------------------------------------------------  ^
+.br
+|                                                   |  |
+.br
+|            Dielectric, permittivity=Er            |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+|             <----------w----------->              |  |
+.br
+|             ------------------------   ^          |  |
+.br
+|             |                      |   |          |  |
+.br
+|             |  Metallic conductor  |   |          |  H
+.br
+|             |  conductor (must be  |   h          |  |
+.br
+|             |  in  the centre)     |   |          |  |
+.br
+|             |                      |   |          |  |
+.br
+|             ------------------------   ^          |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+|                                                   |  |
+.br
+-----------------------------------------------------  |
+.br
+<---------------------------W----------------------->
+.br
+
+The parameters 'W' and 'H' and the inner dimensions of the outer conductor.
+The outer dimensions of the inner conductor are 'w' and 'h'. The inner 
+conductor is assumed be be placed centrally inside the outer conductor. The
+spaced between the two conductors is filled with a dielectric of
+relative permittivity Er
+.PP 
+.br
+.P
+.br
+The bitmaps produced by \fBcreate_bmp_for_rect_cen_in_rect\fR are 24-bit bit colour bitmaps, 
+as required by \fBatlc\fR. 
+
+The permittivity of the bitmap, set by 'Er', determine the
+colours in the bitmap. If Er is 1.0, 2.1, 2.2, 2.33, 2.5, 3.3,
+3.335, 4.8 or 10.2, then the colour corresponding to that permittivity
+will be set according to the colours defined in COLOURS below. If Er
+is not one of those permittivities, the region of permittivity Er
+will be set to the colour 0xCAFF00. 
+The program \fBatlc\fR does not know what these permittivites are, so they
+\fBatlc\fR, must be told with the comand line option -d, as in example 4
+below.
+.P
+.SH OPTIONS
+\fB-b bitmapsize\fR
+.br
+is used to set the size of the bitmap, and so the accuracy to which atlc
+is able to calculate the transmission line's properties. The default
+value for 'bitmapsize' is normally 4, although this is set at compile
+time. The value can be set anywhere from 1 to 15, but more than 8 is
+probably not sensible. 
+.PP
+\fB-f outfile\fR
+.br
+Set the output filename. By default, the bitmap is sent to stdout, but
+it *must* be sent to a file, with this option, or as described above. 
+.P
+\fB-v \fR
+.br
+Causes \fBcreate_bmp_for_rect_cen_in_rect\fR to print some data to stdout.
+
+.SH COLOURS
+The 24-bit bitmaps that \fBatlc\fR expects, have 8 bits assigned 
+to represent the amount of red, 8 for blue and 8 for green. Hence there are 
+256 levels of red, green and blue, making a total of 256*256*256=16777216 colours. 
+Every one of the possible 16777216 colours can be defined precisely by the stating the exact amount 
+of red, green and blue, as in:
+.PP
+.br
+red         = 255,000,000 or 0xff0000
+.br
+green       = 000,255,000 or 0x00ff00
+.br
+blue        = 000,000,255 or 0x0000ff
+.br
+black       = 000,000,000 or 0x000000
+.br
+white       = 255,255,255 or 0xffffff
+.br
+Brown       = 255,000,255 or 0xff00ff 
+.br
+gray        = 142,142,142 or 0x8e8e8e
+.PP
+Some colours, such as pink, turquoise, sandy, brown, gray etc may mean slightly
+different things to different people. This is not so with \fBatlc\fR, as the 
+program expects the colours below to be EXACTLY defined as given. Whether 
+you feel the colour is sandy or yellow is up to you, but if you use it in 
+your bitmap, then it either needs to be a colour recognised by atlc, \fBor\fR
+you must define it with a command line option (see OPTIONS and example 5
+below).
+.br
+The following conductors are recognised by atlc:
+.br
+red    = 255,000,000 or 0xff0000 is the live conductor. 
+.br
+green  = 000,255,000 or 0x00ff00 is the grounded conductor. 
+.br
+blue   = 000,000,000 or 0x000000 is the negative conductor 
+.PP
+All bitmaps \fBmust\fR have the live (red) and grounded (green) conductor. The blue
+conductor is not currently supported, but it will be used to indicate a 
+negative conductor, which will be needed if/when the program gets extended 
+to analyse directional couplers. 
+.PP
+The following dielectrics are recognised by \fRatlc\fB and so are
+produced by \fRcreate_bmp_for_rect_cen_in_rect\fB. 
+.PP
+.br
+white      255,255,255 or 0xFFFFFF as Er=1.0   (vacuum)
+.br
+pink       255,202,202 or 0xFFCACA as Er=1.0006 (air)
+.br
+light blue 130,052,255 or 0x8235Ef as Er=2.1   (PTFE)
+.br
+Mid gray   142,242,142 or 0x8E8E8E as Er=2.2   (duroid 5880)
+.br
+mauve      255.000,255 or 0xFF00FF as Er=2.33  (polyethylene)
+.b r
+yellow     255,255,000 or 0xFFFF00 as Er=2.5   (polystyrene)
+.br
+sandy      239,203,027 or 0xEFCC1A as Er=3.3   (PVC)
+.br
+brown      188,127,096 or 0xBC7F60 as Er=3.335 (epoxy resin)
+.br
+Turquoise  026,239,179 or 0x1AEFB3 as Er=4.8   (glass PCB)
+.br
+Dark gray  142,142,142 or ox696969 as Er=6.15  (duroid 6006)
+.br
+L. gray    240,240,240 or 0xDCDCDC as Er=10.2  (duroid 6010)
+.br
+D. orange  213,130,067 or 0xD5A04D as Er=100.0 (mainly for test purposes)
+.br
+If the permittivity is one not in the above list, then those parts of
+the image with Er will be set to 0xCAFF00.
+.SH EXAMPLES
+Here are a few examples of the use of \fBcreate_bmp_for_rect_cen_in_rect\fR. Again, see the html documentation in atlc-X.Y.Z/docs/html-doc/index.html for more examples.     
+.P
+1) In the first example, there is just a vacuum dielectric, so Er=1.0.
+The inner of 1x1 inches (or mm, miles etc) is placed centrally in an
+outer with dimensions 3.3 x 3.9 inches. 
+
+\fB% create_bmp_for_rect_cen_in_rect 3.3 3.9 1 1 1 > 1.bmp
+.br
+% atlc 1.bmp\fR
+
+2) In this second example, an inner of 15.0 mm x 5.0 mm is surrounded by an
+outer with internal dimensions of 71.5 x 60.0 mm. There is a material
+with permittivity 2.1 (Er of PTFE) around the inner conductor. The output
+from \fBcreate_bmp_for_rect_cen_in_rect\fR is sent to a file 2.bmp, which is then processed by
+\fBatlc\fR 
+
+\fB% create_bmp_for_rect_cen_in_rect 71.5 60.0 15.0 5.0 2.1 > 2.bmp\fR
+.br
+\fB% atlc 2.bmp\fR
+.br
+
+3) In example 3, the bitmap is made larger, to increase accuracy, but
+otherwise this is identical to the second example. 
+\fB% create_bmp_for_rect_cen_in_rect -b7 71.5 60 15 5 2.1 > 3.bmp\fR
+.br
+\fB% atlc 3.bmp\fR
+.br
+.P
+In the fourth example, instead of re-directing \fBcreate_bmp_for_rect_cen_in_rect's\fR output
+to a file with the > sign, it is done using the -f option. 
+.br
+\fB% create_bmp_for_rect_cen_in_rect -f 4.bmp 61.5 28.1 5 22 2.1\fR
+.br
+\fB% atlc 4.bmp\fR
+.SH SEE ALSO
+atlc(1)
+create_bmp_for_circ_in_circ(1)
+create_bmp_for_circ_in_rect(1)
+create_bmp_for_microstrip_coupler(1)
+create_bmp_for_rect_cen_in_rect_coupler(1)
+create_bmp_for_rect_in_circ(1)
+create_bmp_for_rect_in_rect(1)
+create_bmp_for_stripline_coupler(1)
+create_bmp_for_symmetrical_stripline(1)
+design_coupler(1)
+find_optimal_dimensions_for_microstrip_coupler(1)
+readbin(1)
+.P 
+.br
+http://atlc.sourceforge.net                - Home page 
+.br
+http://sourceforge.net/projects/atlc       - Download area
+.br
+atlc-X.Y.Z/docs/html-docs/index.html       - HTML docs
+.br
+atlc-X.Y.Z/docs/qex-december-1996/atlc.pdf - theory paper
+.br
+atlc-X.Y.Z/examples                        - examples

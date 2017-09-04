@@ -1,0 +1,1 @@
+microstrip_coupler.bmp 3 Er_odd=   2.417 Er_even=   2.652 Zodd=  67.257 Zeven=  81.221 Zo=  73.910 Zdiff= 134.514 Zcomm=  40.611 Ohms VERSION=4.6.0

@@ -1,0 +1,61 @@
+Want to help with atlc? Here's how. 
+
+1) First of all, please test atlc on your platform. Let me know
+if it passes or fails and if possible give me the output
+of a log file 
+configure > log
+make >> log
+make check >> log
+
+and send me the log 
+
+2) If anyone can write any code to obtain information about
+hardware on any systems, it would be much appreciated. 
+The format should be very clear form the file 
+tests/benchmark.c. This looks for a number of files
+try_linux.c, try_solaris.c etc. These files are expected
+to fill in the structure computer_data
+
+
+struct computer_data{
+char mhz[MAX_SIZE];                  /* Speed in MHz. Note its a string */
+char cpus[MAX_SIZE];                 /* Number of CPUs running          */
+char max_cpus[MAX_SIZE];             /* Maximum number of CPUs support by system */
+ char sysname[MAX_SIZE];              /* System name - got by uname */
+ char nodename[MAX_SIZE];             /* nodename - got via uname            */
+ char release[MAX_SIZE];              /* Got via uname, but often wrong      */
+ char version[MAX_SIZE];              /* Version of the OS. Sometimes wrong. */
+ char machine[MAX_SIZE];              /* Machine name                        */
+ char cpu_type[MAX_SIZE*3];           /* The CPU type                        */
+ char fpu_type[MAX_SIZE*3];           /* The FPU type                        */
+ char memory[MAX_SIZE];               /* The memory in Mb                    */ 
+ char hw_provider[MAX_SIZE];          /* The hardware provider - Sun, IBM etc */
+ char hw_platform[MAX_SIZE];          /* The hardware platform - eg sun4u    */
+ char t1[MAX_SIZE];                   /* Time in s to run benchmark single threaded */
+ char t2[MAX_SIZE];                   /* Time in s to run benchmark multi threade
+ d */
+ char speedup[MAX_SIZE];              /* t1/t2 */
+ char eff[MAX_SIZE];                  /* The efficiency - t1/(t2*cpus)     */
+ char L1data[MAX_SIZE];               /* Size of level 1 data cache in kb  */
+ char L1instruction[MAX_SIZE];        /* Size of level 1 instuction cache in kb *
+ /
+ char L2[MAX_SIZE];                   /* Size of L2 cache                  */ 
+ }a;
+
+with missing information. So if you know how to find the speed of
+a linux box, please change try_linux.c so it has the speed in the
+structure element 'data.mhz' All information must be stored as
+one long string. So if fpu type should be a 'Athlon XP2800', this
+then data.fpu_type should say 'Athlon_XP2800', with the underscore
+added. 
+
+This really needs doing for Linux and the BSD versions. IRIX I
+can do myself at some time. 
+
+3) Add a GUI
+
+4) Provide an HP compiler for HP-UX.
+
+5) 
+
+Dr. David Kirkby, 15th August 2003.
